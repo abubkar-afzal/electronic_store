@@ -1,5 +1,42 @@
 @import "tailwindcss";
+:root{
+  ---navbar: rgb(255, 255, 255);
+  ---pagecolor: rgb(226, 225, 225);
+  ---mobilemenu: rgb(226, 225, 225);
+  ---youtube: rgb(255, 0, 0);
+  ---facebook: rgb(0, 110, 255);
+  ---tiktok: rgb(8, 8, 8);
+  ---instagram: rgb(255, 0, 140);
+   ---wa: rgb(66, 213, 76);
+    ---em: rgb(104, 202, 211);
+    ---gh: rgb(0, 0, 0);
+    ---ig: rgb(233, 41, 134);
+    ---ln: rgb(24, 62, 214);
+    ---tw:rgb(255, 255, 255);
+}
+body {
+  background: var(---pagecolor);
+}
+@theme {
+  --breakpoint-sm: 290px;
+  --breakpoint-mm: 375px;
+  --breakpoint-lm: 425px;
+  --breakpoint-t: 768px;
+  --breakpoint-l: 1024px;
+  --breakpoint-ll: 1440px;
+  --breakpoint-k: 2560px;
+  --breakpoint-my: 2700px;
 
+}
+/* Custom class to hide scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  scrollbar-width: none; /* For Firefox */
+}
+/* 
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -18,9 +55,5 @@
     --foreground: #ededed;
   }
 }
+  */
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
