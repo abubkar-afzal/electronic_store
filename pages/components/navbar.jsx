@@ -23,7 +23,7 @@ const Navbar=()=>{
         </div>
     </div>
     {
-        mobilemenu ? <div className="fixed top-0 w-full h-full bg-[var(---mobilemenu)] sm:text-[18px] p-3 overflow-y-scroll">
+        mobilemenu ? <div className="fixed top-0 w-full h-full bg-[var(---mobilemenu)] sm:text-[18px] p-3 overflow-y-scroll z-10">
             <div className="text-[30px] place-self-end my-1 cursor-pointer" onClick={showmenu}><RxCross2 /></div>
             <div className="flex items-center space-x-2 my-2 cursor-pointer">
                 <div>Login</div>

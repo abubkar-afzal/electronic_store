@@ -1,18 +1,19 @@
 @import "tailwindcss";
+
 :root{
   ---navbar: rgb(255, 255, 255);
   ---pagecolor: rgb(226, 225, 225);
   ---mobilemenu: rgb(226, 225, 225);
-  ---youtube: rgb(255, 0, 0);
-  ---facebook: rgb(0, 110, 255);
-  ---tiktok: rgb(8, 8, 8);
-  ---instagram: rgb(255, 0, 140);
-   ---wa: rgb(66, 213, 76);
-    ---em: rgb(104, 202, 211);
-    ---gh: rgb(0, 0, 0);
-    ---ig: rgb(233, 41, 134);
-    ---ln: rgb(24, 62, 214);
-    ---tw:rgb(255, 255, 255);
+  ---brandscolor: rgb(172, 168, 168);
+  ---whitetext: rgb(255, 255, 255);
+  ---blacktext: rgb(0, 0, 0);
+  ---bestpricelabel: rgb(210, 38, 38);
+  ---salelabel: rgb(227, 42, 42);
+  ---btncolor:rgb(112, 2, 255);
+  ---price:rgb(112, 2, 255);
+  ---arrowbutton:rgb(196, 195, 195);
+  
+  
 }
 body {
   background: var(---pagecolor);
@@ -36,6 +37,7 @@ body {
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
   scrollbar-width: none; /* For Firefox */
 }
+
 /* 
 :root {
   --background: #ffffff;
@@ -56,4 +58,3 @@ body {
   }
 }
   */
-
