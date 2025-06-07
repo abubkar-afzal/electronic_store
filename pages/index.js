@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./components/navbar";
 import Intro from "./components/intro";
 import Deal from "./components/deal";
 import Services from "./components/services";
@@ -9,11 +8,11 @@ import ShopeCategory from "./components/shopcategory";
 import OnSale from "./components/onsale";
 import TodaySpecial from "./components/todayspecial";
 import Brands from "./components/brands";
+import Newsletter from "./components/newsletter";
 
 export default function Home() {
   return (
     <>
-    <Navbar/>
     <Intro/>
     <Deal/>
     <Services/>
@@ -23,6 +22,7 @@ export default function Home() {
     <OnSale/>
     <TodaySpecial/>
     <Brands/>
+    <Newsletter/>
     </>
   );
 }
