@@ -1,4 +1,4 @@
-"use client"; // Required for Next.js 13+ with App Router
+
 
 import React, { useState } from "react";
 import Image from "next/image";
