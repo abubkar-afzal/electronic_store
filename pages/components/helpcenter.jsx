@@ -11,7 +11,7 @@ const HelpCenter=()=>{
                 <div className="w-full px-[4rem]"><button className="p-2 py-3 bg-[var(---whitetext)] w-full text-[var(---btncolor)] rounded-[1.5rem] my-4 mb-[2rem]">Go to Help Center</button></div>
             </div>
             <div>
-                <Image src={img1} width={1020} height={1020} className="w-full h-[50%]"/>
+                <Image src={img1} width={1020} height={1020} alt="img" className="w-full h-[50%]"/>
             </div>
         </div>
     </>)

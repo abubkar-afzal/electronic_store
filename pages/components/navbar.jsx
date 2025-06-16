@@ -6,7 +6,9 @@ import { FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 
 const Navbar = () => {
-  const [mobilemenu, setmonbilemenu] = useState(false);
+  const [mobilemenu, setmonbilemenu] = useState(true);
+  const [search, setsearch] = useState(true);
+  const [cart, setcart] = useState(true);
   const showmenu = () => {
     setmonbilemenu(!mobilemenu);
   };
@@ -20,20 +22,20 @@ const Navbar = () => {
             <div className="cursor-pointer">
               <IoIosSearch />
             </div>
+            <div className=" mr-4">
             <div className="cursor-pointer">
               <AiOutlineShoppingCart />
             </div>
-            <div className="sm:text-[10px] bg-black text-white font-thin sm:w-[15px] sm:absolute right-7 top-4 text-center rounded-[20px]">
+            <div className="sm:text-[10px] bg-black text-white font-thin sm:w-[15px] sm:absolute right-11 top-4 text-center rounded-[20px]">
               {count}
-            </div>
+            </div></div>
             <div className="cursor-pointer" onClick={showmenu}>
               <RxHamburgerMenu />
             </div>
           </div>
         </div>
       </div>
-      {mobilemenu ? (
-        <div className="fixed top-0 w-full h-full bg-[var(---mobilemenu)] sm:text-[18px] p-3 overflow-y-scroll z-10">
+        <div className={`${mobilemenu ? "right-[-120vw] opacity-0":"right-0 opacity-100"} duration-[2s] fixed top-0 w-full h-full bg-[var(---mobilemenu)] sm:text-[18px] p-3 overflow-y-scroll z-10`}>
           <div
             className="text-[30px] place-self-end my-1 cursor-pointer"
             onClick={showmenu}
@@ -163,7 +165,7 @@ const Navbar = () => {
             </div>
           </Link>
         </div>
-      ) : null}
+        
     </>
   );
 };

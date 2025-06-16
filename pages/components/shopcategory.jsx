@@ -18,7 +18,7 @@ const ShopeCategory =()=>{
             <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img1} width={1020} height={1020} className=""/>
+                    <Image src={img1} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Computers</div>
@@ -26,7 +26,7 @@ const ShopeCategory =()=>{
              <div className="flex flex-col items-center my-[2rem] cursor-pointer ">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img2} width={1020} height={1020} className=""/>
+                    <Image src={img2} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Mobiles</div>
@@ -34,7 +34,7 @@ const ShopeCategory =()=>{
              <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img3} width={1020} height={1020} className=""/>
+                    <Image src={img3} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Drones & Cameras</div>
@@ -42,7 +42,7 @@ const ShopeCategory =()=>{
              <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---btncolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img4} width={1020} height={1020} className=""/>
+                    <Image src={img4} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Sale</div>
@@ -50,7 +50,7 @@ const ShopeCategory =()=>{
              <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img5} width={1020} height={1020} className=""/>
+                    <Image src={img5} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Tablets</div>
@@ -58,7 +58,7 @@ const ShopeCategory =()=>{
              <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---blacktext)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img6} width={1020} height={1020} className=""/>
+                    <Image src={img6} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Best Sellers</div>
@@ -66,7 +66,7 @@ const ShopeCategory =()=>{
             <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img7} width={1020} height={1020} className=""/>
+                    <Image src={img7} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">T.V & Home Cinema</div>
@@ -74,7 +74,7 @@ const ShopeCategory =()=>{
             <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img8} width={1020} height={1020} className=""/>
+                    <Image src={img8} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Wearable Tech</div>
@@ -82,7 +82,7 @@ const ShopeCategory =()=>{
             <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img9} width={1020} height={1020} className=""/>
+                    <Image src={img9} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Speakers</div>
@@ -90,7 +90,7 @@ const ShopeCategory =()=>{
             <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
-                    <Image src={img1} width={1020} height={1020} className=""/>
+                    <Image src={img1} width={1020} height={1020} alt="img" className=""/>
                     
                     </div>
                 <div className="font-bold my-2">Headphones</div>
