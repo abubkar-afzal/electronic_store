@@ -9,12 +9,15 @@
   ---blacktext: rgb(0, 0, 0);
   ---bestpricelabel: rgb(210, 38, 38);
   ---salelabel: rgb(227, 42, 42);
+  ---error: rgb(227, 42, 42);
   ---btncolor:rgb(112, 2, 255);
+  ---hoverbtncolor:rgb(153, 82, 247);   
   ---price:rgb(112, 2, 255);
   ---arrowbutton:rgb(196, 195, 195);
   ---warningred:rgb(247, 140, 140);
-
-  
+  ---inputhoverborder: rgb(0, 0, 0);
+  ---inputborder: rgb(123, 121, 121);
+    
   
 }
 body {
