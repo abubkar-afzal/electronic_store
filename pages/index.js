@@ -15,6 +15,7 @@ export default function Home() {
     <>
     <Intro/>
     <Deal/>
+    <div className="mx-[1rem]">
     <Services/>
     <BestSeller/>
     <BestPrice/>
@@ -22,7 +23,7 @@ export default function Home() {
     <OnSale/>
     <TodaySpecial/>
     <Brands/>
-    <Newsletter/>
+    <Newsletter/></div>
     </>
   );
 }

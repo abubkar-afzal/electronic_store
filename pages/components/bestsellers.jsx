@@ -1,7 +1,7 @@
-
-
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 import img1 from "./assets/img7.jpg";
 import img2 from "./assets/img5.jpg";
@@ -32,43 +32,52 @@ const images = [
     price: "$70.00",
     saleprice: "$65.00",
   },
+  {
+    src: img3,
+    sale: true,
+    name: "FaPhone",
+    specification: "12gb ram",
+    price: "$70.00",
+    saleprice: "$65.00",
+  },
+  {
+    src: img3,
+    sale: true,
+    name: "FaPhone",
+    specification: "12gb ram",
+    price: "$70.00",
+    saleprice: "$65.00",
+  },
+  {
+    src: img3,
+    sale: true,
+    name: "FaPhone",
+    specification: "12gb ram",
+    price: "$70.00",
+    saleprice: "$65.00",
+  },
 ];
 
 const BestSeller = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
   return (
-    <>
-      <div className="w-full bg-[var(---whitetext)] my-[1rem]">
-        <div className="text-center text-[30px] font-bold py-[2rem]">
-          Best Sellers
-        </div>
+    <div className="w-full bg-[var(---whitetext)] my-[1rem]">
+      <div className="text-center text-[30px] l:text-[40px] font-bold py-[2rem]">
+        Best Sellers
+      </div>
 
-        <div className="relative w-full max-w-lg mx-auto">
-          <div className="flex flex-col items-center w-[60%] mx-auto shadow shadow-black">
-            <div className="relative w-full max-w-lg mx-auto overflow-hidden">
-              <div
-                className="flex whitespace-nowrap transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {images.map((item, index) => (
-                  <div
-                    key={index}
-                    className="relative w-full flex-shrink-0 my-2 cursor-pointer"
-                  >
-                    {item.sale ? (
+      <div className="relative max-w-6xl l:max-w-full mx-auto">
+        <Swiper
+          spaceBetween={10}
+          breakpoints={{
+            640: { slidesPerView: 1 },
+            1024: { slidesPerView: 4 },
+          }}
+        >
+          {images.map((item, index) => (
+            <SwiperSlide key={index}>
+              <div className="flex flex-col items-start my-2 shadow shadow-black p-2 mx-2">
+                <div className="w-full relative cursor-pointer">
+                  {item.sale ? (
                       <>
                         <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin ">
                           SALE
@@ -82,61 +91,44 @@ const BestSeller = () => {
                       </>
                     )}
 
-                    <Image
-                      src={item.src}
-                      alt={`Slide ${index}`}
-                      width={1020}
-                      height={1020}
-                      className="transition-transform duration-500 my-2"
-                    />
-                    <div>
-                      <div className="ml-4 font-thin">{item.name}</div>
-                      <div className="ml-4 font-thin">{item.specification}</div>
-                      {item.sale ? (
-                        <>
-                          <div className="flex text-[18px]">
-                            <div className="ml-5 font-bold text-[var(---price)]">
-                              <s>{item.price}</s>
-                            </div>
+                  <Image
+                    src={item.src}
+                    alt={`Slide ${index}`}
+                    width={1020}
+                    height={1020}
+                    className="transition-transform duration-500 my-2"
+                  />
+                </div>
 
-                            <div className="ml-2 font-bold text-[var(---price)]">
-                              {item.saleprice}
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="ml-5 text-[18px] font-bold text-[var(---price)]">
-                            {item.price}
-                          </div>
-                        </>
-                      )}
+                <div className="ml-2 font-thin">{item.name}</div>
+                <div className="ml-2 font-thin">{item.specification}</div>
+
+                {item.sale ? (
+                  <div className="flex text-[18px] ml-2">
+                    <div className="font-bold text-[var(---price)]">
+                      <s>{item.price}</s>
+                    </div>
+                    <div className="ml-2 font-bold text-[var(---price)]">
+                      {item.saleprice}
                     </div>
                   </div>
-                ))}
+                ) : (
+                  <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
+                    {item.price}
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
-
-          {/* Navigation Buttons */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[30px] font-black font-mono 
-                             text-[var(---arrowbutton)] cursor-pointer "
-          >
-            &lt;
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[30px] font-black font-mono 
-                             text-[var(---arrowbutton)] cursor-pointer"
-          >
-            &gt;
-          </button>
-        </div>
-        <div className="flex flex-col items-center"><button className="text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 px-[3rem] rounded-[1.5rem] my-[2rem] cursor-pointer">View All</button></div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-    </>
+
+      <div className="flex justify-center">
+        <button className="text-[16px] l:text-[20px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[4rem] px-[3rem] rounded-[1.5rem] my-[2rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
+          View All
+        </button>
+      </div>
+    </div>
   );
 };
 

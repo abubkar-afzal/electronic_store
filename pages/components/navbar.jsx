@@ -81,33 +81,179 @@ const Navbar = () => {
   return (
     <>
       {/* navbar */}
-      <div className="sm:h-[10vh] w-full bg-[var(---navbar)]">
-        <div className="flex sm:h-[10vh] justify-between px-2 sm:text-[22px] place-items-center">
-          <Link href={`/`}><div className="font-black cursor-pointer">AR Codes</div></Link>
-          <div className="flex items-center space-x-2 text-[1.6rem]">
+      <div className="sm:h-[10vh] l:h-[5rem] w-full bg-[var(---navbar)]">
+        <div className="flex sm:h-[10vh] l:h-[5rem] justify-between px-2 sm:text-[22px] place-items-center">
+          <Link href={`/`}><div className="l:text-[28px] font-black cursor-pointer">AR Codes</div></Link>
+          <div className="flex items-center space-x-2 text-[1.6rem] l:text-[1.8rem]">
             <div className="cursor-pointer" onClick={showsearch}>
               <IoIosSearch />
             </div>
+            <Link href={`/components/basic/login`} className="sm:hidden l:block">
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="flex items-center space-x-2 mx-4 cursor-pointer"
+          >
+            <div className="l:text-[30px]">
+              <FaUserCircle />
+            </div>
+            <div className="l:text-[20px] font-thin">Login</div>
+
+          </div>
+        </Link>
             <div className=" mr-4" onClick={showcart}>
               <div className="cursor-pointer">
                 <AiOutlineShoppingCart />
               </div>
-              <div className="sm:text-[10px] bg-black text-white font-thin sm:w-[15px] sm:absolute right-11 top-4 text-center rounded-[20px]">
+              <div className="sm:text-[10px] l:text-[14px] bg-black text-white font-thin sm:w-[15px] l:w-[18px] sm:absolute right-11 top-4 l:top-4 l:right-5 text-center rounded-[20px]">
                 {count}
               </div>
             </div>
-            <div className="cursor-pointer" onClick={showmenu}>
+            <div className="cursor-pointer l:hidden" onClick={showmenu}>
               <RxHamburgerMenu />
             </div>
           </div>
         </div>
       </div>
+      {/* laptop menu */}
+      <div className="hidden w-full l:flex justify-between sm:text-[18px] px-2 py-2 bg-[var(---pagecolor)]">
+        <div className="flex items-center space-x-[1rem] pl-[1rem]">
+
+        
+        <Link href={`/components/category/allproducts`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] "
+          >
+            All Items
+          </div>
+        </Link>
+        <Link href={`/components/category/computers`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            Computers
+          </div>
+        </Link>
+        <Link href={`/components/category/tablets`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            Tablets
+          </div>
+        </Link>
+        <Link href={`/components/category/drones&cameras`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            Drones & Cameras
+          </div>
+        </Link>
+        <Link href={`/components/category/headphones&speakers`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            Head Phones & Speakers
+          </div>
+        </Link>
+        <Link href={`/components/category/mobiles`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            Mobiles
+          </div>
+        </Link>
+        <Link href={`/components/category/tv&homecinema`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            T.V & Home Cinema
+          </div>
+        </Link>
+        <Link href={`/components/category/wearabletech`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            Wearable Tech
+          </div>
+        </Link>
+        <Link href={`/components/category/sale`}>
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+          >
+            Sale
+          </div>
+        </Link>
+        </div>
+        <div className="flex py-2 space-x-[1rem] pr-[1rem]">
+            <Link href={`/components/basic/about`}>
+            <div
+              onClick={() => {
+                showmenu()
+              }}
+              className="underline text-[15px] cursor-pointer"
+            >
+              About
+            </div>
+          </Link>
+          <Link href={`/components/basic/contact`}>
+            <div
+              onClick={() => {
+                showmenu()
+              }}
+              className="underline text-[15px] cursor-pointer"
+            >
+              Contact
+            </div>
+          </Link>
+          <Link href={`/components/basic/helpcenter`}>
+            <div
+              onClick={() => {
+                showmenu()
+              }}
+              className="underline text-[15px] cursor-pointer"
+            >
+              Help Center
+            </div>
+          </Link>
+        <div className="flex text-[15px] cursor-pointer">
+          Call Us <p className=" mx-1 underline ">+923270972423</p>
+        </div>
+        </div>
+        </div>
 
       {/* mobilemenu */}
       <div
         className={`${
           mobilemenu ? "right-[-120vw] opacity-0" : "right-0 opacity-100"
-        } duration-[2s] fixed top-0 w-full h-full bg-[var(---mobilemenu)] sm:text-[18px] p-3 overflow-y-scroll z-10`}
+        } duration-[2s] fixed top-0 w-full h-full bg-[var(---mobilemenu)] sm:text-[18px] p-3 overflow-y-scroll z-10 l:hidden`}
       >
         <div
           className="text-[30px] place-self-end my-1 cursor-pointer"
@@ -261,8 +407,8 @@ const Navbar = () => {
           search ? "right-[-120vw] opacity-0" : "right-0 opacity-100"
         } duration-[2s] fixed top-0 w-full h-full bg-[var(---whitetext)] sm:text-[18px] p-3 overflow-y-scroll z-10`}
       >
-        <div className="flex justify-between px-[1rem]">
-          <div className="flex items-center space-x-2 p-2 border-[1px] w-[60vw]">
+        <div className="flex justify-between l:justify-center l:space-x-[2rem] px-[1rem]">
+          <div className="flex items-center space-x-2 p-2 border-[1px] w-[60vw] l:w-[80vw]">
             <div>
               <IoIosSearch />
             </div>
@@ -280,10 +426,10 @@ const Navbar = () => {
           </button>
         </div>
         <div>
-          <div className="font-bold my-[2rem] text-[18px]">
+          <div className="font-bold my-[2rem] text-[18px] l:mx-[1rem]">
             Trending Products
           </div>
-          <div className="grid grid-cols-1 gap-4 ">
+          <div className="grid grid-cols-1 l:grid-cols-4 gap-4 l:mx-[1rem]">
             {images.map((item, index) => (
               <div
                 key={index}
@@ -310,13 +456,14 @@ const Navbar = () => {
                   height={1020}
                   className="transition-transform duration-500 my-2"
                 />
-                <div>
+                <div className="l:-ml-4">
+                  <div className="l:flex">
                   <div className="ml-4 font-thin">{item.name}</div>
-                  <div className="ml-4 font-thin">{item.specification}</div>
+                  <div className="ml-4 font-thin">{item.specification}</div></div>
                   {item.sale ? (
                     <>
                       <div className="flex text-[18px] ">
-                        <div className="ml-2 font-bold">
+                        <div className="ml-2 l:ml-4 font-bold">
                           <s>{item.price}</s>
                         </div>
 
@@ -325,14 +472,14 @@ const Navbar = () => {
                     </>
                   ) : (
                     <>
-                      <div className="m-2 text-[14px]">{item.price}</div>
+                      <div className="m-2 l:ml-4 text-[14px] font-semibold">{item.price}</div>
                     </>
                   )}
                 </div>
               </div>
             ))}
           </div>
-          <button className="w-[10rem] h-[4rem] bg-[var(---blacktext)] text-[var(---whitetext)] p-4 font-thin my-[1rem] hover:underline cursor-pointer">
+          <button className="w-[10rem] l:w-[8rem] h-[4rem] l:h-[3rem] l:text-[14px] bg-[var(---blacktext)] text-[var(---whitetext)] p-4 l:p-2 font-thin my-[1rem] hover:underline cursor-pointer l:mx-[1rem]">
             Show All Results
           </button>
         </div>
@@ -341,8 +488,8 @@ const Navbar = () => {
       {/* cart */}
       <div
         className={`${
-          cart ? "right-[-120vw] opacity-0" : "right-0 opacity-100"
-        } duration-[2s] fixed top-0 w-full h-full bg-[var(---whitetext)] sm:text-[18px] p-3 overflow-y-scroll z-10`}
+          cart ? "right-[-120vw] l:right-[-50vw] opacity-0" : "right-0 opacity-100"
+        } duration-[2s] fixed top-0 w-full l:w-[30vw] h-full bg-[var(---whitetext)] sm:text-[18px] p-3 overflow-y-scroll scrollbar-hide z-10`}
       >
         <div className="flex justify-between border-b-[1px] py-[1rem] mb-[2rem]  items-center px-[1rem]">
           <div className="flex font-bold space-x-2">

@@ -12,9 +12,9 @@ import img9 from "./assets/img9.jpg"
 
 const ShopeCategory =()=>{
     return(<>
-    <div className="bg-[var(---whitetext)] py-[2rem] mb-[2rem]">
-        <div className="text-[25px] font-semibold text-center my-[2rem]">Shope by Category</div>
-        <div className="flex flex-col items-center">
+    <div className="bg-[var(---whitetext)] py-[2rem] mb-[1rem]">
+        <div className="text-[25px] l:text-[35px] font-semibold text-center my-[2rem]">Shope by Category</div>
+        <div className="flex flex-col l:grid l:grid-cols-5 l:gap-[1rem] items-center">
             <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                 <div className="w-[15rem] h-[15rem] bg-[var(---pagecolor)] rounded-full overflow-hidden p-4">
                     
