@@ -6,6 +6,7 @@ import "swiper/css";
 import img1 from "./assets/img7.jpg";
 import img2 from "./assets/img5.jpg";
 import img3 from "./assets/img6.jpg";
+import Link from "next/link";
 
 const images = [
   {
@@ -73,7 +74,7 @@ const OnSale = () => {
                     alt={`Slide ${index}`}
                     width={1020}
                     height={1020}
-                    className="transition-transform duration-500 my-2"
+                    className="transition-transform duration-500 my-2 hover:scale-102 hover:duration-500 hover:ease-in-out rounded-[1rem] w-full h-auto"
                   />
                 </div>
 
@@ -101,9 +102,9 @@ const OnSale = () => {
       </div>
 
       <div className="flex justify-center">
-        <button className="text-[16px] l:text-[20px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[4rem] px-[3rem] rounded-[1.5rem] my-[2rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
+        <Link href={`/components/category/sale`}><button className="text-[16px] l:text-[20px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[4rem] px-[3rem] rounded-[1.5rem] my-[2rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
           View All
-        </button>
+        </button></Link>
       </div>
     </div>
   );

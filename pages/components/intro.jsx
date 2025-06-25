@@ -26,7 +26,7 @@ const Intro =()=>{
             <div className="sm:text-[16px] l:text-[20px] sm:font-thin my-2">Get more for less on selected brands</div>
             <div className="">
              <Link href={`/components/category/allproducts`}> <button className="p-3 px-6 my-4
-            bg-[var(---btncolor)] cursor-pointer l:text-[20px] l:py-[1.2rem] l:px-[3rem] text-[var(---whitetext)] rounded-[1.5rem]">Shope Now</button></Link>
+            bg-[var(---btncolor)] cursor-pointer l:text-[16px] l:py-[1.2rem] l:px-[4rem] text-[var(---whitetext)] rounded-[1.5rem]">Shope Now</button></Link>
             
             </div>
         </div>

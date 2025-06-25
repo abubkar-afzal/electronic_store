@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
@@ -77,11 +77,33 @@ const Navbar = () => {
         getNumericPrice(item.sale ? item.saleprice : item.price)
     );
   }, 0);
+const [show, setShow] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const controlNavbar = () => {
+    if (typeof window !== 'undefined') {
+      if (window.scrollY > lastScrollY) {
+        setShow(false); // scroll down → hide
+      } else {
+        setShow(true); // scroll up → show
+      }
+      setLastScrollY(window.scrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', controlNavbar);
+    return () => window.removeEventListener('scroll', controlNavbar);
+  }, [lastScrollY]);
+
 
   return (
-    <>
+    <><nav className={`sticky top-0 left-0 w-full bg-white shadow transition-transform duration-300 z-50 ${
+        show ? 'translate-y-0' : '-translate-y-full'
+      }`}
+>
       {/* navbar */}
-      <div className="sm:h-[10vh] l:h-[5rem] w-full bg-[var(---navbar)]">
+      <div className="sm:h-[10vh] l:h-[5rem] w-full bg-[var(---navbar)] ">
         <div className="flex sm:h-[10vh] l:h-[5rem] justify-between px-2 sm:text-[22px] place-items-center">
           <Link href={`/`}><div className="l:text-[28px] font-black cursor-pointer">AR Codes</div></Link>
           <div className="flex items-center space-x-2 text-[1.6rem] l:text-[1.8rem]">
@@ -128,7 +150,7 @@ const Navbar = () => {
             }}
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] "
           >
-            All Items
+            All Products
           </div>
         </Link>
         <Link href={`/components/category/computers`}>
@@ -316,7 +338,7 @@ const Navbar = () => {
             }}
             className="text-center border-b-1 my-2 text-[16px] py-2 cursor-pointer "
           >
-            All Items
+            All Products
           </div>
         </Link>
         <Link href={`/components/category/computers`}>
@@ -405,7 +427,7 @@ const Navbar = () => {
       <div
         className={`${
           search ? "right-[-120vw] opacity-0" : "right-0 opacity-100"
-        } duration-[2s] fixed top-0 w-full h-full bg-[var(---whitetext)] sm:text-[18px] p-3 overflow-y-scroll z-10`}
+        } duration-[2s] fixed top-0 w-full h-full bg-[var(---whitetext)] sm:text-[18px] p-3 overflow-y-scroll z-30 scrollbar-hide`}
       >
         <div className="flex justify-between l:justify-center l:space-x-[2rem] px-[1rem]">
           <div className="flex items-center space-x-2 p-2 border-[1px] w-[60vw] l:w-[80vw]">
@@ -586,7 +608,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div></nav>
     </>
   );
 };

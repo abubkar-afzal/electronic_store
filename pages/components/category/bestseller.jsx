@@ -82,7 +82,7 @@ const images = [
   },
 ];
 
-const Tablets = () => {
+const BestSeller = () => {
   const [filter, setfilter] = useState(false);
   const [sortbyfilter, setsortbyfilter] = useState(true);
   const [pricefilter, setpricefilter] = useState(false);
@@ -156,9 +156,9 @@ const Tablets = () => {
             <div className="cursor-pointer hover:font-bold font-thin">Home</div>
           </Link>
           <div className="">&gt;</div>
-          <div className="font-thin">Tablets</div>
+          <div className="font-thin">Best Seller</div>
         </div>
-        <div className="text-[30px] font-bold my-[1rem] ">Tablets</div>
+        <div className="text-[30px] font-bold my-[1rem] ">Best Seller</div>
         <div className="flex justify-between font-thin items-center">
           <div>10 Products</div>
           <div
@@ -365,7 +365,7 @@ const Tablets = () => {
               </div>
             </Link>
             <div className="">&gt;</div>
-            <div className="font-thin">Tablets</div>
+            <div className="font-thin">BestSeller</div>
           </div>
           <div>
             <div className="my-[2rem] py-[1rem] border-b-[1px] text-[1.5rem] font-semibold">
@@ -529,7 +529,7 @@ const Tablets = () => {
           </div>
         </div>
         <div className="col-span-4 h-[100vh] overflow-scroll scrollbar-hide">
-          <div className="text-[50px] font-bold my-[1rem] ">Tablets</div>
+          <div className="text-[50px] font-bold my-[1rem] ">Best Seller</div>
           <div className="flex justify-between font-thin text-[20px] items-center">
             <div>10 Products</div>
             <div className="  my-[1rem] flex items-baseline">
@@ -623,4 +623,4 @@ const Tablets = () => {
   );
 };
 
-export default Tablets;
+export default BestSeller;
