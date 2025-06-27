@@ -98,8 +98,8 @@ const [show, setShow] = useState(true);
 
 
   return (
-    <><nav className={`sticky top-0 left-0 w-full bg-white shadow transition-transform duration-300 z-50 ${
-        show ? 'translate-y-0' : '-translate-y-full'
+    <><nav className={`sticky top-0 left-0 w-full bg-white shadow transition-transform duration-300 z-10 overflow-x-hidden ${
+        show ? 'l:translate-y-0' : 'l:-translate-y-full'
       }`}
 >
       {/* navbar */}
@@ -422,7 +422,7 @@ const [show, setShow] = useState(true);
           </div>
         </Link>
       </div>
-
+</nav>
       {/* searchmenu */}
       <div
         className={`${
@@ -517,7 +517,7 @@ const [show, setShow] = useState(true);
           <div className="flex font-bold space-x-2">
             Cart <div className="font-thin ml-2">(1 item)</div>
           </div>
-          <div className="text-[28px]" onClick={showcart}>
+          <div className="text-[28px] cursor-pointer" onClick={showcart}>
             <RxCross2 />
           </div>
         </div>
@@ -608,7 +608,7 @@ const [show, setShow] = useState(true);
             </div>
           </div>
         </div>
-      </div></nav>
+      </div>
     </>
   );
 };

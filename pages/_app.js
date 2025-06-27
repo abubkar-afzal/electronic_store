@@ -5,7 +5,7 @@ import HelpCenter from "./components/helpcenter";
 
 export default function App({ Component, pageProps }) {
   return(<>
-  <Navbar/>
+  <Navbar className=""/>
    <Component {...pageProps} />
     <HelpCenter/>
     <Footer/>

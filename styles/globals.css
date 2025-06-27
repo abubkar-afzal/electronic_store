@@ -17,6 +17,8 @@
   ---warningred:rgb(247, 140, 140);
   ---inputhoverborder: rgb(0, 0, 0);
   ---inputborder: rgb(123, 121, 121);
+  ---forgotpassword: rgb(62, 65, 239);
+  ---loginpage: rgba(255, 255, 255, 0.607);
     
   
 }
@@ -42,7 +44,10 @@ body {
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
   scrollbar-width: none; /* For Firefox */
 }
+.hidethis { animation: css 0s 3s forwards; }
 
+@keyframes css  { to { visibility: hidden; } }
+                    /* visibility / overflow: hidden; */
 /* 
 :root {
   --background: #ffffff;

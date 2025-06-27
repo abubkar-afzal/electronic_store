@@ -38,20 +38,20 @@ const Help_Center = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center p-4 bg-[var(---whitetext)]">
-        <div className="text-[2rem] font-sans font-bold text-center">
+        <div className="text-[2rem] font-sans font-bold text-center l:text-[45px]">
           
           AR Codes Help Center
         </div>
         <div className="">
-          <div className="text-center my-[2rem] text-[20px] font-bold">
+          <div className="text-center my-[2rem] text-[20px] font-bold l:text-[25px]">
             Frequently Asked Questions
           </div>
           <div>
-            <form className="flex items-center justify-center focus:outline-none border-[var(---inputborder)] hover:border-[var(---inputhoverborder)] border-b-[2px] px-2">
+            <form className="flex items-center justify-center focus:outline-none border-[var(---inputborder)] hover:border-[var(---inputhoverborder)] border-b-[2px] px-2 l:text-[20px]">
               <input
                 type="text"
                 placeholder="Search for help..."
-                className=" w-full max-w-md h-[3rem] appearance-none  px-2"
+                className=" w-full max-w-md h-[3rem] appearance-none focus:outline-none  px-2"
               />
               <button type="submit" className="ml-2 ">
                 <IoIosSearch size={24} />
@@ -59,6 +59,7 @@ const Help_Center = () => {
             </form>
           </div>
         </div>
+        <div className="l:w-[70vw] w-full px-3 my-[1rem]">
         <div className="w-full px-3 my-[1rem]">
           <div>choose a category</div>
           <select value={selectedValue} onChange={handleChange} className=" outline outline-black text-[var(---btncolor)] px-2 my-3 h-[3rem] w-full ">
@@ -112,7 +113,7 @@ const Help_Center = () => {
             </div>
             </div>
           ))}
-        </div>}
+        </div>}</div>
       </div>
     </>
   );
