@@ -10,7 +10,7 @@ import paypal from "./assets/paypal.png";
 import Image from "next/image";
 import Link from "next/link";
 
-const Footer = () => {
+const AdminFooter = () => {
   return (
     <>
       <div className="bg-[var(---whitetext)]">
@@ -169,4 +169,4 @@ const Footer = () => {
     </>
   );
 };
-export default Footer;
+export default AdminFooter;
