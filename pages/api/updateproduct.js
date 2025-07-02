@@ -25,6 +25,7 @@ export default async function handler(req, res) {
       image,
       display_place,
       category,
+      color
     } = req.body;
 
     try {
@@ -42,7 +43,8 @@ export default async function handler(req, res) {
           shipping = ?,
           image = ?,
           display_place = ?,
-          category = ?
+          category = ?,
+          color = ?
         WHERE id = ?`,
         [
           name,
@@ -58,6 +60,7 @@ export default async function handler(req, res) {
           image,
           display_place,
           category,
+          color,
           id,
         ]
       );

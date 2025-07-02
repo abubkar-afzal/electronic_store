@@ -1,19 +1,41 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { RxCross2, RxMinus, RxPlus } from "react-icons/rx";
-import { FaEdit } from "react-icons/fa";
+import { FaArrowCircleUp, FaEdit } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { MoonLoader } from "react-spinners";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Fade } from "react-awesome-reveal";
+import toast, { Toaster } from "react-hot-toast";
 
 const AllProducts = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [displayPlaceOpen, setDisplayPlaceOpen] = useState(false);
+  const [categoryOpen, setCategoryOpen] = useState(false);
+  const [errors, setErrors] = useState({});
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const [filter, setfilter] = useState(false);
+  const [sortbyfilter, setsortbyfilter] = useState(true);
+  const [pricefilter, setpricefilter] = useState(false);
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Recommended");
+  const dropdownOptions = [
+    "Recommended",
+    "Newest",
+    "Price (low to high)",
+    "Price (high to low)",
+    "Name A-Z",
+    "Name Z-A",
+  ];
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [colorfilter, setcolorfilter] = useState(false);
+  const router = useRouter();
+  let currentpage;
   const [form, setForm] = useState({
     id: "",
     name: "",
@@ -29,8 +51,33 @@ const AllProducts = () => {
     image: null,
     display_place: "",
     category: "",
+    color: "#000000",
     file: null,
   });
+  const maxItemPrice =
+    items.length > 0
+      ? Math.max(...items.map((item) => Number(item.price) || 0)) + 10
+      : 10;
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 200);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  useEffect(() => {
+    if (items.length > 0) {
+      setMinPrice(0);
+      setMaxPrice(
+        Math.max(...items.map((item) => Number(item.price) || 0)) + 10
+      );
+    } else {
+      setMinPrice(0);
+      setMaxPrice(10);
+    }
+  }, [items]);
   useEffect(() => {
     setLoading(true);
     const fetchProducts = async () => {
@@ -43,6 +90,46 @@ const AllProducts = () => {
     };
     fetchProducts();
   }, []);
+
+  if (router.route === "/admin/components/category/allproducts") {
+    currentpage = "allproducts";
+  } else if (router.route === "/admin/components/category/computers") {
+    currentpage = "computers";
+  } else if (router.route === "/admin/components/category/mobiles") {
+    currentpage = "mobiles";
+  } else if (router.route === "/admin/components/category/drones&cameras") {
+    currentpage = "drones&cameras";
+  } else if (router.route === "/admin/components/category/tv&homecinema") {
+    currentpage = "tv&homecinema";
+  } else if (router.route === "/admin/components/category/tablets") {
+    currentpage = "tablets";
+  } else if (
+    router.route === "/admin/components/category/headphones&speakers"
+  ) {
+    currentpage = "headphones&speakers";
+  } else if (router.route === "/admin/components/category/wearabletech") {
+    currentpage = "wearabletech";
+  } else if (router.route === "/admin/components/category/sale") {
+    currentpage = "sale";
+  } else if (router.route === "/admin/components/category/bestseller") {
+    currentpage = "bestseller";
+  } else {
+    currentpage = "no route found";
+  }
+
+   const validateForm = () => {
+    const newErrors = {};
+    if (!form.name || form.name.trim().length < 2)
+      newErrors.name = "Name is required (min 2 chars)";
+    if (!form.price || isNaN(form.price) || Number(form.price) <= 0)
+      newErrors.price = "Valid price is required";
+    if (!form.category) newErrors.category = "Category is required";
+    if (!form.display_place)
+      newErrors.display_place = "Display Place is required";
+    if (!form.image) newErrors.image = "Image is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
   const openEditModal = (index = null) => {
     if (index !== null) {
       const item = items[index];
@@ -61,6 +148,7 @@ const AllProducts = () => {
         image: item.image,
         display_place: item.display_place,
         category: item.category,
+        color: item.color,
         file: null,
       });
       setEditIndex(index);
@@ -80,6 +168,7 @@ const AllProducts = () => {
         image: null,
         display_place: "",
         category: "",
+        color: "#000000",
         file: null,
       });
       setEditIndex(null);
@@ -112,7 +201,7 @@ const AllProducts = () => {
   };
 
   const handleSave = async () => {
-    if (!form.name || !form.price) return;
+    if (!validateForm()) return;
     setLoading(true);
     const productData = {
       id: form.id,
@@ -129,8 +218,8 @@ const AllProducts = () => {
       image: form.image || "",
       display_place: form.display_place || "",
       category: form.category || "",
+      color: form.color || "#000000",
     };
-    console.log(editIndex);
     try {
       if (editIndex !== null) {
         setEditModalOpen(false);
@@ -139,13 +228,36 @@ const AllProducts = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(productData),
         });
+        toast("Product Update Succussfully", {
+          icon: "✅",
+          style: {
+            background: "#7002ff",
+            color: "#fff",
+          },
+        });
       } else {
         setEditModalOpen(false);
-        await fetch("/api/addproduct", {
+        let req = await fetch("/api/addproduct", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(productData),
         });
+
+        let res = await req.json();
+        if (res.duplicate) {
+          setErrors({ id: "Product with this name already exists" });
+          setEditModalOpen(true);
+          setLoading(false);
+          return;
+        } else {
+          toast("Product Added Succussfully", {
+            icon: "✅",
+            style: {
+              background: "#7002ff",
+              color: "#fff",
+            },
+          });
+        }
       }
       const res = await fetch("/api/viewall");
 
@@ -169,6 +281,7 @@ const AllProducts = () => {
       image: null,
       display_place: "",
       category: "",
+      color: "#000000",
       file: null,
     });
     setEditIndex(null);
@@ -191,42 +304,14 @@ const AllProducts = () => {
     } catch (error) {}
     setLoading(false);
   };
-
-  const [filter, setfilter] = useState(false);
-  const [sortbyfilter, setsortbyfilter] = useState(true);
-  const [pricefilter, setpricefilter] = useState(false);
-  const [minPrice, setMinPrice] = useState(50);
-  const [maxPrice, setMaxPrice] = useState(100);
-
-  const [colorfilter, setcolorfilter] = useState(false);
-  const router = useRouter();
-  let currentpage;
-  if (router.route === "/admin/components/category/allproducts") {
-    currentpage = "allproducts";
-  } else if (router.route === "/admin/components/category/computers") {
-    currentpage = "computers";
-  } else if (router.route === "/admin/components/category/mobiles") {
-    currentpage = "mobiles";
-  } else if (router.route === "/admin/components/category/drones&cameras") {
-    currentpage = "drones&cameras";
-  } else if (router.route === "/admin/components/category/tv&homecinema") {
-    currentpage = "tv&homecinema";
-  } else if (router.route === "/admin/components/category/tablets") {
-    currentpage = "tablets";
-  } else if (
-    router.route === "/admin/components/category/headphones&speakers"
-  ) {
-    currentpage = "headphones&speakers";
-  } else if (router.route === "/admin/components/category/wearabletech") {
-    currentpage = "wearabletech";
-  } else if (router.route === "/admin/components/category/sale") {
-    currentpage = "sale";
-  } else if (router.route === "/admin/components/category/bestseller") {
-    currentpage = "bestseller";
-  } else {
-    currentpage = "no route found";
-  }
-
+  const inputVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.04, type: "spring", stiffness: 120 },
+    }),
+  };
   const showfilter = () => {
     setfilter(!filter);
   };
@@ -239,26 +324,65 @@ const AllProducts = () => {
   const showcolorfilter = () => {
     setcolorfilter(!colorfilter);
   };
-  let colorofitem = "rgb(810, 58, 4)";
-
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Recommended");
-  const dropdownOptions = [
-    "Recommended",
-    "Newest",
-    "Price (low to high)",
-    "Price (high to low)",
-    "Name A-Z",
-    "Name Z-A",
-  ];
 
   const handleDropdownSelect = (option) => {
     setSelectedOption(option);
     setDropdownOpen(false);
   };
+  const uniqueColors = Array.from(
+    new Set(
+      items
+        .map((item) => (item.color ? item.color.toLowerCase() : "#000000"))
+        .filter(Boolean)
+    )
+  );
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const filteredAndSortedItems = items
+    .filter((item) => {
+      const price = Number(item.price) || 0;
+      return price >= (minPrice ?? 0) && price <= (maxPrice ?? Infinity);
+    })
+    .filter((item) => {
+      if (!selectedColor) return true;
+      return (
+        (item.color || "#000000").toLowerCase() === selectedColor.toLowerCase()
+      );
+    })
+    .sort((a, b) => {
+      switch (selectedOption) {
+        case "Price (low to high)":
+          return (Number(a.price) || 0) - (Number(b.price) || 0);
+        case "Price (high to low)":
+          return (Number(b.price) || 0) - (Number(a.price) || 0);
+        case "Name A-Z":
+          return (a.name || "").localeCompare(b.name || "");
+        case "Name Z-A":
+          return (b.name || "").localeCompare(a.name || "");
+        case "Newest":
+          return (Number(b.id) || 0) - (Number(a.id) || 0);
+        default:
+          return 0;
+      }
+    });
 
+  
   return (
     <>
+      <button
+        onClick={scrollToTop}
+        className={`${
+          showScrollTop ? "opacity-100" : "opacity-0 hidethis"
+        } fixed bottom-8 right-8 z-[9999] bg-[var(---btncolor)] text-white p-3 rounded-full shadow-lg hover:bg-transparent cursor-pointer hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] transition-all duration-[1s] text-[20px]`}
+        title="Scroll to top"
+        aria-label="Scroll to top"
+      >
+        <FaArrowCircleUp />
+      </button>
+     
+      <Toaster />
+
       {/* Edit Modal */}
       {editModalOpen && (
         <motion.div
@@ -273,157 +397,418 @@ const AllProducts = () => {
             animate={{ scale: 1 }}
             exit={{ scale: 0.8 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] scrollbar-hide overflow-y-auto"
           >
             <div className="text-2xl font-bold mb-4">
               {editIndex !== null ? "Edit Product" : "Add New Product"}
             </div>
-            <div className="flex flex-col items-center">
-              <label htmlFor="id">ID:</label>
-              <input
-                type="number"
-                id="id"
-                name="id"
-                value={form.id}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-                placeholder="Unique ID"
-              />
-              <label htmlFor="name">Name:</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={form.name}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-              />
-              <label htmlFor="specification">Specification:</label>
-              <input
-                type="text"
-                id="specification"
-                name="specification"
-                value={form.specification}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-              />
-              <label htmlFor="description">Description:</label>
-              <textarea
-                id="description"
-                name="description"
-                value={form.description}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-              />
-              <label htmlFor="price">Price:</label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                value={form.price}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-                step="0.01"
-              />
-              <label htmlFor="sale_price">Sale Price:</label>
-              <input
-                type="number"
-                id="sale_price"
-                name="sale_price"
-                value={form.sale_price}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-                step="0.01"
-              />
-              <label className="flex items-center mt-2 w-full justify-center my-[1rem]">
-                <input
-                  type="checkbox"
-                  name="onsale"
-                  checked={!!form.onsale}
-                  onChange={handleFormChange}
-                  className="mr-2 cursor-pointer"
-                />
-                On Sale
-              </label>
-              <label htmlFor="avaliable_quantity">Available Quantity:</label>
-              <input
-                type="number"
-                id="avaliable_quantity"
-                name="avaliable_quantity"
-                value={form.avaliable_quantity}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-              />
-              <label htmlFor="use_cause">Use Cause:</label>
-              <textarea
-                type="text"
-                id="use_cause"
-                name="use_cause"
-                value={form.use_cause}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-              />
-              <label htmlFor="return_policy">Return Policy:</label>
-              <textarea
-                type="text"
-                id="return_policy"
-                name="return_policy"
-                value={form.return_policy}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-              />
-              <label htmlFor="shipping">Shipping:</label>
-              <textarea
-                type="text"
-                id="shipping"
-                name="shipping"
-                value={form.shipping}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
-              />
 
-              <label htmlFor="display_place">Display Place:</label>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col items-center"
+            >
+              {[
+                {
+                  label: "ID:",
+                  htmlFor: "id",
+                  input: (
+                    <>
+                      <input
+                        type="number"
+                        id="id"
+                        name="id"
+                        value={form.id}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.id ? "border border-red-500" : ""
+                        }`}
+                        placeholder="Unique ID"
+                      />
+                      {errors.id && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.id}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Name:",
+                  htmlFor: "name",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={form.name}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.name ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.name && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.name}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Specification:",
+                  htmlFor: "specification",
+                  input: (
+                    <input
+                      type="text"
+                      id="specification"
+                      name="specification"
+                      value={form.specification}
+                      onChange={handleFormChange}
+                      className="outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]"
+                    />
+                  ),
+                },
+                {
+                  label: "Description:",
+                  htmlFor: "description",
+                  input: (
+                    <textarea
+                      id="description"
+                      name="description"
+                      value={form.description}
+                      onChange={handleFormChange}
+                      className="outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]"
+                    />
+                  ),
+                },
+                {
+                  label: "Price:",
+                  htmlFor: "price",
+                  input: (
+                    <>
+                      <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        value={form.price}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.price ? "border border-red-500" : ""
+                        }`}
+                        step="0.01"
+                      />
+                      {errors.price && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.price}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Sale Price:",
+                  htmlFor: "sale_price",
+                  input: (
+                    <input
+                      type="number"
+                      id="sale_price"
+                      name="sale_price"
+                      value={form.sale_price}
+                      onChange={handleFormChange}
+                      className="outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]"
+                      step="0.01"
+                    />
+                  ),
+                },
+                {
+                  label: "On Sale",
+                  htmlFor: "onsale",
+                  input: (
+                    <label className="flex items-center mt-2 w-full justify-center my-[1rem] gap-2 cursor-pointer select-none">
+                      <span
+                        className={`relative inline-block w-15 h-6 transition duration-[1s] 
+              ${form.onsale ? "bg-[var(---btncolor)] " : "bg-gray-300"} 
+              rounded-full`}
+                      >
+                        <input
+                          type="checkbox"
+                          name="onsale"
+                          checked={!!form.onsale}
+                          onChange={handleFormChange}
+                          className="opacity-0 w-0 h-0 peer"
+                        />
+                        <span
+                          className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-[1s]
+                ${form.onsale ? "translate-x-9" : ""}`}
+                        ></span>
+                      </span>
+                      <span
+                        className={`font-semibold duration-[1s] ${
+                          form.onsale ? "text-green-600" : "text-red-600"
+                        }`}
+                      >
+                        On Sale
+                      </span>
+                    </label>
+                  ),
+                },
+                {
+                  label: "Available Quantity:",
+                  htmlFor: "avaliable_quantity",
+                  input: (
+                    <input
+                      type="number"
+                      id="avaliable_quantity"
+                      name="avaliable_quantity"
+                      value={form.avaliable_quantity}
+                      onChange={handleFormChange}
+                      className="outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]"
+                    />
+                  ),
+                },
+                {
+                  label: "Use Cause:",
+                  htmlFor: "use_cause",
+                  input: (
+                    <textarea
+                      type="text"
+                      id="use_cause"
+                      name="use_cause"
+                      value={form.use_cause}
+                      onChange={handleFormChange}
+                      className="outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]"
+                    />
+                  ),
+                },
+                {
+                  label: "Return Policy:",
+                  htmlFor: "return_policy",
+                  input: (
+                    <textarea
+                      type="text"
+                      id="return_policy"
+                      name="return_policy"
+                      value={form.return_policy}
+                      onChange={handleFormChange}
+                      className="outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]"
+                    />
+                  ),
+                },
+                {
+                  label: "Shipping:",
+                  htmlFor: "shipping",
+                  input: (
+                    <textarea
+                      type="text"
+                      id="shipping"
+                      name="shipping"
+                      value={form.shipping}
+                      onChange={handleFormChange}
+                      className="outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]"
+                    />
+                  ),
+                },
+                {
+                  label: (
+                    <>
+                      <span>Color:</span>
+                      <span className="text-[12px] mt-[1rem] block">
+                        Click on Color and then select new Color
+                      </span>
+                    </>
+                  ),
+                  htmlFor: "color",
+                  input: (
+                    <input
+                      type="color"
+                      id="color"
+                      name="color"
+                      value={form.color}
+                      onChange={handleFormChange}
+                      className="m-2 w-full h-10 p-0 border-none bg-transparent cursor-pointer"
+                    />
+                  ),
+                },
+              ].map((field, i) => (
+                <motion.div
+                  key={field.htmlFor}
+                  custom={i}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="w-full"
+                >
+                  <label htmlFor={field.htmlFor}>{field.label}</label>
+                  {field.input}
+                </motion.div>
+              ))}
 
-              <select
-                id="display_place"
-                name="display_place"
-                value={form.display_place}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
+              {/* Display Place Dropdown with validation */}
+              <motion.div
+                custom={13}
+                variants={inputVariants}
+                initial="hidden"
+                animate="visible"
+                className="w-full relative my-2"
               >
-                <option value="">Select Display Place</option>
-                <option value="product_category">Products Category</option>
-                <option value="onsale">On Sale</option>
-                <option value="bestseller">Best Seller</option>
-              </select>
-              <label htmlFor="category">Category:</label>
+                <label htmlFor="display_place">Display Place:</label>
+                <div
+                  className={`outline focus:outline-black m-2 w-full border rounded px-3 py-2 cursor-pointer bg-white ${
+                    errors.display_place ? "border-red-500" : ""
+                  }`}
+                  onClick={() => setDisplayPlaceOpen((open) => !open)}
+                  tabIndex={0}
+                  onBlur={() =>
+                    setTimeout(() => setDisplayPlaceOpen(false), 100)
+                  }
+                >
+                  {form.display_place
+                    ? {
+                        product_category: "Products Category",
+                        onsale: "On Sale",
+                        bestseller: "Best Seller",
+                      }[form.display_place]
+                    : "Select Display Place"}
+                </div>
+                <AnimatePresence>
+                  {displayPlaceOpen && (
+                    <motion.ul
+                      initial={{ opacity: 0, y: -16, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -16, scale: 0.98 }}
+                      transition={{ duration: 0.22, type: "spring" }}
+                      className="absolute left-0 right-0 bg-white border rounded shadow z-50"
+                    >
+                      <li
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => {
+                          setForm((f) => ({
+                            ...f,
+                            display_place: "product_category",
+                          }));
+                          setDisplayPlaceOpen(false);
+                        }}
+                      >
+                        Products Category
+                      </li>
+                      <li
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => {
+                          setForm((f) => ({ ...f, display_place: "onsale" }));
+                          setDisplayPlaceOpen(false);
+                        }}
+                      >
+                        On Sale
+                      </li>
+                      <li
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => {
+                          setForm((f) => ({
+                            ...f,
+                            display_place: "bestseller",
+                          }));
+                          setDisplayPlaceOpen(false);
+                        }}
+                      >
+                        Best Seller
+                      </li>
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+                {errors.display_place && (
+                  <div className="text-red-500 text-xs mb-1">
+                    {errors.display_place}
+                  </div>
+                )}
+              </motion.div>
 
-              <select
-                id="category"
-                name="category"
-                value={form.category}
-                onChange={handleFormChange}
-                className="outline focus:outline-black m-2 w-full"
+              {/* Category Dropdown with validation */}
+              <motion.div
+                custom={14}
+                variants={inputVariants}
+                initial="hidden"
+                animate="visible"
+                className="w-full relative my-2"
               >
-                <option value="">Select Category</option>
-                <option value="allproduct">All Products</option>
+                <label htmlFor="category">Category:</label>
+                <div
+                  className={`outline focus:outline-black m-2 w-full border rounded px-3 py-2 cursor-pointer bg-white ${
+                    errors.category ? "border-red-500" : ""
+                  }`}
+                  onClick={() => setCategoryOpen((open) => !open)}
+                  tabIndex={0}
+                  onBlur={() => setTimeout(() => setCategoryOpen(false), 100)}
+                >
+                  {form.category
+                    ? {
+                        allproduct: "All Products",
+                        computers: "Computers",
+                        tablets: "Tablets",
+                        "drones&cameras": "Drones & Cameras",
+                        "headphones&speakers": "Headphones & Speakers",
+                        mobiles: "Mobiles",
+                        "tv&homecinema": "T.V & Home Cinema",
+                        wearabletech: "Wearable Tech",
+                        sale: "Sale",
+                        bestseller: "Best Seller",
+                      }[form.category]
+                    : "Select Category"}
+                </div>
+                <AnimatePresence>
+                  {categoryOpen && (
+                    <motion.ul
+                      initial={{ opacity: 0, y: -16, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -16, scale: 0.98 }}
+                      transition={{ duration: 0.22, type: "spring" }}
+                      className="absolute left-0 right-0 bg-white border rounded shadow z-50 max-h-60 overflow-y-auto"
+                    >
+                      {[
+                        { value: "allproduct", label: "All Products" },
+                        { value: "computers", label: "Computers" },
+                        { value: "tablets", label: "Tablets" },
+                        { value: "drones&cameras", label: "Drones & Cameras" },
+                        {
+                          value: "headphones&speakers",
+                          label: "Headphones & Speakers",
+                        },
+                        { value: "mobiles", label: "Mobiles" },
+                        { value: "tv&homecinema", label: "T.V & Home Cinema" },
+                        { value: "wearabletech", label: "Wearable Tech" },
+                        { value: "sale", label: "Sale" },
+                        { value: "bestseller", label: "Best Seller" },
+                      ].map((opt) => (
+                        <li
+                          key={opt.value}
+                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                          onClick={() => {
+                            setForm((f) => ({ ...f, category: opt.value }));
+                            setCategoryOpen(false);
+                          }}
+                        >
+                          {opt.label}
+                        </li>
+                      ))}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+                {errors.category && (
+                  <div className="text-red-500 text-xs mb-1">
+                    {errors.category}
+                  </div>
+                )}
+              </motion.div>
 
-                <option value="computers">Computers</option>
-                <option value="tablets">Tablets</option>
-
-                <option value="drones&cameras">Drones & Cameras</option>
-                <option value="headphones&speakers">
-                  Headphones & Speakers
-                </option>
-                <option value="mobiles">Mobiles</option>
-                <option value="tv&homecinema">T.V & Home Cinema</option>
-                <option value="wearabletech">Wearable Tech</option>
-                <option value="sale">Sale</option>
-                <option value="bestseller">Best Seller</option>
-              </select>
-              <label
+              {/* File Upload with validation */}
+              <motion.label
+                custom={15}
+                variants={inputVariants}
+                initial="hidden"
+                animate="visible"
                 htmlFor="file"
-                className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 rounded cursor-pointer w-full justify-center"
+                className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 cursor-pointer w-full justify-center hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px] "
               >
                 Upload Image
                 <input
@@ -434,26 +819,37 @@ const AllProducts = () => {
                   accept="image/*"
                   onChange={handleFormChange}
                 />
-              </label>
-              {form.image && (
-                <Image
-                  src={form.image}
-                  alt="Preview"
-                  className="mt-2 w-24 h-24 object-cover rounded"
-                  width={96}
-                  height={96}
-                />
+              </motion.label>
+              {errors.image && (
+                <div className="text-red-500 text-xs mb-1">{errors.image}</div>
               )}
-            </div>
+              {form.image && (
+                <motion.div
+                  custom={16}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="w-full flex justify-center"
+                >
+                  <Image
+                    src={form.image}
+                    alt="Preview"
+                    className="mt-2 w-24 h-24 object-cover rounded"
+                    width={96}
+                    height={96}
+                  />
+                </motion.div>
+              )}
+            </motion.div>
             <div className="flex justify-between mt-6">
               <button
-                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
+                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
                 onClick={() => setEditModalOpen(false)}
               >
                 Close
               </button>
               <button
-                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
+                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
                 onClick={handleSave}
               >
                 {editIndex !== null ? "Update" : "Add"}
@@ -500,12 +896,12 @@ const AllProducts = () => {
                   Loading...
                 </div>
               </div>
-            ) : items.length == 0 ? (
+            ) : filteredAndSortedItems.length == 0 ? (
               <div className="text-[50px] col-span-5 font-thin">
                 There is no Product, Add Product for Production.
               </div>
             ) : (
-              items.map((item, index) => (
+              filteredAndSortedItems.map((item, index) => (
                 <Fade duration={2000} cascade triggerOnce fraction={0.1}>
                   <div
                     key={item.id}
@@ -567,6 +963,7 @@ const AllProducts = () => {
           </div>
         </div>
       </Fade>
+
       {/* mobile filter  */}
       <div
         className={`fixed w-full h-full bg-[var(---whitetext)] top-0 duration-[2s] px-[1rem] z-300 ${
@@ -631,7 +1028,7 @@ const AllProducts = () => {
 
         <div
           className={`p-4 border-b-[1px] duration-700 overflow-y-hidden ${
-            pricefilter ? "h-[9rem]" : "h-[3.5rem] "
+            pricefilter ? "h-[7rem]" : "h-[3.5rem] "
           }`}
         >
           <div
@@ -654,21 +1051,31 @@ const AllProducts = () => {
             </div>
             <RxPlus className="cursor-pointer" onClick={showpricefilter} />
           </div>
-          <div className="flex w-[80vw] my-[1rem]">
-            <input
-              type="range"
-              min={minPrice}
-              value={maxPrice}
-              max={100}
-              onChange={(e) => {
-                setMaxPrice(e.target.value);
-              }}
-              className="w-[80vw]"
-            />
-          </div>
-          <div className="flex justify-between w-[80vw]">
-            <div>${minPrice}</div>
-            <div>${maxPrice}</div>
+          <div className="flex flex-col items-center my-[1rem]">
+            <div className="w-full flex items-center gap-4">
+              <span className="text-[16px] font-semibold text-gray-700">
+                ${minPrice}
+              </span>
+              <input
+                type="range"
+                min={0}
+                max={maxItemPrice}
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
+                className="w-full accent-[var(---btncolor)] h-2 rounded-lg appearance-none bg-gray-200 outline-none transition-all duration-300"
+                disabled={maxItemPrice === 0}
+                style={{
+                  background: `linear-gradient(to right, var(--btncolor, #7002ff) 0%, var(--btncolor, #7002ff) ${
+                    (maxPrice / (maxItemPrice || 1)) * 100
+                  }%, #e5e7eb ${
+                    (maxPrice / (maxItemPrice || 1)) * 100
+                  }%, #e5e7eb 100%)`,
+                }}
+              />
+              <span className="text-[16px] font-semibold text-gray-700">
+                ${maxItemPrice}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -693,18 +1100,32 @@ const AllProducts = () => {
             <div>Color</div>
             <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
           </div>
-          <div className="my-[1rem]">
-            <div
-              className="w-[2rem] h-[2rem] rounded-full"
-              style={{ backgroundColor: colorofitem }}
-            ></div>
+          <div className="my-[1rem] flex gap-2 flex-wrap">
+            {uniqueColors.map((color) => (
+              <div
+                key={color}
+                className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+        ${selectedColor === color ? " scale-110 shadow-lg" : "border-gray-300"}
+      `}
+                style={{ backgroundColor: color }}
+                title={color}
+                onClick={() =>
+                  setSelectedColor(selectedColor === color ? null : color)
+                }
+              >
+                {selectedColor === color && (
+                  <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
+
       {/* laptop */}
       <Fade duration={1000} cascade>
         <div className="sm:hidden mx-[1.5rem] l:grid l:grid-cols-5 gap-[10px] ">
-          <div className="col-span-1 h-[100vh] overflow-scroll scrollbar-hide">
+          <div className="col-span-1 scrollbar-hide">
             <Fade duration={2000} cascade triggerOnce>
               <div className="flex space-x-2 text-[20px]">
                 <Link href={`/admin/components`}>
@@ -832,7 +1253,7 @@ const AllProducts = () => {
                 </div>
                 <div
                   className={`p-4 border-b-[1px] duration-700 overflow-y-hidden ${
-                    pricefilter ? "h-[9rem]" : "h-[3.5rem] "
+                    pricefilter ? "h-[8rem]" : "h-[3.5rem] "
                   }`}
                 >
                   <div
@@ -861,21 +1282,31 @@ const AllProducts = () => {
                       onClick={showpricefilter}
                     />
                   </div>
-                  <div className="flex  my-[1rem]">
-                    <input
-                      type="range"
-                      min={minPrice}
-                      value={maxPrice}
-                      max={100}
-                      onChange={(e) => {
-                        setMaxPrice(e.target.value);
-                      }}
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="flex justify-between">
-                    <div>${minPrice}</div>
-                    <div>${maxPrice}</div>
+                  <div className="flex flex-col items-center mt-[1rem]">
+                    <div className="w-full flex items-center gap-4">
+                      <span className="text-[16px] font-semibold text-gray-700">
+                        ${minPrice}
+                      </span>
+                      <input
+                        type="range"
+                        min={0}
+                        max={maxItemPrice}
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(Number(e.target.value))}
+                        className="w-full accent-[var(---btncolor)] h-2 rounded-lg appearance-none bg-gray-200 outline-none transition-all duration-300"
+                        disabled={maxItemPrice === 0}
+                        style={{
+                          background: `linear-gradient(to right, var(--btncolor, #7002ff) 0%, var(--btncolor, #7002ff) ${
+                            (maxPrice / (maxItemPrice || 1)) * 100
+                          }%, #e5e7eb ${
+                            (maxPrice / (maxItemPrice || 1)) * 100
+                          }%, #e5e7eb 100%)`,
+                        }}
+                      />
+                      <span className="text-[16px] font-semibold text-gray-700">
+                        ${maxItemPrice}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -906,17 +1337,32 @@ const AllProducts = () => {
                       onClick={showcolorfilter}
                     />
                   </div>
-                  <div className="my-[1rem]">
-                    <div
-                      className="w-[2rem] h-[2rem] rounded-full"
-                      style={{ backgroundColor: colorofitem }}
-                    ></div>
+                  <div className="my-[1rem] flex gap-2 flex-wrap">
+                    {uniqueColors.map((color) => (
+                      <div
+                        key={color}
+                        className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+        ${selectedColor === color ? " scale-110 shadow-lg" : "border-gray-300"}
+      `}
+                        style={{ backgroundColor: color }}
+                        title={color}
+                        onClick={() =>
+                          setSelectedColor(
+                            selectedColor === color ? null : color
+                          )
+                        }
+                      >
+                        {selectedColor === color && (
+                          <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </Fade>
           </div>
-          <div className="col-span-4 h-[100vh] overflow-scroll scrollbar-hide">
+          <div className="col-span-4 scrollbar-hide">
             <div className="text-[50px] font-bold my-[1rem] flex items-center justify-between">
               All Products
               <FaEdit
@@ -970,12 +1416,12 @@ const AllProducts = () => {
                     Loading...
                   </div>
                 </div>
-              ) : items.length == 0 ? (
+              ) : filteredAndSortedItems.length == 0 ? (
                 <div className="text-[50px] col-span-5 font-thin">
                   There is no Product, Add Product for Production.
                 </div>
               ) : (
-                items.map((item, index) => (
+                filteredAndSortedItems.map((item, index) => (
                   <Fade duration={1000} cascade fraction={0.3} triggerOnce>
                     <div
                       key={item.id}
