@@ -10,6 +10,7 @@ import { Fade } from "react-awesome-reveal";
 import toast, { Toaster } from "react-hot-toast";
 
 const AllProducts = () => {
+  const pageName = "All Products";
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [displayPlaceOpen, setDisplayPlaceOpen] = useState(false);
@@ -117,7 +118,7 @@ const AllProducts = () => {
     currentpage = "no route found";
   }
 
-   const validateForm = () => {
+  const validateForm = () => {
     const newErrors = {};
     if (!form.name || form.name.trim().length < 2)
       newErrors.name = "Name is required (min 2 chars)";
@@ -367,7 +368,6 @@ const AllProducts = () => {
       }
     });
 
-  
   return (
     <>
       <button
@@ -380,7 +380,7 @@ const AllProducts = () => {
       >
         <FaArrowCircleUp />
       </button>
-     
+
       <Toaster />
 
       {/* Edit Modal */}
@@ -869,10 +869,10 @@ const AllProducts = () => {
               </div>
             </Link>
             <div className="">&gt;</div>
-            <div className="font-thin">All Products</div>
+            <div className="font-thin">{pageName}</div>
           </div>
           <div className="text-[30px] font-bold my-[1rem] flex items-center justify-between">
-            All Products
+            {pageName}
             <FaEdit
               className="text-[30px] cursor-pointer text-[var(---edit)]"
               onClick={() => openEditModal()}
@@ -880,7 +880,7 @@ const AllProducts = () => {
             />
           </div>
           <div className="flex justify-between font-thin items-center">
-            <div>{items.length} Products</div>
+            <div>{filteredAndSortedItems.length} Products</div>
             <div
               className="underline cursor-pointer my-[1rem]"
               onClick={showfilter}
@@ -971,7 +971,7 @@ const AllProducts = () => {
         } overflow-y-scroll mb-[4rem] scrollbar-hide`}
       >
         <div className="flex justify-between p-4 border-y-[1px] items-center py-[1.5rem] my-[1rem] text-[20px] font-thin">
-          <div>Filter & Sort (10 products)</div>
+          <div>Filter & Sort ({filteredAndSortedItems.length} products)</div>
           <div className="text-[1.5rem]">
             <RxCross2 onClick={showfilter} />
           </div>
@@ -1000,27 +1000,63 @@ const AllProducts = () => {
 
           <div className="flex flex-col">
             <div className="space-x-2 my-2">
-              <input type="radio" name="sort" id="rec" defaultChecked />
+              <input
+                type="radio"
+                name="sort"
+                id="rec"
+                checked={selectedOption === "Recommended"}
+                onChange={() => handleDropdownSelect("Recommended")}
+              />
               <label htmlFor="rec">Recommended</label>
             </div>
             <div className="space-x-2 my-2">
-              <input type="radio" name="sort" id="newest" />
+              <input
+                type="radio"
+                name="sort"
+                id="newest"
+                checked={selectedOption === "Newest"}
+                onChange={() => handleDropdownSelect("Newest")}
+              />
               <label htmlFor="newest">Newest</label>
             </div>
             <div className="space-x-2 my-2">
-              <input type="radio" name="sort" id="plth" />
+              <input
+                type="radio"
+                name="sort"
+                id="plth"
+                checked={selectedOption === "Price (low to high)"}
+                onChange={() => handleDropdownSelect("Price (low to high)")}
+              />
               <label htmlFor="plth">Price (low to high)</label>
             </div>
             <div className="space-x-2 my-2">
-              <input type="radio" name="sort" id="phtl" />
+              <input
+                type="radio"
+                name="sort"
+                id="phtl"
+                checked={selectedOption === "Price (high to low)"}
+                onChange={() => handleDropdownSelect("Price (high to low)")}
+              />
               <label htmlFor="phtl">Price (high to low)</label>
             </div>
             <div className="space-x-2 my-2">
-              <input type="radio" name="sort" id="Natoz" />
+              <input
+                type="radio"
+                name="sort"
+                id="Natoz"
+                checked={selectedOption === "Name A-Z"}
+                onChange={() => handleDropdownSelect("Name A-Z")}
+              />
               <label htmlFor="Natoz">Name A-Z</label>
             </div>
             <div className="space-x-2 my-2">
-              <input type="radio" name="sort" id="Nztoa" />
+              <input
+                type="radio"
+                name="sort"
+                id="Nztoa"
+                checked={selectedOption === "Name Z-A"}
+                onChange={() => handleDropdownSelect("Name Z-A")}
+              />
               <label htmlFor="Nztoa">Name Z-A</label>
             </div>
           </div>
@@ -1080,46 +1116,59 @@ const AllProducts = () => {
         </div>
 
         <div
-          className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
-            colorfilter ? "h-[7rem]" : "h-[3.5rem] "
-          }`}
-        >
-          <div
-            className={`justify-between items-center  text-[20px] font-thin flex ${
-              colorfilter ? "block" : "hidden"
-            }`}
-          >
-            <div>Color</div>
-            <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
-          </div>
-          <div
-            className={`justify-between items-center text-[20px] font-thin ${
-              colorfilter ? "hidden" : "flex"
-            } border-b-[1px`}
-          >
-            <div>Color</div>
-            <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
-          </div>
-          <div className="my-[1rem] flex gap-2 flex-wrap">
-            {uniqueColors.map((color) => (
-              <div
-                key={color}
-                className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-        ${selectedColor === color ? " scale-110 shadow-lg" : "border-gray-300"}
-      `}
-                style={{ backgroundColor: color }}
-                title={color}
-                onClick={() =>
-                  setSelectedColor(selectedColor === color ? null : color)
-                }
-              >
-                {selectedColor === color && (
-                  <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
-                )}
-              </div>
-            ))}
-          </div>
+  className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
+    colorfilter ? "h-auto" : "h-auto "
+  }`}
+>
+  <div
+    className={`justify-between items-center  text-[20px] font-thin flex ${
+      colorfilter ? "block" : "hidden"
+    }`}
+  >
+    <div>Color</div>
+    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
+  </div>
+  <div
+    className={`justify-between items-center text-[20px] font-thin ${
+      colorfilter ? "hidden" : "flex"
+    } `}
+  >
+    <div>Color</div>
+    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
+  </div>
+  <AnimatePresence initial={false}>
+    {colorfilter && (
+      <motion.div
+        key="colorfilter"
+        initial={{ height: 0, opacity: 0, y: -20 }}
+        animate={{ height: "auto", opacity: 1, y: 0 }}
+        exit={{ height: 0, opacity: 0, y: -20 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className="overflow-hidden"
+      >
+        <div className="my-[1rem] flex gap-2 flex-wrap">
+          {uniqueColors.map((color) => (
+            <div
+              key={color}
+              className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+              `}
+              style={{ backgroundColor: color }}
+              title={color}
+              onClick={() =>
+                setSelectedColor(selectedColor === color ? null : color)
+              }
+            >
+              {selectedColor === color && (
+                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+              )}
+            </div>
+          ))}
         </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
       </div>
 
       {/* laptop */}
@@ -1134,7 +1183,7 @@ const AllProducts = () => {
                   </div>
                 </Link>
                 <div className="">&gt;</div>
-                <div className="font-thin">All Products</div>
+                <div className="font-thin">{pageName}</div>
               </div>
               <div>
                 <div className="my-[2rem] py-[1rem] border-b-[1px] text-[1.5rem] font-semibold">
@@ -1311,60 +1360,65 @@ const AllProducts = () => {
                 </div>
 
                 <div
-                  className={`p-4 border-b-[1px] mb-[4rem] duration-700 overflow-y-hidden ${
-                    colorfilter ? "h-[7rem]" : "h-[3.5rem] "
-                  }`}
-                >
-                  <div
-                    className={`justify-between items-center  text-[20px] font-thin flex ${
-                      colorfilter ? "block" : "hidden"
-                    }`}
-                  >
-                    <div>Color</div>
-                    <RxMinus
-                      className="cursor-pointer"
-                      onClick={showcolorfilter}
-                    />
-                  </div>
-                  <div
-                    className={`justify-between items-center text-[20px] font-thin ${
-                      colorfilter ? "hidden" : "flex"
-                    } border-b-[1px`}
-                  >
-                    <div>Color</div>
-                    <RxPlus
-                      className="cursor-pointer"
-                      onClick={showcolorfilter}
-                    />
-                  </div>
-                  <div className="my-[1rem] flex gap-2 flex-wrap">
-                    {uniqueColors.map((color) => (
-                      <div
-                        key={color}
-                        className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-        ${selectedColor === color ? " scale-110 shadow-lg" : "border-gray-300"}
-      `}
-                        style={{ backgroundColor: color }}
-                        title={color}
-                        onClick={() =>
-                          setSelectedColor(
-                            selectedColor === color ? null : color
-                          )
-                        }
-                      >
-                        {selectedColor === color && (
-                          <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+  className={`p-4 mb-[4rem] duration-700 border-b-[1px] overflow-y-hidden ${
+    colorfilter ? "h-auto" : "h-auto "
+  }`}
+>
+  <div
+    className={`justify-between items-center  text-[20px] font-thin flex ${
+      colorfilter ? "block" : "hidden"
+    }`}
+  >
+    <div>Color</div>
+    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
+  </div>
+  <div
+    className={`justify-between items-center text-[20px] font-thin ${
+      colorfilter ? "hidden" : "flex"
+    }`}
+  >
+    <div>Color</div>
+    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
+  </div>
+  <AnimatePresence initial={false}>
+    {colorfilter && (
+      <motion.div
+        key="colorfilter"
+        initial={{ height: 0, opacity: 0, y: -20 }}
+        animate={{ height: "auto", opacity: 1, y: 0 }}
+        exit={{ height: 0, opacity: 0, y: -20 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className="overflow-hidden"
+      >
+        <div className="my-[1rem] flex gap-2 flex-wrap">
+          {uniqueColors.map((color) => (
+            <div
+              key={color}
+              className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+              `}
+              style={{ backgroundColor: color }}
+              title={color}
+              onClick={() =>
+                setSelectedColor(selectedColor === color ? null : color)
+              }
+            >
+              {selectedColor === color && (
+                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+              )}
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
               </div>
             </Fade>
           </div>
           <div className="col-span-4 scrollbar-hide">
             <div className="text-[50px] font-bold my-[1rem] flex items-center justify-between">
-              All Products
+              {pageName}
               <FaEdit
                 className="text-[40px] cursor-pointer text-[var(---edit)]"
                 onClick={() => openEditModal()}
@@ -1372,7 +1426,7 @@ const AllProducts = () => {
               />
             </div>
             <div className="flex justify-between font-thin text-[20px] items-center">
-              <div>{items.length} Products</div>
+              <div>{filteredAndSortedItems.length} Products</div>
               <div className="  my-[1rem] flex items-baseline">
                 Sort by:
                 <div className="relative mb-4 cursor-pointer">
