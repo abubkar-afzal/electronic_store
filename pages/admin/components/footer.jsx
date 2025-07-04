@@ -40,34 +40,34 @@ const AdminFooter = () => {
             <div className="text-[18px] font-bold my-[1rem] l:w-[50%] l:text-left">
               Shope
             </div>
-            <Link href={`/components/category/allproducts`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/allproducts`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               All Products
             </div></Link>
-            <Link href={`/components/category/computers`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/computers`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Computers
             </div></Link>
-            <Link href={`/components/category/tablets`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/tablets`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Tablets
             </div></Link>
-            <Link href={`/components/category/drones&cameras`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/drones&cameras`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Drones & Cameras
             </div></Link>
-            <Link href={`/components/category/headphones&speakers`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/headphones&speakers`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Headphones & Speakers
             </div></Link>
-            <Link href={`/components/category/mobiles`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/mobiles`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Mobiles
             </div></Link>
-            <Link href={`/components/category/tv&homecinema`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/tv&homecinema`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               T.V & Home Cinema
             </div></Link>
-            <Link href={`/components/category/wearabletech`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/wearabletech`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Wearable Tech
             </div></Link>
-            <Link href={`/components/category/sale`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/sale`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Sale
             </div></Link>
-            <Link href={`/components/category/bestseller`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
+            <Link href={`/admin/components/category/bestseller`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
               Best Seller
             </div></Link>
           </div>
