@@ -1,48 +1,47 @@
-import React, { useState } from "react";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaEdit } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Help_Center = () => {
   const [openIndex, setOpenIndex] = useState(null);
-  const [otherquestion, setotherquestion] = useState(false);
-   const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState("generaloption");
+ const [faqs, setFaqs] = useState([]);
+  const [gen, setGen] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-    if (event.target.value === "generaloption") {
-      setotherquestion(true);
-    } else if (event.target.value === "settingupfaqsoption") {
-      setotherquestion(false);
+  // Fetch FAQs from API on mount and when category changes
+  useEffect(() => {
+    fetchFaqs();
+  }, [selectedValue]);
+
+  const fetchFaqs = async () => {
+    const res = await fetch(`/api/helpcenter?category=${selectedValue}`);
+    if (res.ok) {
+      const data = await res.json();
+      if (selectedValue === "generaloption") setGen(data.faqs || []);
+      else setFaqs(data.faqs || []);
     }
-};
+  };
 
+  // Helper to get/set correct category
+  const getCurrentList = () => (selectedValue === "generaloption" ? gen : faqs);
 
-
-  const faqs = [
-    {
-      q: "What is this FAQ about?",
-      a: "It's an FAQ example using Tailwind and React.",
-    },
-    { q: "How do I use it Mobile?", a: "Click on a question to see the answer." },
-    { q: "Can I add more Cities in Pakistan?", a: "Yes! Just extend the faqs array." },
+ 
+  // Dropdown options
+  const dropdownOptions = [
+    { value: "generaloption", label: "General" },
+    { value: "settingupfaqsoption", label: "Setting up FAQs" },
   ];
-   const gen = [
-    {
-      q: "What is this site about?",
-      a: "It's an FAQ example using Tailwind and React.",
-    },
-    { q: "How do I use it?", a: "Click on a question to see the answer." },
-    { q: "Can I add more?", a: "Yes! Just extend the faqs array." },
-  ];
+  const selectedLabel = dropdownOptions.find(opt => opt.value === selectedValue)?.label || "Choose a category";
 
   return (
     <>
       <div className="flex flex-col items-center justify-center p-4 bg-[var(---whitetext)]">
         <div className="text-[2rem] font-sans font-bold text-center l:text-[45px]">
-          
           AR Codes Help Center
         </div>
-        <div className="">
+        <div>
           <div className="text-center my-[2rem] text-[20px] font-bold l:text-[25px]">
             Frequently Asked Questions
           </div>
@@ -60,62 +59,83 @@ const Help_Center = () => {
           </div>
         </div>
         <div className="l:w-[70vw] w-full px-3 my-[1rem]">
-        <div className="w-full px-3 my-[1rem]">
-          <div>choose a category</div>
-          <select value={selectedValue} onChange={handleChange} className=" outline outline-black text-[var(---btncolor)] px-2 my-3 h-[3rem] w-full ">
-            <option  value="generaloption">General</option>
-            <option  value="settingupfaqsoption">Setting up FAQs</option>
-          </select>
+          <div className="w-full px-3 my-[1rem] flex items-center justify-between">
+            <div className="w-full relative">
+              <div
+                className="cursor-pointer outline outline-black text-[var(---btncolor)] px-2 my-3 h-[3rem] w-full flex items-center justify-between bg-white"
+                onClick={() => setShowDropdown((v) => !v)}
+                tabIndex={0}
+                onBlur={() => setTimeout(() => setShowDropdown(false), 150)}
+              >
+                <span>{selectedLabel}</span>
+                <span className="ml-2">{showDropdown ? "▲" : "▼"}</span>
+              </div>
+              <AnimatePresence>
+                {showDropdown && (
+                  <motion.ul
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute left-0 right-0 bg-white border border-gray-300 z-10 rounded shadow"
+                  >
+                    {dropdownOptions.map((opt) => (
+                      <li
+                        key={opt.value}
+                        className={`px-4 py-2 hover:bg-[var(---btncolor)] hover:text-white cursor-pointer ${selectedValue === opt.value ? "bg-gray-100" : ""}`}
+                        onClick={() => {
+                          setSelectedValue(opt.value);
+                          setShowDropdown(false);
+                        }}
+                      >
+                        {opt.label}
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+         
+          <div className="w-full p-4">
+            {getCurrentList().map((item, index) => (
+              <div key={item.id || index} className="border-b py-2 relative">
+                <button
+                  onClick={() => setOpenIndex(index === openIndex ? null : index)}
+                  className="w-full text-left font-medium cursor-pointer flex justify-between"
+                >
+                  {item.q}
+                  <span>{openIndex === index ? "∧" : "∨"}</span>
+                </button>
+                
+                <AnimatePresence initial={false}>
+                  {openIndex === index && (
+                    <motion.div
+                      key="answer"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <p className="mt-2 text-sm text-gray-600">{item.a}</p>
+                      <div className="flex text-[16px] space-x-2 my-[2rem]">
+                        <FaFacebookF className="cursor-pointer" />
+                        <FaInstagram className="cursor-pointer" />
+                        <FaTwitter className="cursor-pointer" />
+                        <FaYoutube className="cursor-pointer" />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
         </div>
-        {otherquestion ? <div className="w-full p-4">
-          {gen.map((item, index) => (
-            <div key={index} className="border-b py-2">
-              <button
-                onClick={() => setOpenIndex(index === openIndex ? null : index)}
-                className="w-full text-left font-medium flex justify-between"
-              >
-                {item.q}
-                <span>{openIndex === index ? "∧" : "∨"}</span>
-              </button>
-              
-                <div className={openIndex === index ? "h-[6rem] overflow-hidden duration-[2s]" : "h-0 overflow-hidden duration-[2s]"}>
-                  <p className="mt-2 text-sm text-gray-600">{item.a}</p>
-                  <div className="flex text-[16px] space-x-2 my-[2rem]">
-                    <FaFacebookF className="cursor-pointer" />
-                    <FaInstagram className="cursor-pointer" />
-                    <FaTwitter className="cursor-pointer" />
-                    <FaYoutube className="cursor-pointer" />
-                  </div>
-                </div>
-              
-            </div>
-          ))}
-        </div>:
-          
-        <div className="w-full p-4">
-          {faqs.map((item, index) => (
-            <div key={index} className="border-b py-2">
-              <button
-                onClick={() => setOpenIndex(index === openIndex ? null : index)}
-                className="w-full text-left font-medium flex justify-between"
-              >
-                {item.q}
-                <span>{openIndex === index ? "∧" : "∨"}</span>
-              </button>
-              <div className={openIndex === index ? "h-[6rem] overflow-hidden duration-[2s]" : "h-0 overflow-hidden duration-[2s]"}>
-                  <p className="mt-2 text-sm text-gray-600">{item.a}</p>
-                  <div className="flex text-[16px] space-x-2 my-[2rem]">
-                    <FaFacebookF className="cursor-pointer" />
-                    <FaInstagram className="cursor-pointer" />
-                    <FaTwitter className="cursor-pointer" />
-                    <FaYoutube className="cursor-pointer" />
-                  </div>
-            </div>
-            </div>
-          ))}
-        </div>}</div>
       </div>
+     
     </>
   );
 };
+
 export default Help_Center;

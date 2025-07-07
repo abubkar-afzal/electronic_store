@@ -1,11 +1,34 @@
-import Image from "next/image";
-import React from "react";
-import img from "../assets/img5.jpg";
+import React, { useState, useEffect } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import Newsletter from "../newsletter";
 
 const Contact = () => {
+  const [storeInfo, setStoreInfo] = useState({
+    location: "",
+    email: "",
+    phone: "",
+    hours: [],
+    id: null,
+  });
+ // Fetch store info from API on mount
+  useEffect(() => {
+    const fetchStoreInfo = async () => {
+      const res = await fetch("/api/contact");
+      if (res.ok) {
+        const dbData = await res.json();
+        setStoreInfo(dbData && Object.keys(dbData).length > 0 ? dbData : {
+          location: "",
+          email: "",
+          phone: "",
+          hours: [],
+          id: null,
+        });
+      }
+    };
+    fetchStoreInfo();
+  }, []);
+
+ 
   return (
     <>
       <div className="flex flex-col items-center justify-center p-4 bg-[var(---whitetext)]">
@@ -116,40 +139,58 @@ const Contact = () => {
             </form>
           </div>
           <div>
-            <div className="flex flex-col items-center px-[4rem] py-[2rem] l:my-[2rem]">
+                <div className="flex flex-col items-center px-[4rem] py-[2rem] l:my-[2rem] relative">
+              
               <div className="text-[18px] font-bold my-[1rem] l:text-[22px]">
                 Store Location
               </div>
               <div className="font-thin text-center my-1 cursor-pointer l:text-[18px]">
-                500 Japan Bara Market, Shah Allam Market, Lahore, Punjab,
-                Pakisatn 54000
+                {storeInfo.location}
               </div>
               <div className="font-thin text-center my-1 cursor-pointer l:text-[18px]">
-                arcodes504@gmail.com
+                {storeInfo.email}
               </div>
               <div className="font-thin text-center my-1 cursor-pointer l:text-[18px]">
-                +923270972423
+                {storeInfo.phone}
               </div>
             </div>
-            <div className="flex flex-col items-center px-[4rem] py-[2rem]">
-              <div className="text-[18px] font-bold my-[1rem] l:text-[22px]">
-                Opening Hours
-              </div>
-              <div className="text-[13px] font-thin text-center my-1 cursor-pointer l:text-[16px]">
-                Mon - Fri: 8:00 AM - 8:00 PM
-              </div>
-              <div className="text-[13px] font-thin text-center my-1 cursor-pointer l:text-[16px]">
-                Saturday: 9:00 AM - 7:00 PM
-              </div>
-              <div className="text-[13px] font-thin text-center my-1 cursor-pointer l:text-[16px]">
-                Sunday: Closed
-              </div>
-            </div>
+           <div className="flex flex-col items-center px-[4rem] py-[2rem]">
+  <div className="text-[18px] font-bold my-[1rem] l:text-[22px]">
+    Opening Hours
+  </div>
+  {storeInfo.hours && storeInfo.hours.map((h, i) => {
+    let from = "", to = "", day = "";
+    if (typeof h === "object" && h !== null) {
+      from = h.from || "";
+      to = h.to || "";
+      day = h.day || "";
+    } else if (typeof h === "string" && h.includes(" to ")) {
+      [from, to] = h.split(" to ");
+    }
+    // Format time to 12-hour with AM/PM
+    function formatTime(t) {
+      if (!t) return "";
+      const [hour, minute] = t.split(":");
+      let h = parseInt(hour, 10);
+      const ampm = h >= 12 ? "PM" : "AM";
+      h = h % 12 || 12;
+      return `${h}:${minute} ${ampm}`;
+    }
+    return (
+      <div key={i} className="text-[13px] font-thin text-center my-1 cursor-pointer l:text-[16px]">
+        {day && <span className="font-semibold">{day}: </span>}
+        {from && to ? `${formatTime(from)} to ${formatTime(to)}` : ""}
+      </div>
+    );
+  })}
+</div>
           </div>
         </div>
       </div>
+      
       <Newsletter />
     </>
   );
 };
+
 export default Contact;

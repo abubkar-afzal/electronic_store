@@ -2,7 +2,7 @@ import React from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
 const Newsletter = ()=>{
     return(<>
-    <div className="w-full bg-[var(---btncolor)] text-[var(---whitetext)] flex flex-col items-center py-[1rem] l:my-[1rem]">
+    <div className="w-full bg-[var(---btncolor)] text-[var(---whitetext)] flex flex-col items-center py-[1rem] my-[1rem]">
         <div className="text-[25px] font-bold">Newsletter</div>
         <div className="px-[2rem] text-center">Sign up to receive updates on new arrivals and special offers</div>
         <div className="mt-[3rem] l:mt-[1rem] w-full px-4 l:items-center l:flex l:justify-center l:flex-col">

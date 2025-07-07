@@ -175,7 +175,7 @@ const Help_Center = () => {
               <div key={item.id || index} className="border-b py-2 relative">
                 <button
                   onClick={() => setOpenIndex(index === openIndex ? null : index)}
-                  className="w-full text-left font-medium flex justify-between"
+                  className="w-full text-left cursor-pointer font-medium flex justify-between"
                 >
                   {item.q}
                   <span>{openIndex === index ? "∧" : "∨"}</span>

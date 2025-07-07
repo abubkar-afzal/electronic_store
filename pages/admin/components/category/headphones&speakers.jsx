@@ -1147,7 +1147,7 @@ const HeadphonesAndSpeakers = () => {
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
-                <div className="my-[1rem] flex gap-2 flex-wrap">
+                <div className="m-[1rem] flex gap-2 flex-wrap">
                   {uniqueColors.map((color) => (
                     <div
                       key={color}
@@ -1391,7 +1391,7 @@ const HeadphonesAndSpeakers = () => {
                        transition={{ duration: 0.4, ease: "easeInOut" }}
                        className="overflow-hidden"
                      >
-                       <div className="my-[1rem] flex gap-2 flex-wrap">
+                       <div className="m-[1rem] flex gap-2 flex-wrap">
                          {uniqueColors.map((color) => (
                            <div
                              key={color}

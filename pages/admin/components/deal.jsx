@@ -28,7 +28,41 @@ const Deal = () => {
     line3: "",
     image: "",
   });
+    const [errors, setErrors] = useState({});
+  
+const validatemobileDeal = () => {
+    const newErrors = {};
+    if (!mobileDeal.line1 || mobileDeal.line1.trim().length < 2)
+      newErrors.line1 = "Line 1 is required (min 2 chars)";
+    if (!mobileDeal.line2 || mobileDeal.line2.trim().length < 2)
+      newErrors.line2 = "Line 2 is required (min 2 chars)";
+    if (!mobileDeal.line3 || mobileDeal.line3.trim().length < 2)
+      newErrors.line3 = "Line 3 is required (min 2 chars)";
+    if (!mobileDeal.image) newErrors.image = "Image is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+const validateheadphoneDeal = () => {
+    const newErrors = {};
+    if (!headphoneDeal.line1 || headphoneDeal.line1.trim().length < 2)
+      newErrors.line1 = "Line 1 is required (min 2 chars)";
+    if (!headphoneDeal.line2 || headphoneDeal.line2.trim().length < 2)
+      newErrors.line2 = "Line 2 is required (min 2 chars)";
+    if (!headphoneDeal.line3 || headphoneDeal.line3.trim().length < 2)
+      newErrors.line3 = "Line 3 is required (min 2 chars)";
+    if (!headphoneDeal.image) newErrors.image = "Image is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
+  const inputVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.04, type: "spring", stiffness: 120 },
+    }),
+  };
   // Fetch deals from API on mount
   useEffect(() => {
     fetchDeals();
@@ -72,6 +106,8 @@ const Deal = () => {
 
   // Save mobile deal
   const handleSaveMobile = async () => {
+       if (!validatemobileDeal()) return;
+
     let image = mobileDeal.image;
     if (mobileImages.length > 0) {
       const base64Images = await filesToBase64(mobileImages);
@@ -95,6 +131,8 @@ const Deal = () => {
 
   // Save headphone deal
   const handleSaveHeadphone = async () => {
+       if (!validateheadphoneDeal()) return;
+
     let image = headphoneDeal.image;
     if (headphoneImages.length > 0) {
       const base64Images = await filesToBase64(headphoneImages);
@@ -190,7 +228,7 @@ const Deal = () => {
       </div>
 
       {/* Mobile Edit Modal */}
-      <AnimatePresence>
+      <>
         {mobileEdit && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -204,70 +242,156 @@ const Deal = () => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-lg p-8 shadow-lg sm:max-w-sm sm:w-full l:max-w-full text-center l:w-[30rem] max-h-[90vh] scrollbar-hide overflow-y-auto"
-            >
-              <div className="text-2xl font-bold mb-4">Edit Mobile Deal!!</div>
-              <div className="mb-4">Update the deal details and image.</div>
-              <div className="flex flex-col items-center">
-                <label htmlFor="mobile-line1">First Line:</label>
-                <input
-                  type="text"
-                  id="mobile-line1"
-                  className="outline focus:outline-black m-2"
-                  value={mobileDeal.line1}
-                  onChange={(e) =>
+              className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] scrollbar-hide overflow-y-auto"
+            >  <div className="text-2xl font-bold mb-4">
+              Edit Mobile Deal!!
+            </div>
+            <div className=" mb-4">
+              Update the deal details and image.
+            </div>
+            <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          className="flex flex-col items-center"
+                        >
+                          {[
+                            {
+                              label: "First Line:",
+                              htmlFor: "line1",
+                              input: (
+                                <>
+                                  <input
+                                    type="text"
+                                    id="line1"
+                                    name="line1"
+                                    value={mobileDeal.line1}
+                                     onChange={(e) =>
                     setMobileDeal({ ...mobileDeal, line1: e.target.value })
                   }
-                />
-                <label htmlFor="mobile-line2">Second Line:</label>
-                <input
-                  type="text"
-                  id="mobile-line2"
-                  className="outline focus:outline-black m-2"
-                  value={mobileDeal.line2}
-                  onChange={(e) =>
+                                    className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                                      errors.line1 ? "border border-red-500" : ""
+                                    }`}
+                                    
+                                  />
+                                  {errors.line1 && (
+                                    <div className="text-red-500 text-xs mb-1">
+                                      {errors.line1}
+                                    </div>
+                                  )}
+                                </>
+                              ),
+                            },
+                            {
+                              label: "Second Line:",
+                              htmlFor: "line2",
+                              input: (
+                                <>
+                                  <input
+                                    type="text"
+                                    id="line2"
+                                    name="line2"
+                                    value={mobileDeal.line2}
+                                    onChange={(e) =>
                     setMobileDeal({ ...mobileDeal, line2: e.target.value })
                   }
-                />
-                <label htmlFor="mobile-line3">Third Line:</label>
-                <input
-                  type="text"
-                  id="mobile-line3"
-                  className="outline focus:outline-black m-2"
-                  value={mobileDeal.line3}
-                  onChange={(e) =>
+                                    className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                                      errors.line2 ? "border border-red-500" : ""
+                                    }`}
+                                  />
+                                  {errors.line2 && (
+                                    <div className="text-red-500 text-xs mb-1">
+                                      {errors.line2}
+                                    </div>
+                                  )}
+                                </>
+                              ),
+                            },
+                            {
+                              label: "Third Line:",
+                              htmlFor: "line3",
+                              input: (
+                                <>
+                                <input
+                                  type="text"
+                                  id="line3"
+                                  name="line3"
+                                  value={mobileDeal.line3}
+                                  onChange={(e) =>
                     setMobileDeal({ ...mobileDeal, line3: e.target.value })
                   }
-                />
-                <label
-                  htmlFor="mobile-upload"
-                  className="mt-[1rem] flex bg-[var(---btncolor)] hover:bg-transparent text-[var(---whitetext)] hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] text-base font-medium px-4 py-2.5 outline-none hover:*:fill-[var(---btncolor)] rounded w-max cursor-pointer mx-auto *:duration-[1s] duration-[1s]"
-                >
-                  Upload
-                  <input
-                    type="file"
-                    id="mobile-upload"
-                    className="hidden"
-                    multiple={false}
-                    onChange={handleMobileImage}
-                  />
-                </label>
-                {(mobileImages.length > 0 || mobileDeal.image) && (
-                  <div className="flex justify-center mt-4">
-                    <Image
-                      src={
+                                   className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                                      errors.line3 ? "border border-red-500" : ""
+                                    }`}
+                                  />
+                                  {errors.line3 && (
+                                    <div className="text-red-500 text-xs mb-1">
+                                      {errors.line3}
+                                    </div>
+                                  )}
+                                  </>
+                              ),
+                            },
+                           
+                          ].map((field, i) => (
+                            <motion.div
+                              key={field.htmlFor}
+                              custom={i}
+                              variants={inputVariants}
+                              initial="hidden"
+                              animate="visible"
+                              className="w-full"
+                            >
+                              <label htmlFor={field.htmlFor}>{field.label}</label>
+                              {field.input}
+                            </motion.div>
+                          ))}
+            
+                          {/* File Upload with validation */}
+                          <motion.label
+                            custom={15}
+                            variants={inputVariants}
+                            initial="hidden"
+                            animate="visible"
+                            htmlFor="file"
+                            className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 cursor-pointer w-full justify-center hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px] "
+                          >
+                            Upload Image
+                            <input
+                              type="file"
+                              id="file"
+                              name="file"
+                              className="hidden"
+                              accept="image/*"
+                               onChange={handleMobileImage}
+                            />
+                          </motion.label>
+                          {errors.image && (
+                            <div className="text-red-500 text-xs mb-1">{errors.image}</div>
+                          )}
+                          {mobileDeal.image && (
+                            <motion.div
+                              custom={16}
+                              variants={inputVariants}
+                              initial="hidden"
+                              animate="visible"
+                              className="w-full flex justify-center"
+                            >
+                              <Image
+                                 src={
                         mobileImages.length > 0
                           ? URL.createObjectURL(mobileImages[0])
                           : mobileDeal.image
                       }
-                      alt="Preview"
-                      width={200}
-                      height={200}
-                      className="rounded shadow object-cover max-h-40"
-                    />
-                  </div>
-                )}
-              </div>
+                                alt="Preview"
+                                className="mt-2 w-24 h-24 object-cover rounded"
+                                width={96}
+                                height={96}
+                              />
+                            </motion.div>
+                          )}
+                        </motion.div>
+             
+                
               <div className="flex l:flex-row sm:flex-col l:space-x-[1rem] items-center justify-center l:w-[100%] l:mt-[2rem]">
                 <button
                   className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
@@ -285,11 +409,10 @@ const Deal = () => {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
+      </>
 
       {/* Headphone Edit Modal */}
-      <AnimatePresence>
-        {headphoneEdit && (
+     {headphoneEdit && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -302,81 +425,156 @@ const Deal = () => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
               transition={{ duration: 0.3 }}
-              className="bg-white rounded-lg p-8 shadow-lg sm:max-w-sm sm:w-full l:max-w-full text-center l:w-[30rem] max-h-[90vh] scrollbar-hide overflow-y-auto"
-            >
-              <div className="text-2xl font-bold mb-4">
-                Edit Headphones Deal!!
-              </div>
-              <div className="mb-4">Update the deal details and image.</div>
-              <div className="flex flex-col items-center">
-                <label htmlFor="headphone-line1">First Line:</label>
-                <input
-                  type="text"
-                  id="headphone-line1"
-                  className="outline focus:outline-black m-2"
-                  value={headphoneDeal.line1}
-                  onChange={(e) =>
-                    setHeadphoneDeal({
-                      ...headphoneDeal,
-                      line1: e.target.value,
-                    })
+              className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] scrollbar-hide overflow-y-auto"
+            >  <div className="text-2xl font-bold mb-4">
+              Edit Headphone Deal!!
+            </div>
+            <div className=" mb-4">
+              Update the deal details and image.
+            </div>
+            <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          className="flex flex-col items-center"
+                        >
+                          {[
+                            {
+                              label: "First Line:",
+                              htmlFor: "line1",
+                              input: (
+                                <>
+                                  <input
+                                    type="text"
+                                    id="line1"
+                                    name="line1"
+                                    value={headphoneDeal.line1}
+                                     onChange={(e) =>
+                    setHeadphoneDeal({ ...headphoneDeal, line1: e.target.value })
                   }
-                />
-                <label htmlFor="headphone-line2">Second Line:</label>
-                <input
-                  type="text"
-                  id="headphone-line2"
-                  className="outline focus:outline-black m-2"
-                  value={headphoneDeal.line2}
-                  onChange={(e) =>
-                    setHeadphoneDeal({
-                      ...headphoneDeal,
-                      line2: e.target.value,
-                    })
+                                    className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                                      errors.line1 ? "border border-red-500" : ""
+                                    }`}
+                                    
+                                  />
+                                  {errors.line1 && (
+                                    <div className="text-red-500 text-xs mb-1">
+                                      {errors.line1}
+                                    </div>
+                                  )}
+                                </>
+                              ),
+                            },
+                            {
+                              label: "Second Line:",
+                              htmlFor: "line2",
+                              input: (
+                                <>
+                                  <input
+                                    type="text"
+                                    id="line2"
+                                    name="line2"
+                                    value={headphoneDeal.line2}
+                                    onChange={(e) =>
+                    setHeadphoneDeal({ ...headphoneDeal, line2: e.target.value })
                   }
-                />
-                <label htmlFor="headphone-line3">Third Line:</label>
-                <input
-                  type="text"
-                  id="headphone-line3"
-                  className="outline focus:outline-black m-2"
-                  value={headphoneDeal.line3}
-                  onChange={(e) =>
-                    setHeadphoneDeal({
-                      ...headphoneDeal,
-                      line3: e.target.value,
-                    })
+                                    className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                                      errors.line2 ? "border border-red-500" : ""
+                                    }`}
+                                  />
+                                  {errors.line2 && (
+                                    <div className="text-red-500 text-xs mb-1">
+                                      {errors.line2}
+                                    </div>
+                                  )}
+                                </>
+                              ),
+                            },
+                            {
+                              label: "Third Line:",
+                              htmlFor: "line3",
+                              input: (
+                                <>
+                                <input
+                                  type="text"
+                                  id="line3"
+                                  name="line3"
+                                  value={headphoneDeal.line3}
+                                  onChange={(e) =>
+                    setHeadphoneDeal({ ...headphoneDeal, line3: e.target.value })
                   }
-                />
-                <label
-                  htmlFor="headphone-upload"
-                  className="mt-[1rem] flex bg-[var(---btncolor)] hover:bg-transparent text-[var(---whitetext)] hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] text-base font-medium px-4 py-2.5 outline-none hover:*:fill-[var(---btncolor)] rounded w-max cursor-pointer mx-auto *:duration-[1s] duration-[1s]"
-                >
-                  Upload
-                  <input
-                    type="file"
-                    id="headphone-upload"
-                    className="hidden"
-                    multiple={false}
-                    onChange={handleHeadphoneImage}
-                  />
-                </label>
-                {(headphoneImages.length > 0 || headphoneDeal.image) && (
-                  <div className="flex justify-center mt-4">
-                    <Image
-                      src={
+                                   className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                                      errors.line3 ? "border border-red-500" : ""
+                                    }`}
+                                  />
+                                  {errors.line3 && (
+                                    <div className="text-red-500 text-xs mb-1">
+                                      {errors.line3}
+                                    </div>
+                                  )}
+                                  </>
+                              ),
+                            },
+                           
+                          ].map((field, i) => (
+                            <motion.div
+                              key={field.htmlFor}
+                              custom={i}
+                              variants={inputVariants}
+                              initial="hidden"
+                              animate="visible"
+                              className="w-full"
+                            >
+                              <label htmlFor={field.htmlFor}>{field.label}</label>
+                              {field.input}
+                            </motion.div>
+                          ))}
+            
+                          {/* File Upload with validation */}
+                          <motion.label
+                            custom={15}
+                            variants={inputVariants}
+                            initial="hidden"
+                            animate="visible"
+                            htmlFor="file"
+                            className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 cursor-pointer w-full justify-center hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px] "
+                          >
+                            Upload Image
+                            <input
+                              type="file"
+                              id="file"
+                              name="file"
+                              className="hidden"
+                              accept="image/*"
+                               onChange={handleHeadphoneImage}
+                            />
+                          </motion.label>
+                          {errors.image && (
+                            <div className="text-red-500 text-xs mb-1">{errors.image}</div>
+                          )}
+                          {headphoneDeal.image && (
+                            <motion.div
+                              custom={16}
+                              variants={inputVariants}
+                              initial="hidden"
+                              animate="visible"
+                              className="w-full flex justify-center"
+                            >
+                              <Image
+                                 src={
                         headphoneImages.length > 0
                           ? URL.createObjectURL(headphoneImages[0])
                           : headphoneDeal.image
                       }
-                      alt="Preview"
-                      width={200}
-                      height={200}
-                      className="rounded shadow object-cover max-h-40"
-                    />
-                  </div>
-                )}
-              </div>
+                                alt="Preview"
+                                className="mt-2 w-24 h-24 object-cover rounded"
+                                width={96}
+                                height={96}
+                              />
+                            </motion.div>
+                          )}
+                        </motion.div>
+             
+                
               <div className="flex l:flex-row sm:flex-col l:space-x-[1rem] items-center justify-center l:w-[100%] l:mt-[2rem]">
                 <button
                   className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
@@ -394,7 +592,6 @@ const Deal = () => {
             </motion.div>
           </motion.div>
         )}
-      </AnimatePresence>
     </>
   );
 };

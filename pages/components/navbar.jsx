@@ -37,12 +37,23 @@ const images = [
   },
 ];
 
-const Navbar = () => {
+const Navbar = ({account}) => {
   const [mobilemenu, setmonbilemenu] = useState(true);
   const [search, setsearch] = useState(true);
   const [cart, setcart] = useState(true);
    const [showloder, setshowloder] = useState(false);
     const [showresult, setshowresult] = useState(false);
+    const [trendproduct, settrendproduct] = useState([]);
+    useEffect(() => {
+        const fetchProducts = async () => {
+          try {
+            const res = await fetch("/api/bestsellermain");
+            const data = await res.json();
+            settrendproduct(data);
+          } catch (error) {}
+        };
+        fetchProducts();
+      }, []);
     const handleShowLoader = () => {
     setshowloder(!showloder);
     setTimeout(() => {
@@ -59,7 +70,7 @@ const Navbar = () => {
   const showcart = () => {
     setcart(!cart);
   };
-  let count = 1;
+  let count = 10;
   const [quantities, setQuantities] = useState(
     () => images.map(() => 1) // default starting count is 1 for each
   );
@@ -119,25 +130,37 @@ const [show, setShow] = useState(true);
             <div className="cursor-pointer" onClick={showsearch}>
               <IoIosSearch />
             </div>
-            <Link href={`/components/basic/login`} className="sm:hidden l:block">
+            {
+              account.image ? <><Link href={`/components/basic/account`} className="sm:hidden l:block">
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
+            className="flex items-center space-x-2 mx-4 cursor-pointer"
+          >
+            <div className="w-[2rem] h-[2rem] rounded-full overflow-hidden">
+              <Image src={account.image} width={200} height={200} alt="profile" className="w-full h-full"/>
+            </div>
+            <div className="l:text-[20px] font-thin hover:underline">Account</div>
+
+          </div>
+        </Link></>:<><Link href={`/components/basic/login`} className="sm:hidden l:block">
+          <div
+            
             className="flex items-center space-x-2 mx-4 cursor-pointer"
           >
             <div className="l:text-[30px]">
               <FaUserCircle />
             </div>
-            <div className="l:text-[20px] font-thin">Login</div>
+            <div className="l:text-[20px] font-thin hover:underline">Login</div>
 
           </div>
-        </Link>
+        </Link></>
+            }
+            
             <div className=" mr-4" onClick={showcart}>
               <div className="cursor-pointer">
                 <AiOutlineShoppingCart />
               </div>
-              <div className="sm:text-[10px] l:text-[14px] bg-black text-white font-thin sm:w-[15px] l:w-[18px] sm:absolute right-11 top-4 l:top-4 l:right-5 text-center rounded-[20px]">
+              <div className="sm:text-[10px] l:text-[14px] bg-[var(---salelabel)] text-white font-thin sm:w-[15px] l:w-[18px] sm:absolute right-11 top-4 l:top-4 l:right-5 text-center rounded-[20px]">
                 {count}
               </div>
             </div>
@@ -154,9 +177,7 @@ const [show, setShow] = useState(true);
         
         <Link href={`/components/category/allproducts`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+           
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] "
           >
             All Products
@@ -164,9 +185,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/computers`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             Computers
@@ -174,9 +193,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/tablets`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             Tablets
@@ -184,9 +201,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/drones&cameras`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             Drones & Cameras
@@ -194,9 +209,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/headphones&speakers`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             Head Phones & Speakers
@@ -204,9 +217,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/mobiles`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             Mobiles
@@ -214,9 +225,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/tv&homecinema`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+           
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             T.V & Home Cinema
@@ -224,9 +233,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/wearabletech`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             Wearable Tech
@@ -234,9 +241,7 @@ const [show, setShow] = useState(true);
         </Link>
         <Link href={`/components/category/sale`}>
           <div
-            onClick={() => {
-              showmenu()
-            }}
+            
             className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
           >
             Sale
@@ -246,9 +251,7 @@ const [show, setShow] = useState(true);
         <div className="flex py-2 space-x-[1rem] pr-[1rem]">
             <Link href={`/components/basic/about`}>
             <div
-              onClick={() => {
-                showmenu()
-              }}
+              
               className="underline text-[15px] cursor-pointer"
             >
               About
@@ -256,9 +259,7 @@ const [show, setShow] = useState(true);
           </Link>
           <Link href={`/components/basic/contact`}>
             <div
-              onClick={() => {
-                showmenu()
-              }}
+              
               className="underline text-[15px] cursor-pointer"
             >
               Contact
@@ -266,9 +267,7 @@ const [show, setShow] = useState(true);
           </Link>
           <Link href={`/components/basic/helpcenter`}>
             <div
-              onClick={() => {
-                showmenu()
-              }}
+              
               className="underline text-[15px] cursor-pointer"
             >
               Help Center
@@ -292,7 +291,22 @@ const [show, setShow] = useState(true);
         >
           <RxCross2 />
         </div>
-        <Link href={`/components/basic/login`}>
+        
+         {
+              account.image ? <><Link href={`/components/basic/account`} className="">
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="flex items-center space-x-2 mr-4 cursor-pointer"
+          >            <div className="text-[20px]  hover:underline">Account</div>
+
+            <div className="w-[1.5rem] h-[1.5rem] rounded-full overflow-hidden">
+              <Image src={account.image} width={200} height={200} alt="profile" className="w-full h-full"/>
+            </div>
+
+          </div>
+        </Link></>:<><Link href={`/components/basic/login`}>
           <div
             onClick={() => {
               showmenu()
@@ -300,11 +314,12 @@ const [show, setShow] = useState(true);
             className="flex items-center space-x-2 my-2 cursor-pointer"
           >
             <div>Login</div>
-            <div className="text-[22px]">
+            <div className="text-[22px]  hover:underline">
               <FaUserCircle />
             </div>
           </div>
-        </Link>
+        </Link></>
+            }
         <div className="flex justify-between text-[14px] my-4">
           <Link href={`/components/basic/about`}>
             <div
@@ -461,12 +476,12 @@ const [show, setShow] = useState(true);
             Trending Products
           </div>
           <div className="grid grid-cols-1 l:grid-cols-4 gap-4 l:mx-[1rem]">
-            {images.map((item, index) => (
+            {trendproduct.map((item, index) => (
               <div
                 key={index}
                 className="relative w-full flex-shrink-0 cursor-pointer bg-[var(---whitetext)]"
               >
-                {item.sale ? (
+                {item.onsale ? (
                   <>
                     <div className="p-0.5 px-4 bg-[var(---price)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin ">
                       SALE
@@ -481,8 +496,8 @@ const [show, setShow] = useState(true);
                 )}
 
                 <Image
-                  src={item.src}
-                  alt={`Slide ${index}`}
+                  src={item.image}
+                  alt={`Image ${index}`}
                   width={1020}
                   height={1020}
                   className="transition-transform duration-500 my-2"
@@ -491,14 +506,14 @@ const [show, setShow] = useState(true);
                   <div className="l:flex">
                   <div className="ml-4 font-thin">{item.name}</div>
                   <div className="ml-4 font-thin">{item.specification}</div></div>
-                  {item.sale ? (
+                  {item.onsale ? (
                     <>
                       <div className="flex text-[18px] ">
                         <div className="ml-2 l:ml-4 font-bold">
                           <s>{item.price}</s>
                         </div>
 
-                        <div className="ml-2 font-bold">{item.saleprice}</div>
+                        <div className="ml-2 font-bold">{item.sale_price}</div>
                       </div>
                     </>
                   ) : (
@@ -510,9 +525,9 @@ const [show, setShow] = useState(true);
               </div>
             ))}
           </div>
-          <button className="w-[10rem] l:w-[8rem] h-[4rem] l:h-[3rem] l:text-[14px] bg-[var(---blacktext)] text-[var(---whitetext)] p-4 l:p-2 font-thin my-[1rem] hover:underline cursor-pointer l:mx-[1rem]">
+          <Link href={`/components/category/bestseller`}><button className="w-[10rem] l:w-[8rem] h-[4rem] l:h-[3rem] l:text-[14px] bg-[var(---blacktext)] text-[var(---whitetext)] p-4 l:p-2 font-thin my-[1rem] hover:underline cursor-pointer l:mx-[1rem]">
             Show All Results
-          </button>
+          </button></Link>
         </div>
       </div>
 

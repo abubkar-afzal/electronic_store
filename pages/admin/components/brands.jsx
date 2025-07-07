@@ -57,9 +57,25 @@ const Brands = () => {
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
-
+         const [errors, setErrors] = useState({});
+    
+ const validateBrand = () => {
+        const newErrors = {};
+        if (!form.img) newErrors.img = "Image is required";
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+      };
+      const inputVariants = {
+        hidden: { opacity: 0, y: 16 },
+        visible: (i) => ({
+          opacity: 1,
+          y: 0,
+          transition: { delay: i * 0.04, type: "spring", stiffness: 120 },
+        }),
+      };
   // Save (add or update) brand via API
   const handleSave = async () => {
+    if(!validateBrand()) return;
     let image = form.image;
     if (form.file) {
       image = await fileToBase64(form.file);
@@ -142,68 +158,103 @@ const Brands = () => {
           ))}
         </div>
       </div>
-      <AnimatePresence>
-        {editModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
-          >
-            <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white rounded-lg p-8 shadow-lg w-[350px]"
-            >
-              <div className="text-2xl font-bold mb-4">
-                {editIndex !== null ? "Edit Brand" : "Add New Brand"}
-              </div>
-              <div className="flex flex-col items-center">
-                <label
-                  htmlFor="file"
-                  className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 rounded cursor-pointer"
+       {editModalOpen && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
                 >
-                  Upload Image
-                  <input
-                    type="file"
-                    id="file"
-                    name="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleFormChange}
-                  />
-                </label>
-                {form.image && (
-                  <Image
-                    src={form.image}
-                    alt="Preview"
-                    className="mt-2 w-24 h-12 object-contain rounded"
-                    width={120}
-                    height={60}
-                  />
-                )}
-              </div>
-              <div className="flex justify-between mt-6">
-                <button
-                  className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
-                  onClick={() => setEditModalOpen(false)}
-                >
-                  Close
-                </button>
-                <button
-                  className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
-                  onClick={handleSave}
-                >
-                  {editIndex !== null ? "Update" : "Add"}
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  <motion.div
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0.8 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-white rounded-lg p-8 shadow-lg w-[350px]"
+                  >
+                    <div className="text-2xl font-bold mb-4">
+                      {editIndex !== null ? "Edit Brand" : "Add New Brand"}
+                    </div>
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      className="flex flex-col items-center"
+                    >
+                      {[
+                        
+                      ].map((field, i) => (
+                        <motion.div
+                          key={field.htmlFor}
+                          custom={i}
+                          variants={inputVariants}
+                          initial="hidden"
+                          animate="visible"
+                          className="w-full"
+                        >
+                          <label htmlFor={field.htmlFor}>{field.label}</label>
+                          {field.input}
+                        </motion.div>
+                      ))}
+      
+                      {/* File Upload with validation */}
+                      <motion.label
+                        custom={15}
+                        variants={inputVariants}
+                        initial="hidden"
+                        animate="visible"
+                        htmlFor="file"
+                        className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 cursor-pointer w-full justify-center hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px] "
+                      >
+                        Upload Image
+                        <input
+                          type="file"
+                          id="file"
+                          name="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={handleFormChange}
+                        />
+                      </motion.label>
+                      {errors.img && (
+                        <div className="text-red-500 text-xs mb-1">{errors.img}</div>
+                      )}
+                      {form.img && (
+                        <motion.div
+                          custom={16}
+                          variants={inputVariants}
+                          initial="hidden"
+                          animate="visible"
+                          className="w-full flex justify-center"
+                        >
+                          <Image
+                            src={form.img}
+                            alt="Preview"
+                            className="mt-2 w-24 h-24 object-cover rounded"
+                            width={96}
+                            height={96}
+                          />
+                        </motion.div>
+                      )}
+                    </motion.div>
+                   
+                    <div className="flex justify-between mt-6">
+                      <button
+                        className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
+                        onClick={() => setEditModalOpen(false)}
+                      >
+                        Close
+                      </button>
+                      <button
+                        className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
+                        onClick={handleSave}
+                      >
+                        {editIndex !== null ? "Update" : "Add"}
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
     </>
   );
 };

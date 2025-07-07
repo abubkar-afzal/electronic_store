@@ -1,3 +1,4 @@
+import {motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 
 const initialOrders = [
@@ -98,8 +99,16 @@ const Orders = () => {
       </div>
 
       {/* Order Details Modal */}
+                      <AnimatePresence>
+
       {selectedOrder && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+       <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
+          >
           <div className="bg-white rounded-lg p-8 shadow-lg w-[350px] max-w-full">
             <div className="text-xl font-bold mb-2">Order #{selectedOrder.id}</div>
             <div className="mb-2"><b>Customer:</b> {selectedOrder.customer}</div>
@@ -117,14 +126,16 @@ const Orders = () => {
               ))}
             </ul>
             <button
-              className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
+              className="hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] duration-[1s] px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
               onClick={() => setSelectedOrder(null)}
             >
               Close
             </button>
           </div>
-        </div>
+        </motion.div>
       )}
+                      </AnimatePresence>
+
     </div>
   );
 };

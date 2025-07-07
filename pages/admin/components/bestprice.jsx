@@ -17,7 +17,34 @@ const BestPrice = () => {
     button: "",
     file: null,
   });
+  const [errors, setErrors] = useState({});
 
+  const validateBestPrice = () => {
+    const newErrors = {};
+    if (!form.label || form.label.trim().length < 2)
+      newErrors.label = "Label is required (min 2 chars)";
+    if (!form.saveText || form.saveText.trim().length < 2)
+      newErrors.saveText = "Save Text is required (min 2 chars)";
+    if (!form.amount || form.amount.trim().length < 1)
+      newErrors.amount = "Amount is required (min 1 chars)";
+    if (!form.description || form.description.trim().length < 2)
+      newErrors.description = "Description is required (min 2 chars)";
+    if (!form.terms || form.terms.trim().length < 2)
+      newErrors.terms = "Terms are required (min 2 chars)";
+    if (!form.button || form.button.trim().length < 2)
+      newErrors.button = "Button text is required (min 2 chars)";
+    if (!form.img) newErrors.img = "Image is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  const inputVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.04, type: "spring", stiffness: 120 },
+    }),
+  };
   // Fetch data from API on mount
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +60,7 @@ const BestPrice = () => {
   // Keep form in sync with data when opening modal
   const openEditModal = () => {
     setForm({
-      img: data.image || data.img ,
+      img: data.image || data.img,
       label: data.label || "",
       saveText: data.save_text || "",
       amount: data.amount || "",
@@ -59,40 +86,41 @@ const BestPrice = () => {
     }
   };
 
- const handleSave = async () => {
-  let image = form.img;
-  if (form.file) {
-    image = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(form.file);
+  const handleSave = async () => {
+    if (!validateBestPrice()) return;
+    let image = form.img;
+    if (form.file) {
+      image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(form.file);
+      });
+    }
+
+    await fetch("/api/bestprice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        label: form.label,
+        save_text: form.saveText,
+        amount: form.amount,
+        description: form.description,
+        terms: form.terms,
+        button_text: form.button,
+        image,
+        id: form.id, // for update if exists
+      }),
     });
-  }
 
-  await fetch("/api/bestprice", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      label: form.label,
-      save_text: form.saveText,
-      amount: form.amount,
-      description: form.description,
-      terms: form.terms,
-      button_text: form.button,
-      image,
-      id: form.id, // for update if exists
-    }),
-  });
-
-  // Refetch from DB after save
-  const res = await fetch("/api/bestprice");
-  if (res.ok) {
-    const dbData = await res.json();
-    setData(dbData);
-  }
-  setEditModalOpen(false);
-};
+    // Refetch from DB after save
+    const res = await fetch("/api/bestprice");
+    if (res.ok) {
+      const dbData = await res.json();
+      setData(dbData);
+    }
+    setEditModalOpen(false);
+  };
 
   return (
     <>
@@ -105,7 +133,7 @@ const BestPrice = () => {
         <div className="bg-[var(---whitetext)] my-[1rem] l:grid l:grid-cols-2 l:gap-[1rem] l:h-[90vh]">
           <div className="relative t:w-[120%]">
             <Image
-              src={data.image || data.img }
+              src={data.image || data.img}
               width={1020}
               height={100}
               alt="img1"
@@ -134,95 +162,212 @@ const BestPrice = () => {
           </div>
         </div>
       </div>
-      <AnimatePresence>
-        {editModalOpen && (
+      {editModalOpen ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
+        >
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] scrollbar-hide overflow-y-auto"
           >
+            
+            <div className="text-2xl font-bold mb-4">Edit Best Price Deal!!</div>
+            <div className=" mb-4">Update the deal details and image.</div>
             <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white rounded-lg p-8 shadow-lg sm:max-w-sm sm:w-full l:max-w-full text-center l:w-[30rem] max-h-[90vh] scrollbar-hide overflow-y-auto"
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col items-center"
             >
-              <div className="text-2xl font-bold mb-4">
-                Edit Best Price Section
-              </div>
-              <div className="flex flex-col items-center">
-                <label htmlFor="label">Label:</label>
-                <input
-                  type="text"
-                  id="label"
-                  name="label"
-                  value={form.label}
-                  onChange={handleFormChange}
-                  className="outline focus:outline-black m-2"
-                />
-                <label htmlFor="saveText">Save Text:</label>
-                <input
-                  type="text"
-                  id="saveText"
-                  name="saveText"
-                  value={form.saveText}
-                  onChange={handleFormChange}
-                  className="outline focus:outline-black m-2"
-                />
-                <label htmlFor="amount">Amount:</label>
-                <input
-                  type="text"
-                  id="amount"
-                  name="amount"
-                  value={form.amount}
-                  onChange={handleFormChange}
-                  className="outline focus:outline-black m-2"
-                />
-                <label htmlFor="description">Description:</label>
-                <input
-                  type="text"
-                  id="description"
-                  name="description"
-                  value={form.description}
-                  onChange={handleFormChange}
-                  className="outline focus:outline-black m-2"
-                />
-                <label htmlFor="terms">Terms:</label>
-                <input
-                  type="text"
-                  id="terms"
-                  name="terms"
-                  value={form.terms}
-                  onChange={handleFormChange}
-                  className="outline focus:outline-black m-2"
-                />
-                <label htmlFor="button">Button Text:</label>
-                <input
-                  type="text"
-                  id="button"
-                  name="button"
-                  value={form.button}
-                  onChange={handleFormChange}
-                  className="outline focus:outline-black m-2"
-                />
-                <label
-                  htmlFor="file"
-                  className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 rounded cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] duration-[1s]"
+              {[
+                {
+                  label: "Label:",
+                  htmlFor: "label",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="label"
+                        name="label"
+                        value={form.label}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.label ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.label && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.lebel}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Save Text:",
+                  htmlFor: "saveText",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="saveText"
+                        name="saveText"
+                        value={form.saveText}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.saveText ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.saveText && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.saveText}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Amount:",
+                  htmlFor: "amount",
+                  input: (
+                    <>
+                      <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        value={form.amount}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.amount ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.amount && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.amount}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Description:",
+                  htmlFor: "description",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="description"
+                        name="description"
+                        value={form.description}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.description ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.description && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.description}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Terms:",
+                  htmlFor: "terms",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="terms"
+                        name="terms"
+                        value={form.terms}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.terms ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.terms && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.terms}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Button Text:",
+                  htmlFor: "button",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="button"
+                        name="button"
+                        value={form.button}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.button ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.button && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.button}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+              ].map((field, i) => (
+                <motion.div
+                  key={field.htmlFor}
+                  custom={i}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="w-full"
                 >
-                  Upload Image
-                  <input
-                    type="file"
-                    id="file"
-                    name="file"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleFormChange}
-                  />
-                </label>
-                {form.img && (
+                  <label htmlFor={field.htmlFor}>{field.label}</label>
+                  {field.input}
+                </motion.div>
+              ))}
+
+              {/* File Upload with validation */}
+              <motion.label
+                custom={15}
+                variants={inputVariants}
+                initial="hidden"
+                animate="visible"
+                htmlFor="file"
+                className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 cursor-pointer w-full justify-center hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px] "
+              >
+                Upload Image
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFormChange}
+                />
+              </motion.label>
+              {errors.img && (
+                <div className="text-red-500 text-xs mb-1">{errors.img}</div>
+              )}
+              {form.img && (
+                <motion.div
+                  custom={16}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="w-full flex justify-center"
+                >
                   <Image
                     src={form.img}
                     alt="Preview"
@@ -230,26 +375,26 @@ const BestPrice = () => {
                     width={96}
                     height={96}
                   />
-                )}
-              </div>
-              <div className="flex l:flex-row sm:flex-col l:space-x-[1rem] items-center justify-center l:w-[100%] l:mt-[2rem]">
-                <button
-                  className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
-                  onClick={() => setEditModalOpen(false)}
-                >
-                  Close
-                </button>
-                <button
-                  className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
-                  onClick={handleSave}
-                >
-                  Update
-                </button>
-              </div>
+                </motion.div>
+              )}
             </motion.div>
+            <div className="flex l:flex-row sm:flex-col l:space-x-[1rem] items-center justify-center l:w-[100%] l:mt-[2rem]">
+              <button
+                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
+                onClick={() => setEditModalOpen(false)}
+              >
+                Close
+              </button>
+              <button
+                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
+                onClick={handleSave}
+              >
+                Update
+              </button>
+            </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
+      ) : null}
     </>
   );
 };
