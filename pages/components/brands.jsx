@@ -3,7 +3,7 @@ import { FaEdit } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
-const Brands = () => {
+const Brands = ({onDone}) => {
   const [brands, setBrands] = useState([]);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
@@ -19,6 +19,7 @@ const Brands = () => {
     if (res.ok) {
       const data = await res.json();
       setBrands(data.brands || []);
+      onDone();
     }
   };
 

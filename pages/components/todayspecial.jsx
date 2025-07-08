@@ -4,7 +4,7 @@ import { FaEdit } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
-const TodaySpecial = () => {
+const TodaySpecial = ({onDone}) => {
   const [data, setData] = useState({});
  
   // Fetch from API on mount
@@ -24,6 +24,7 @@ const TodaySpecial = () => {
           note2: "",
           button_text: "",
         });
+        onDone();
       }
     };
     fetchData();

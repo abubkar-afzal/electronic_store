@@ -5,7 +5,7 @@ import { motion, useAnimation } from "framer-motion";
 import { Fade } from "react-awesome-reveal";
 
 
-const Intro = () => {
+const Intro = ({onDone}) => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -38,6 +38,7 @@ const Intro = () => {
       setImagefordisplay(
         data.images && data.images.length > 0 ? data.images : []
       );
+      onDone();
     }
     setLoading(false);
   };

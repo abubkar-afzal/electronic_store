@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 
-const Deal = () => {
+const Deal = ({onDone}) => {
  const [mobileDeal, setMobileDeal] = useState({
     line1: "",
     line2: "",
@@ -29,6 +29,7 @@ const Deal = () => {
       const data = await res.json();
       if (data.mobile) setMobileDeal(data.mobile);
       if (data.headphone) setHeadphoneDeal(data.headphone);
+      onDone();
     }
   };
 

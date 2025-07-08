@@ -7,11 +7,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 const initialOrders = [
   {
     id: 1,
     customer: "Ali Raza",
-    postcode: "ali@example.com",
+    email: "ali@example.com",
     phone: "+923001234567",
     address: "123 Main St, Lahore",
     items: [
@@ -24,7 +25,7 @@ const initialOrders = [
   {
     id: 2,
     customer: "Sara Khan",
-    postcode: "sara@example.com",
+    email: "sara@example.com",
     phone: "+923004567890",
     address: "456 Market Rd, Karachi",
     items: [{ name: "Headphones", qty: 1, price: 30 }],
@@ -408,7 +409,7 @@ const Account = ({ account, setAccount }) => {
             showdetails ? "right-0" : "right-[100vw]"
           } duration-[2s] sm:fixed l:hidden top-[10vh] overflow-y-scroll scrollbar-hide h-[90vh] bg-white shadow-md rounded-lg p-6  `}
         >
-          {" "}
+          
           <div
             className="text-[30px] place-self-end my-1 l:hidden sm:block cursor-pointer"
             onClick={() => {
@@ -487,7 +488,7 @@ const Account = ({ account, setAccount }) => {
         <div
           className={`sm:hidden l:block bg-white shadow-md rounded-lg p-6 col-span-2 `}
         >
-          {" "}
+          
           <div
             className="text-[30px] place-self-end my-1 l:hidden sm:block cursor-pointer"
             onClick={() => {
@@ -585,7 +586,7 @@ const Account = ({ account, setAccount }) => {
                   <tr className="bg-gray-100">
                     <th className="p-2 border">Order ID</th>
                     <th className="p-2 border">Customer</th>
-                    <th className="p-2 border">postcode</th>
+                    <th className="p-2 border">Email</th>
                     <th className="p-2 border">Phone</th>
                     <th className="p-2 border">Status</th>
                     <th className="p-2 border">Date</th>
@@ -597,7 +598,7 @@ const Account = ({ account, setAccount }) => {
                     <tr key={order.id} className="hover:bg-gray-50 text-center">
                       <td className="p-2 border">{order.id}</td>
                       <td className="p-2 border">{order.customer}</td>
-                      <td className="p-2 border">{order.postcode}</td>
+                      <td className="p-2 border">{order.email}</td>
                       <td className="p-2 border">{order.phone}</td>
                       <td className="p-2 border">Pending</td>
                       <td className="p-2 border">{order.date}</td>
@@ -622,9 +623,10 @@ const Account = ({ account, setAccount }) => {
               </table>
             </div>
             <div className="mb-4 text-[16px] w-full items-center flex justify-center">
+              <Link href={`/components/category/allproducts`}>
               <button className="flex items-center text-[14px] l:text-[16px] font-semibold bg-[var(---hoverbtncolor)] text-[var(---whitetext)] p-2 l:p-3 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[2rem] cursor-pointer hover:bg-transparent hover:text-[var(---hoverbtncolor)] hover:border-[var(---hoverbtncolor)] hover:border-[1px] duration-[1s] ">
                 Buy More <FaPlus className="mx-2" />
-              </button>
+              </button></Link>
             </div>
 
             {/* Order Details Modal */}
@@ -645,7 +647,7 @@ const Account = ({ account, setAccount }) => {
                       <b>Customer:</b> {selectedOrder.customer}
                     </div>
                     <div className="mb-2">
-                      <b>postcode:</b> {selectedOrder.postcode}
+                      <b>Email:</b> {selectedOrder.email}
                     </div>
                     <div className="mb-2">
                       <b>Phone:</b> {selectedOrder.phone}
@@ -655,6 +657,9 @@ const Account = ({ account, setAccount }) => {
                     </div>
                     <div className="mb-2">
                       <b>Status:</b> {selectedOrder.status}
+                    </div>
+                    <div className="mb-2">
+                      <b>Post Code:</b> {selectedOrder.postcode}
                     </div>
                     <div className="mb-2">
                       <b>Date:</b> {selectedOrder.date}

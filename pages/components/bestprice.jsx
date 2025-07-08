@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const BestPrice = () => {
+const BestPrice = ({onDone}) => {
   const [data, setData] = useState({});
  
   // Fetch data from API on mount
@@ -12,6 +12,7 @@ const BestPrice = () => {
       if (res.ok) {
         const dbData = await res.json();
         setData(dbData);
+        onDone();
       }
     };
     fetchData();

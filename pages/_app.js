@@ -96,6 +96,17 @@ const fetchAccount = async (email) => {
       console.error("Error fetching account:", error.message || error);
     }
   };
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      // Store current path before changing route
+      sessionStorage.setItem("previousPage", window.location.pathname);
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => router.events.off("routeChangeStart", handleRouteChange);
+  }, [router]);
+
   return (
     <ErrorBoundary>
       <SessionProvider session={pageProps.session}>

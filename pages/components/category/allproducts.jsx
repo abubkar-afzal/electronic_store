@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { RxCross2, RxMinus, RxPlus } from "react-icons/rx";
-import { FaArrowCircleUp, FaEdit } from "react-icons/fa";
+import { FaArrowCircleUp } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { MoonLoader } from "react-spinners";
 import { motion, AnimatePresence } from "framer-motion";
 import { Fade } from "react-awesome-reveal";
-import toast, { Toaster } from "react-hot-toast";
 
 const AllProducts = () => {
   const pageName = "All Products";
+  const [flippedCards, setFlippedCards] = useState({});
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filter, setfilter] = useState(false);
@@ -32,7 +32,7 @@ const AllProducts = () => {
   const [colorfilter, setcolorfilter] = useState(false);
   const router = useRouter();
   let currentpage;
- 
+
   const maxItemPrice =
     items.length > 0
       ? Math.max(...items.map((item) => Number(item.price) || 0)) + 10
@@ -82,9 +82,7 @@ const AllProducts = () => {
     currentpage = "tv&homecinema";
   } else if (router.route === "/components/category/tablets") {
     currentpage = "tablets";
-  } else if (
-    router.route === "/components/category/headphones&speakers"
-  ) {
+  } else if (router.route === "/components/category/headphones&speakers") {
     currentpage = "headphones&speakers";
   } else if (router.route === "/components/category/wearabletech") {
     currentpage = "wearabletech";
@@ -95,7 +93,6 @@ const AllProducts = () => {
   } else {
     currentpage = "no route found";
   }
-
 
   const showfilter = () => {
     setfilter(!filter);
@@ -165,8 +162,6 @@ const AllProducts = () => {
         <FaArrowCircleUp />
       </button>
 
-     
-
       {/* mobile  */}
       <Fade duration={2000} cascade>
         <div className="sm:block l:hidden mx-[1rem] min-h-screen">
@@ -181,7 +176,6 @@ const AllProducts = () => {
           </div>
           <div className="text-[30px] font-bold my-[1rem] flex items-center justify-between">
             {pageName}
-            
           </div>
           <div className="flex justify-between font-thin items-center">
             <div>{filteredAndSortedItems.length} Products</div>
@@ -206,52 +200,90 @@ const AllProducts = () => {
               </div>
             ) : (
               filteredAndSortedItems.map((item, index) => (
-                <Fade duration={2000} cascade triggerOnce fraction={0.1}>
-                  <div
+                  <Fade
                     key={item.id}
-                    className="relative w-full flex-shrink-0 cursor-pointer bg-[var(---whitetext)] h-[20rem]"
+                    duration={1000}
+                    cascade
+                    fraction={0.3}
+                    triggerOnce
                   >
-                    <div className="relative w-full h-[2rem]">
-                    
-                    </div>
-                    {item.onsale ? (
-                      <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin ">
-                        SALE
-                      </div>
-                    ) : (
-                      <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin ">
-                        SALE
-                      </div>
-                    )}
+                    <div
+                      onClick={() =>
+                        setFlippedCards((prev) => ({
+                          ...prev,
+                          [item.id]: !prev[item.id], // flip only this card
+                        }))
+                      }
+                      className="w-full h-[20rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
+                    >
+                      <div
+                        className={`transition-transform duration-[1s] w-full h-full relative`}
+                        style={{
+                          transformStyle: "preserve-3d",
+                          transform: flippedCards[item.id]
+                            ? "rotateY(180deg)"
+                            : "rotateY(0deg)",
+                        }}
+                      >
+                        {/* FRONT SIDE */}
+                        <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow bg-[var(---whitetext)] shadow-black p-2">
+                          {item.onsale ? (
+                            <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] text-[14px] rounded-[1rem] m-2 font-thin">
+                              SALE
+                            </div>
+                          ) : (
+                            <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] text-[14px] rounded-[1rem] m-2 font-thin">
+                              SALE
+                            </div>
+                          )}
 
-                    <Image
-                      src={item.image}
-                      alt={`Product ${index}`}
-                      width={1020}
-                      height={1020}
-                      className="transition-transform duration-500 my-2 h-[9rem]"
-                    />
-                    <div>
-                      <div className="ml-4 font-thin">{item.name}</div>
-                      <div className="ml-4 font-thin">{item.specification}</div>
-                      {item.onsale ? (
-                        <div className="flex flex-col text-[18px] ">
-                          <div className="ml-2 font-bold text-[var(---price)]">
-                            <s>{item.price}</s>
+                          <Image
+                            src={item.image}
+                            alt={`Slide ${index}`}
+                            width={1020}
+                            height={1020}
+                            className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-auto h-[10rem]"
+                          />
+
+                          <div className="ml-2 font-thin">{item.name}</div>
+                          <div className="ml-2 font-thin">
+                            {item.specification}
                           </div>
-                          <div className="ml-2 font-bold text-[var(---price)]">
-                            {item.sale_price}
-                          </div>
+
+                          {item.onsale ? (
+                            <div className="flex flex-col text-[12px] ml-2 mt-2">
+                              <div className="font-bold text-[var(---price)]">
+                                <s>{item.price}</s>
+                              </div>
+                              <div className="font-bold text-[var(---price)]">
+                                {item.sale_price}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-[12px] ml-2 mt-2 font-bold text-[var(---price)]">
+                              {item.price}
+                            </div>
+                          )}
                         </div>
-                      ) : (
-                        <div className="m-2 text-[18px] font-bold text-[var(---price)]">
-                          {item.price}
+
+                        {/* BACK SIDE */}
+                        <div className="absolute inset-0 backface-hidden rotate-y-180 border bg-[var(---whitetext)] shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
+                          <button className="text-[14px] l:text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
+                            Add to Cart
+                          </button>
+                          <button className="text-[14px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
+                            Buy Now
+                          </button>
+                          <Link href={`/components/product/${item.id}`}>
+                            <div className="underline text-[14px] l:text-[16px] text-blue-600 cursor-pointer hover:scale-110 duration-[1s]">
+                              Details
+                            </div>
+                          </Link>
                         </div>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                </Fade>
-              ))
+                  </Fade>
+                ))
             )}
           </div>
         </div>
@@ -409,59 +441,63 @@ const AllProducts = () => {
         </div>
 
         <div
-  className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
-    colorfilter ? "h-auto" : "h-auto "
-  }`}
->
-  <div
-    className={`justify-between items-center  text-[20px] font-thin flex ${
-      colorfilter ? "block" : "hidden"
-    }`}
-  >
-    <div>Color</div>
-    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <div
-    className={`justify-between items-center text-[20px] font-thin ${
-      colorfilter ? "hidden" : "flex"
-    } `}
-  >
-    <div>Color</div>
-    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <AnimatePresence initial={false}>
-    {colorfilter && (
-      <motion.div
-        key="colorfilter"
-        initial={{ height: 0, opacity: 0, y: -20 }}
-        animate={{ height: "auto", opacity: 1, y: 0 }}
-        exit={{ height: 0, opacity: 0, y: -20 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className="overflow-hidden"
-      >
-        <div className="m-[1rem] flex gap-2 flex-wrap">
-          {uniqueColors.map((color) => (
-            <div
-              key={color}
-              className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+          className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
+            colorfilter ? "h-auto" : "h-auto "
+          }`}
+        >
+          <div
+            className={`justify-between items-center  text-[20px] font-thin flex ${
+              colorfilter ? "block" : "hidden"
+            }`}
+          >
+            <div>Color</div>
+            <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
+          </div>
+          <div
+            className={`justify-between items-center text-[20px] font-thin ${
+              colorfilter ? "hidden" : "flex"
+            } `}
+          >
+            <div>Color</div>
+            <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
+          </div>
+          <AnimatePresence initial={false}>
+            {colorfilter && (
+              <motion.div
+                key="colorfilter"
+                initial={{ height: 0, opacity: 0, y: -20 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="m-[1rem] flex gap-2 flex-wrap">
+                  {uniqueColors.map((color) => (
+                    <div
+                      key={color}
+                      className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+                ${
+                  selectedColor === color
+                    ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                    : "border-gray-300"
+                }
               `}
-              style={{ backgroundColor: color }}
-              title={color}
-              onClick={() =>
-                setSelectedColor(selectedColor === color ? null : color)
-              }
-            >
-              {selectedColor === color && (
-                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
-              )}
-            </div>
-          ))}
+                      style={{ backgroundColor: color }}
+                      title={color}
+                      onClick={() =>
+                        setSelectedColor(selectedColor === color ? null : color)
+                      }
+                    >
+                      {selectedColor === color && (
+                        <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
       </div>
 
       {/* laptop */}
@@ -653,66 +689,77 @@ const AllProducts = () => {
                 </div>
 
                 <div
-  className={`p-4 mb-[4rem] duration-700 border-b-[1px] overflow-y-hidden ${
-    colorfilter ? "h-auto" : "h-auto "
-  }`}
->
-  <div
-    className={`justify-between items-center  text-[20px] font-thin flex ${
-      colorfilter ? "block" : "hidden"
-    }`}
-  >
-    <div>Color</div>
-    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <div
-    className={`justify-between items-center text-[20px] font-thin ${
-      colorfilter ? "hidden" : "flex"
-    }`}
-  >
-    <div>Color</div>
-    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <AnimatePresence initial={false}>
-    {colorfilter && (
-      <motion.div
-        key="colorfilter"
-        initial={{ height: 0, opacity: 0, y: -20 }}
-        animate={{ height: "auto", opacity: 1, y: 0 }}
-        exit={{ height: 0, opacity: 0, y: -20 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className="overflow-hidden"
-      >
-        <div className="m-[1rem] flex gap-2 flex-wrap">
-          {uniqueColors.map((color) => (
-            <div
-              key={color}
-              className={` w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+                  className={`p-4 mb-[4rem] duration-700 border-b-[1px] overflow-y-hidden ${
+                    colorfilter ? "h-auto" : "h-auto "
+                  }`}
+                >
+                  <div
+                    className={`justify-between items-center  text-[20px] font-thin flex ${
+                      colorfilter ? "block" : "hidden"
+                    }`}
+                  >
+                    <div>Color</div>
+                    <RxMinus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
+                  </div>
+                  <div
+                    className={`justify-between items-center text-[20px] font-thin ${
+                      colorfilter ? "hidden" : "flex"
+                    }`}
+                  >
+                    <div>Color</div>
+                    <RxPlus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
+                  </div>
+                  <AnimatePresence initial={false}>
+                    {colorfilter && (
+                      <motion.div
+                        key="colorfilter"
+                        initial={{ height: 0, opacity: 0, y: -20 }}
+                        animate={{ height: "auto", opacity: 1, y: 0 }}
+                        exit={{ height: 0, opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="m-[1rem] flex gap-2 flex-wrap">
+                          {uniqueColors.map((color) => (
+                            <div
+                              key={color}
+                              className={` w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+                ${
+                  selectedColor === color
+                    ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                    : "border-gray-300"
+                }
               `}
-              style={{ backgroundColor: color }}
-              title={color}
-              onClick={() =>
-                setSelectedColor(selectedColor === color ? null : color)
-              }
-            >
-              {selectedColor === color && (
-                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
-              )}
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
+                              style={{ backgroundColor: color }}
+                              title={color}
+                              onClick={() =>
+                                setSelectedColor(
+                                  selectedColor === color ? null : color
+                                )
+                              }
+                            >
+                              {selectedColor === color && (
+                                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </Fade>
           </div>
           <div className="col-span-4 scrollbar-hide">
             <div className="text-[50px] font-bold my-[1rem] flex items-center justify-between">
               {pageName}
-              
             </div>
             <div className="flex justify-between font-thin text-[20px] items-center">
               <div>{filteredAndSortedItems.length} Products</div>
@@ -765,48 +812,86 @@ const AllProducts = () => {
                 </div>
               ) : (
                 filteredAndSortedItems.map((item, index) => (
-                  <Fade duration={1000} cascade fraction={0.3} triggerOnce>
+                  <Fade
+                    key={item.id}
+                    duration={1000}
+                    cascade
+                    fraction={0.3}
+                    triggerOnce
+                  >
                     <div
-                      key={item.id}
-                      className="relative w-full flex-shrink-0 cursor-pointer bg-[var(---whitetext)] h-[28rem] content-center"
+                      onClick={() =>
+                        setFlippedCards((prev) => ({
+                          ...prev,
+                          [item.id]: !prev[item.id], // flip only this card
+                        }))
+                      }
+                      className="w-full h-[25rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
                     >
-                      
-                      {item.onsale ? (
-                        <div className=" p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin ">
-                          SALE
-                        </div>
-                      ) : (
-                        <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin ">
-                          SALE
-                        </div>
-                      )}
+                      <div
+                        className={`transition-transform duration-[1s] w-full h-full relative`}
+                        style={{
+                          transformStyle: "preserve-3d",
+                          transform: flippedCards[item.id]
+                            ? "rotateY(180deg)"
+                            : "rotateY(0deg)",
+                        }}
+                      >
+                        {/* FRONT SIDE */}
+                        <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow bg-[var(---whitetext)] shadow-black p-2">
+                          {item.onsale ? (
+                            <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                              SALE
+                            </div>
+                          ) : (
+                            <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                              SALE
+                            </div>
+                          )}
 
-                      <Image
-                        src={item.image}
-                        alt={`product ${index}`}
-                        width={1020}
-                        height={1020}
-                        className="transition-transform duration-500 my-2 hover:scale-102 h-[18rem]"
-                      />
-                      <div>
-                        <div className="ml-4 font-thin">{item.name}</div>
-                        <div className="ml-4 font-thin">
-                          {item.specification}
+                          <Image
+                            src={item.image}
+                            alt={`Slide ${index}`}
+                            width={1020}
+                            height={1020}
+                            className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-auto h-[16rem]"
+                          />
+
+                          <div className="ml-2 font-thin">{item.name}</div>
+                          <div className="ml-2 font-thin">
+                            {item.specification}
+                          </div>
+
+                          {item.onsale ? (
+                            <div className="flex text-[18px] ml-2">
+                              <div className="font-bold text-[var(---price)]">
+                                <s>{item.price}</s>
+                              </div>
+                              <div className="ml-2 font-bold text-[var(---price)]">
+                                {item.sale_price}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
+                              {item.price}
+                            </div>
+                          )}
                         </div>
-                        {item.onsale ? (
-                          <div className="flex flex-col text-[18px] ">
-                            <div className="ml-2 font-bold text-[var(---price)]">
-                              <s>{item.price}</s>
+
+                        {/* BACK SIDE */}
+                        <div className="absolute inset-0 backface-hidden rotate-y-180 border bg-[var(---whitetext)] shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
+                          <button className="text-[16px] l:text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
+                            Add to Cart
+                          </button>
+                          <button className="text-[16px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
+                            Buy Now
+                          </button>
+                          <Link href={`/components/product/${item.id}`}>
+                            <div className="underline text-blue-600 cursor-pointer hover:scale-110 duration-[1s]">
+                              Details
                             </div>
-                            <div className="ml-2 font-bold text-[var(---price)]">
-                              {item.sale_price}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="m-2 text-[18px] font-bold text-[var(---price)]">
-                            {item.price}
-                          </div>
-                        )}
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </Fade>
