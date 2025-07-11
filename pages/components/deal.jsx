@@ -1,9 +1,8 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaEdit } from "react-icons/fa";
 
-const Deal = ({onDone}) => {
+const Deal = () => {
  const [mobileDeal, setMobileDeal] = useState({
     line1: "",
     line2: "",
@@ -29,7 +28,7 @@ const Deal = ({onDone}) => {
       const data = await res.json();
       if (data.mobile) setMobileDeal(data.mobile);
       if (data.headphone) setHeadphoneDeal(data.headphone);
-      onDone();
+      
     }
   };
 

@@ -10,7 +10,7 @@ import { Fade } from "react-awesome-reveal";
 import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 
-const Tablets = () => {
+const Tablets = ({addToCart}) => {
   const pageName = "Tablets";
     const [flippedCards, setFlippedCards] = useState({});
   
@@ -174,7 +174,7 @@ const Tablets = () => {
       <Fade duration={2000} cascade>
         <div className="sm:block l:hidden mx-[1rem] min-h-screen">
           <div className="flex space-x-2">
-            <Link href={`/admin/components`}>
+            <Link href={`/`}>
               <div className="cursor-pointer hover:font-bold font-thin">
                 Home
               </div>
@@ -235,65 +235,82 @@ const Tablets = () => {
                         }}
                       >
                         {/* FRONT SIDE */}
-                        <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow bg-[var(---whitetext)] shadow-black p-2">
-                          {item.onsale ? (
-                            <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] text-[14px] rounded-[1rem] m-2 font-thin">
-                              SALE
-                            </div>
-                          ) : (
-                            <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] text-[14px] rounded-[1rem] m-2 font-thin">
-                              SALE
-                            </div>
-                          )}
-
-                          <Image
-                            src={item.image}
-                            alt={`Slide ${index}`}
-                            width={1020}
-                            height={1020}
-                            className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-auto h-[10rem]"
-                          />
-
-                          <div className="ml-2 font-thin">{item.name}</div>
-                          <div className="ml-2 font-thin">
-                            {item.specification}
+                      <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
+                        {item.avaliable_quantity <= 0 ? (
+                          <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
+                            OUT OF STOCK
                           </div>
+                        ) : item.onsale ? (
+                          <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                            SALE
+                          </div>
+                        ) : (
+                          <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                            SALE
+                          </div>
+                        )}
 
-                          {item.onsale ? (
-                            <div className="flex flex-col text-[12px] ml-2 mt-2">
-                              <div className="font-bold text-[var(---price)]">
-                                <s>{item.price}</s>
-                              </div>
-                              <div className="font-bold text-[var(---price)]">
-                                {item.sale_price}
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="text-[12px] ml-2 mt-2 font-bold text-[var(---price)]">
-                              {item.price}
-                            </div>
-                          )}
+                        <Image
+                          src={item.image}
+                          alt={`Slide ${index}`}
+                          width={1020}
+                          height={1020}
+                          className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full h-[10rem]"
+                        />
+
+                        <div className="ml-2 font-thin">{item.name}</div>
+                        <div className="ml-2 font-thin">
+                          {item.specification}
                         </div>
 
-                        {/* BACK SIDE */}
-                        <div className="absolute inset-0 backface-hidden rotate-y-180 border bg-[var(---whitetext)] shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
-                          <button className="text-[14px] l:text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
-                            Add to Cart
-                          </button>
-                          <button className="text-[14px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
-                            Buy Now
-                          </button>
-                          <Link href={`/components/product/${item.id}`}>
-                            <div className="underline text-[14px] l:text-[16px] text-blue-600 cursor-pointer hover:scale-110 duration-[1s]">
-                              Details
+                        {item.onsale ? (
+                          <div className="flex sm:flex-col l:flex-row text-[18px] l:ml-2">
+                            <div className="font-bold text-[var(---price)]">
+                              <s>{item.price}</s>
                             </div>
-                          </Link>
-                        </div>
+                            <div className="l:ml-2 font-bold text-[var(---price)]">
+                              {item.sale_price}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
+                            {item.price}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* BACK SIDE */}
+                      <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
+                        {item.avaliable_quantity <= 0 ? (
+                          <div className="text-red-600 font-black text-center">
+                            Not Available
+                          </div>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => addToCart(item)}
+                              className="text-[14px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]"
+                            >
+                              Add to Cart
+                            </button>
+                            <Link href={`/components/buynow/${item.id}`}>
+                              <button className="text-[14px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
+                                Buy Now
+                              </button>
+                            </Link>
+                            <Link href={`/components/product/${item.id}`}>
+                              <div className="underline text-blue-600 text-[14px] cursor-pointer hover:scale-110 duration-[1s]">
+                                Details
+                              </div>
+                            </Link>
+                          </>
+                        )}
+                      </div>
                       </div>
                     </div>
                   </Fade>
                 ))
-            )}
+              )}
           </div>
         </div>
       </Fade>
@@ -511,7 +528,7 @@ const Tablets = () => {
           <div className="col-span-1 scrollbar-hide">
             <Fade duration={2000} cascade triggerOnce>
               <div className="flex space-x-2 text-[20px]">
-                <Link href={`/admin/components`}>
+                <Link href={`/`}>
                   <div className="cursor-pointer hover:font-bold font-thin">
                     Home
                   </div>
@@ -805,7 +822,7 @@ const Tablets = () => {
                   There is no Product, Add Product for Production.
                 </div>
               ) : (
-                 filteredAndSortedItems.map((item, index) => (
+                filteredAndSortedItems.map((item, index) => (
                   <Fade
                     key={item.id}
                     duration={1000}
@@ -832,60 +849,77 @@ const Tablets = () => {
                         }}
                       >
                         {/* FRONT SIDE */}
-                        <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow bg-[var(---whitetext)] shadow-black p-2">
-                          {item.onsale ? (
-                            <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
-                              SALE
-                            </div>
-                          ) : (
-                            <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
-                              SALE
-                            </div>
-                          )}
-
-                          <Image
-                            src={item.image}
-                            alt={`Slide ${index}`}
-                            width={1020}
-                            height={1020}
-                            className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-auto h-[16rem]"
-                          />
-
-                          <div className="ml-2 font-thin">{item.name}</div>
-                          <div className="ml-2 font-thin">
-                            {item.specification}
+                      <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
+                        {item.avaliable_quantity <= 0 ? (
+                          <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
+                            OUT OF STOCK
                           </div>
+                        ) : item.onsale ? (
+                          <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                            SALE
+                          </div>
+                        ) : (
+                          <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                            SALE
+                          </div>
+                        )}
 
-                          {item.onsale ? (
-                            <div className="flex text-[18px] ml-2">
-                              <div className="font-bold text-[var(---price)]">
-                                <s>{item.price}</s>
-                              </div>
-                              <div className="ml-2 font-bold text-[var(---price)]">
-                                {item.sale_price}
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
-                              {item.price}
-                            </div>
-                          )}
+                        <Image
+                          src={item.image}
+                          alt={`Slide ${index}`}
+                          width={1020}
+                          height={1020}
+                          className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full h-[16rem]"
+                        />
+
+                        <div className="ml-2 font-thin">{item.name}</div>
+                        <div className="ml-2 font-thin">
+                          {item.specification}
                         </div>
 
-                        {/* BACK SIDE */}
-                        <div className="absolute inset-0 backface-hidden rotate-y-180 border bg-[var(---whitetext)] shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
-                          <button className="text-[16px] l:text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
-                            Add to Cart
-                          </button>
-                          <button className="text-[16px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
-                            Buy Now
-                          </button>
-                          <Link href={`/components/product/${item.id}`}>
-                            <div className="underline text-blue-600 cursor-pointer hover:scale-110 duration-[1s]">
-                              Details
+                        {item.onsale ? (
+                          <div className="flex sm:flex-col l:flex-row text-[18px] l:ml-2">
+                            <div className="font-bold text-[var(---price)]">
+                              <s>{item.price}</s>
                             </div>
-                          </Link>
-                        </div>
+                            <div className="l:ml-2 font-bold text-[var(---price)]">
+                              {item.sale_price}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
+                            {item.price}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* BACK SIDE */}
+                      <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
+                        {item.avaliable_quantity <= 0 ? (
+                          <div className="text-red-600 font-black text-center">
+                            Not Available
+                          </div>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => addToCart(item)}
+                              className="text-[16px] l:text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]"
+                            >
+                              Add to Cart
+                            </button>
+                            <Link href={`/components/buynow/${item.id}`}>
+                              <button className="text-[16px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
+                                Buy Now
+                              </button>
+                            </Link>
+                            <Link href={`/components/product/${item.id}`}>
+                              <div className="underline text-blue-600 text-[16px] cursor-pointer hover:scale-110 duration-[1s]">
+                                Details
+                              </div>
+                            </Link>
+                          </>
+                        )}
+                      </div>
                       </div>
                     </div>
                   </Fade>

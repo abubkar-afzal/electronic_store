@@ -8,6 +8,7 @@ import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { MoonLoader } from "react-spinners";
 const initialOrders = [
   {
     id: 1,
@@ -42,8 +43,9 @@ const Account = ({ account, setAccount }) => {
       router.push("/");
     }
   }, []);
-  const [orders, setOrders] = useState(initialOrders);
+  const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  console.log(selectedOrder)
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [showdetails, setshowdetails] = useState(false);
   const inputVariants = {
@@ -159,6 +161,54 @@ const Account = ({ account, setAccount }) => {
       }
     } catch (error) {
       console.error("Error updating account:", error);
+    }
+  };
+  useEffect(() => {
+    const token = localStorage.getItem("custom_jwt");
+    if (!token) {
+      router.push("/");
+      return;
+    }
+
+    if (account?.email) {
+      fetchUserOrders(account.email);
+    }
+  }, [account?.email]);
+
+  const fetchUserOrders = async (email) => {
+    try {
+      const res = await fetch("/api/getorders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.success) {
+        const formattedOrders = data.orders.map((order) => ({
+          id: order.id,
+          customer: order.name,
+          email: order.email,
+          phone: order.phone,
+          address: order.address,
+          postcode: order.postcode,
+          items: order.order_items.map((item) => ({
+            product_id: item.product_id,
+            name: item.name,
+            image: item.image,
+            specification: item.specification,
+            color:item.color,
+            onsale: item.onsale,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+          status: order.status,
+          date: new Date(order.created_at || order.date).toLocaleDateString(),
+        }));
+        setOrders(formattedOrders);
+      }
+    } catch (error) {
+      console.error("Failed to fetch orders:", error);
     }
   };
 
@@ -409,7 +459,6 @@ const Account = ({ account, setAccount }) => {
             showdetails ? "right-0" : "right-[100vw]"
           } duration-[2s] sm:fixed l:hidden top-[10vh] overflow-y-scroll scrollbar-hide h-[90vh] bg-white shadow-md rounded-lg p-6  `}
         >
-          
           <div
             className="text-[30px] place-self-end my-1 l:hidden sm:block cursor-pointer"
             onClick={() => {
@@ -488,7 +537,6 @@ const Account = ({ account, setAccount }) => {
         <div
           className={`sm:hidden l:block bg-white shadow-md rounded-lg p-6 col-span-2 `}
         >
-          
           <div
             className="text-[30px] place-self-end my-1 l:hidden sm:block cursor-pointer"
             onClick={() => {
@@ -615,7 +663,12 @@ const Account = ({ account, setAccount }) => {
                   {orders.length === 0 && (
                     <tr>
                       <td colSpan={7} className="text-center p-4">
-                        No orders found.
+                        <div className=" inset-0  flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+                  <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+                    <MoonLoader size={30} color="#7002ff" />
+                    Loading...
+                  </div>
+                </div>
                       </td>
                     </tr>
                   )}
@@ -624,66 +677,87 @@ const Account = ({ account, setAccount }) => {
             </div>
             <div className="mb-4 text-[16px] w-full items-center flex justify-center">
               <Link href={`/components/category/allproducts`}>
-              <button className="flex items-center text-[14px] l:text-[16px] font-semibold bg-[var(---hoverbtncolor)] text-[var(---whitetext)] p-2 l:p-3 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[2rem] cursor-pointer hover:bg-transparent hover:text-[var(---hoverbtncolor)] hover:border-[var(---hoverbtncolor)] hover:border-[1px] duration-[1s] ">
-                Buy More <FaPlus className="mx-2" />
-              </button></Link>
+                <button className="flex items-center text-[14px] l:text-[16px] font-semibold bg-[var(---hoverbtncolor)] text-[var(---whitetext)] p-2 l:p-3 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[2rem] cursor-pointer hover:bg-transparent hover:text-[var(---hoverbtncolor)] hover:border-[var(---hoverbtncolor)] hover:border-[1px] duration-[1s] ">
+                  Buy More <FaPlus className="mx-2" />
+                </button>
+              </Link>
             </div>
 
             {/* Order Details Modal */}
-            <AnimatePresence>
-              {selectedOrder && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
-                >
-                  <div className="bg-white rounded-lg p-8 shadow-lg w-[350px] max-w-full">
-                    <div className="text-xl font-bold mb-2">
-                      Order #{selectedOrder.id}
-                    </div>
-                    <div className="mb-2">
-                      <b>Customer:</b> {selectedOrder.customer}
-                    </div>
-                    <div className="mb-2">
-                      <b>Email:</b> {selectedOrder.email}
-                    </div>
-                    <div className="mb-2">
-                      <b>Phone:</b> {selectedOrder.phone}
-                    </div>
-                    <div className="mb-2">
-                      <b>Address:</b> {selectedOrder.address}
-                    </div>
-                    <div className="mb-2">
-                      <b>Status:</b> {selectedOrder.status}
-                    </div>
-                    <div className="mb-2">
-                      <b>Post Code:</b> {selectedOrder.postcode}
-                    </div>
-                    <div className="mb-2">
-                      <b>Date:</b> {selectedOrder.date}
-                    </div>
-                    <div className="mb-2">
-                      <b>Items:</b>
-                    </div>
-                    <ul className="mb-4">
-                      {selectedOrder.items.map((item, idx) => (
-                        <li key={idx}>
-                          {item.name} x{item.qty} (${item.price} each)
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      className="hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] duration-[1s] px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
-                      onClick={() => setSelectedOrder(null)}
-                    >
-                      Close
-                    </button>
+<AnimatePresence>
+  {selectedOrder && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
+    >
+      <div className="bg-white rounded-lg p-8 shadow-lg max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide">
+        <div className="text-2xl font-bold mb-4">
+          Order #{selectedOrder.id}
+        </div>
+        <div className="grid grid-cols-1  gap-4 text-[16px]">
+          <div><b>Customer:</b> {selectedOrder.customer}</div>
+          <div><b>Email:</b> {selectedOrder.email}</div>
+          <div><b>Phone:</b> {selectedOrder.phone}</div>
+          <div><b>Address:</b> {selectedOrder.address}</div>
+          <div><b>Status:</b> {selectedOrder.status}</div>
+          <div><b>Post Code:</b> {selectedOrder.postcode}</div>
+          <div><b>Date:</b> {selectedOrder.date}</div>
+        </div>
+
+        <div className="mt-6">
+          <div className="text-lg font-semibold mb-2">Items:</div>
+          <ul className="space-y-4">
+            {selectedOrder.items.map((item, idx) => (
+              <li key={idx} className="grid grid-cols-2 items-start gap-4 border l:px-[3rem] p-3 rounded-md">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={1020}
+                  height={1020}
+                  className="w-30 h-30 object-cover rounded-md border col-span-2"
+                />
+                <div className="flex-1 col-start-3 ">
+                  <div className="font-bold text-[17px]">{item.name}</div>
+                  <div className="text-sm text-gray-600">{item.specification}</div>
+                  <div className="text-sm flex items-center">
+                    Color: <div className="rounded-full w-[1.2rem] h-[1.2rem] mx-1" style={{backgroundColor: item.color}}></div>
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                  <div className="text-sm">
+                    Quantity: <b>{item.quantity}</b>
+                  </div>
+                  <div className="text-sm">
+                    Price:{" "}
+                    <b className="text-[var(---price)]">
+                      ${item.price}
+                    </b>
+                  </div>
+                  {item.onsale && (
+                    <span className="bg-[var(---salelabel)] text-white text-xs px-2 py-0.5 rounded inline-block mt-1">
+                      On Sale
+                    </span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="text-center mt-6">
+          <button
+            className="hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] duration-[1s] px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
+            onClick={() => setSelectedOrder(null)}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
           </div>
         </div>
       </div>

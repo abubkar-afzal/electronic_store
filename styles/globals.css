@@ -11,6 +11,7 @@
   ---salelabel: rgb(227, 42, 42);
   ---error: rgb(227, 42, 42);
   ---btncolor:#7002ff;
+  ---disablebtncolor:#7141b0;
   ---hoverbtncolor:rgb(153, 82, 247);   
   ---price:rgb(112, 2, 255);
   ---arrowbutton:rgb(196, 195, 195);
@@ -20,9 +21,8 @@
   ---forgotpassword: rgb(62, 65, 239);
   ---loginpage: rgba(255, 255, 255, 0.607);
   ---edit: #ff0000;
-  ---loader: rgba(0, 0, 0, 0.862);
-    
-  
+  ---loader: rgba(0, 0, 0, 0.862); 
+  ---redstock:#e7000b;
 }
 body {
   background: var(---pagecolor);

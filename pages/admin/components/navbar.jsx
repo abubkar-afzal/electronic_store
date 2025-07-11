@@ -1,41 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
-import { FaBox, FaLock, FaMinus, FaPlus, FaUserCircle } from "react-icons/fa";
-import { HiMinus, HiPlus } from "react-icons/hi2";
+import { FaBox } from "react-icons/fa";
 import Link from "next/link";
-import img1 from "./assets/img7.jpg";
-import img2 from "./assets/img5.jpg";
-import img3 from "./assets/img6.jpg";
 import Image from "next/image";
-import { RiDeleteBin6Line } from "react-icons/ri";
-const images = [
-  {
-    src: img1,
-    sale: true,
-    name: "FaPhone",
-    specification: "12gb ram",
-    price: "$70.00",
-    saleprice: "$65.00",
-  },
-  {
-    src: img2,
-    sale: false,
-    name: "FaPhone",
-    specification: "12gb ram",
-    price: "$70.00",
-    saleprice: "$65.00",
-  },
-  {
-    src: img3,
-    sale: true,
-    name: "FaPhone",
-    specification: "12gb ram",
-    price: "$70.00",
-    saleprice: "$65.00",
-  },
-];
+import { BiSolidMessage } from "react-icons/bi";
 
 const AdminNavbar = () => {
   const [mobilemenu, setmonbilemenu] = useState(true);
@@ -46,7 +15,17 @@ const AdminNavbar = () => {
   const showsearch = () => {
     setsearch(!search);
   };
-  
+  const [trendproduct, settrendproduct] = useState([]);
+      useEffect(() => {
+          const fetchProducts = async () => {
+            try {
+              const res = await fetch("/api/bestsellermain");
+              const data = await res.json();
+              settrendproduct(data);
+            } catch (error) {}
+          };
+          fetchProducts();
+        }, []);
   let count = 1;
   
 const [show, setShow] = useState(true);
@@ -83,12 +62,24 @@ const [show, setShow] = useState(true);
             <div className="cursor-pointer" onClick={showsearch}>
               <IoIosSearch />
             </div>
+            <Link href={`/admin/components/basic/messages`} className="">
+          <div
+            onClick={() => {
+              showmenu()
+            }}
+            className="flex items-center l:text-[35px] mx-2 cursor-pointer"
+          >
+           
+<BiSolidMessage />              
+
+          </div>
+        </Link>
             <Link href={`/admin/components/basic/orders`} className="sm:hidden l:block">
           <div
             onClick={() => {
               showmenu()
             }}
-            className="flex items-center space-x-2 mx-4 cursor-pointer"
+            className="flex items-center space-x-2 mx-2 cursor-pointer"
           >
             <div className="l:text-[30px] relative">
               <FaBox />
@@ -397,7 +388,7 @@ const [show, setShow] = useState(true);
       <div
         className={`${
           search ? "right-[-120vw] opacity-0" : "right-0 opacity-100"
-        } duration-[2s] fixed top-0 w-full h-full bg-[var(---whitetext)] sm:text-[18px] p-3 overflow-y-scroll z-110 scrollbar-hide`}
+        } duration-[2s] fixed top-0 w-full h-full bg-[var(---whitetext)] sm:text-[18px] p-3 overflow-y-scroll z-999 scrollbar-hide`}
       >
         <div className="flex justify-between l:justify-center l:space-x-[2rem] px-[1rem]">
           <div className="flex items-center space-x-2 p-2 border-[1px] w-[60vw] l:w-[80vw]">
@@ -406,7 +397,7 @@ const [show, setShow] = useState(true);
             </div>
             <input
               type="text"
-              placeholder="Search Items by ID"
+              placeholder="Search"
               className="appearance-none focus:outline-none p-2 w-[50vw]"
             />
           </div>
@@ -422,12 +413,12 @@ const [show, setShow] = useState(true);
             Trending Products
           </div>
           <div className="grid grid-cols-1 l:grid-cols-4 gap-4 l:mx-[1rem]">
-            {images.map((item, index) => (
+            {trendproduct.map((item, index) => (
               <div
                 key={index}
                 className="relative w-full flex-shrink-0 cursor-pointer bg-[var(---whitetext)]"
               >
-                {item.sale ? (
+                {item.onsale ? (
                   <>
                     <div className="p-0.5 px-4 bg-[var(---price)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin ">
                       SALE
@@ -442,8 +433,8 @@ const [show, setShow] = useState(true);
                 )}
 
                 <Image
-                  src={item.src}
-                  alt={`Slide ${index}`}
+                  src={item.image}
+                  alt={`Image ${index}`}
                   width={1020}
                   height={1020}
                   className="transition-transform duration-500 my-2"
@@ -452,14 +443,14 @@ const [show, setShow] = useState(true);
                   <div className="l:flex">
                   <div className="ml-4 font-thin">{item.name}</div>
                   <div className="ml-4 font-thin">{item.specification}</div></div>
-                  {item.sale ? (
+                  {item.onsale ? (
                     <>
                       <div className="flex text-[18px] ">
                         <div className="ml-2 l:ml-4 font-bold">
                           <s>{item.price}</s>
                         </div>
 
-                        <div className="ml-2 font-bold">{item.saleprice}</div>
+                        <div className="ml-2 font-bold">{item.sale_price}</div>
                       </div>
                     </>
                   ) : (
@@ -471,9 +462,9 @@ const [show, setShow] = useState(true);
               </div>
             ))}
           </div>
-          <button className="w-[10rem] l:w-[8rem] h-[4rem] l:h-[3rem] l:text-[14px] bg-[var(---blacktext)] text-[var(---whitetext)] p-4 l:p-2 font-thin my-[1rem] hover:underline cursor-pointer l:mx-[1rem]">
+          <Link href={`/admin/components/category/bestseller`}><button className="w-[10rem] l:w-[8rem] h-[4rem] l:h-[3rem] l:text-[14px] bg-[var(---blacktext)] text-[var(---whitetext)] p-4 l:p-2 font-thin my-[1rem] hover:underline cursor-pointer l:mx-[1rem]">
             Show All Results
-          </button>
+          </button></Link>
         </div>
       </div>
 

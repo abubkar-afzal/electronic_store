@@ -12,6 +12,7 @@
     "@coreui/react-pro": "^5.16.0",
     "@emotion/react": "^11.14.0",
     "@next-auth/prisma-adapter": "^1.0.7",
+    "bcrypt": "^6.0.0",
     "framer-motion": "^12.20.2",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",

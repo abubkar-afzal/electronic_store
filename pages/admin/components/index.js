@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Intro from "./intro";
 import Deal from "./deal";
 import Services from "./services";
@@ -9,8 +9,17 @@ import OnSale from "./onsale";
 import TodaySpecial from "./todayspecial";
 import Brands from "./brands";
 import Newsletter from "./newsletter";
+import { useRouter } from "next/router";
 
 export default function Admin() {
+  const router = useRouter();
+  useEffect(() => {
+  const adminName = localStorage.getItem("admin_name");
+  if (!adminName) {
+    router.push("/"); // redirect to login
+  }
+}, []);
+
   return (
     <>
     <Intro/>

@@ -11,7 +11,6 @@ import img7 from "./assets/img7.jpg";
 import img8 from "./assets/img8.jpg";
 import img9 from "./assets/img9.jpg";
 import img10 from "./assets/img1.jpg";
-// Remove static images and initialCategories, use API instead
 
 const ShopeCategory = () => {
   const [categories, setCategories] = useState([
@@ -20,59 +19,82 @@ const ShopeCategory = () => {
       label: "All Products",
       img: img1,
       link: "/components/category/allproducts",
-      bg: "bg-[var(---pagecolor)]"
-    },{id: 2,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 2,
       label: "Computers",
       img: img2,
       link: "/components/category/computers",
-      bg: "bg-[var(---pagecolor)]"},{id: 3,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 3,
       label: "Tablets",
       img: img3,
       link: "/components/category/tablets",
-      bg: "bg-[var(---pagecolor)]"},{id: 4,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 4,
       label: "Drones & Cameras",
       img: img4,
       link: "/components/category/drones&cameras",
-      bg: "bg-[var(---pagecolor)]"},{id: 5,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 5,
       label: "Head Phones & Speakers",
       img: img5,
       link: "/components/category/headphones&speakers",
-      bg: "bg-[var(---pagecolor)]"},{id: 6,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 6,
       label: "Mobiles",
       img: img6,
       link: "/components/category/mobiles",
-      bg: "bg-[var(---pagecolor)]"},{id: 7,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 7,
       label: "T.V & Home Cinema",
       img: img7,
       link: "/components/category/tv&homecinema",
-      bg: "bg-[var(---pagecolor)]"},{id: 8,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 8,
       label: "Wearable Tech",
       img: img8,
       link: "/components/category/wearabletech",
-      bg: "bg-[var(---pagecolor)]"},{id: 9,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 9,
       label: "Sale",
       img: img9,
       link: "/components/category/Sale",
-      bg: "bg-[var(---pagecolor)]"},{id: 10,
+      bg: "bg-[var(---pagecolor)]",
+    },
+    {
+      id: 10,
       label: "Best Seller",
       img: img10,
       link: "/components/category/bestseller",
-      bg: "bg-[var(---pagecolor)]"}
+      bg: "bg-[var(---pagecolor)]",
+    },
   ]);
-
 
   return (
     <>
       <div className="bg-[var(---whitetext)] py-[2rem] mb-[1rem] relative">
-        
         <div className="text-[25px] l:text-[35px] font-semibold text-center my-[2rem]">
           Shope by Category
         </div>
         <div className="flex flex-col l:grid l:grid-cols-5 l:gap-[1rem] items-center">
           {categories.map((item, index) => (
             <div key={item.id || index} className="relative">
-              
-             
               <Link href={item.link}>
                 <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                   <div
@@ -93,7 +115,6 @@ const ShopeCategory = () => {
           ))}
         </div>
       </div>
-      
     </>
   );
 };
