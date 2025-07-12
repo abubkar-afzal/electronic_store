@@ -176,7 +176,17 @@ export default function App({ Component, pageProps }) {
   });
 };
 
-
+const [orders, setOrders] = useState([]);
+      useEffect(() => {
+          const fetchProducts = async () => {
+            try {
+              const res = await fetch("/api/getallorders");
+              const data = await res.json();
+              setOrders(data);
+            } catch (error) {}
+          };
+          fetchProducts();
+        }, [router.route]);
   return (
     <ErrorBoundary>
       <SessionProvider session={pageProps.session}>
@@ -189,7 +199,7 @@ export default function App({ Component, pageProps }) {
           }}
         />
         {router.route.includes("admin/components") ? (
-          <AdminNavbar />
+          <AdminNavbar orders={orders}/>
         ) : (
           <Navbar
             account={account}

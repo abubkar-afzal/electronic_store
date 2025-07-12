@@ -45,7 +45,6 @@ const Account = ({ account, setAccount }) => {
   }, []);
   const [orders, setOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
-  console.log(selectedOrder)
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [showdetails, setshowdetails] = useState(false);
   const inputVariants = {
@@ -648,7 +647,7 @@ const Account = ({ account, setAccount }) => {
                       <td className="p-2 border">{order.customer}</td>
                       <td className="p-2 border">{order.email}</td>
                       <td className="p-2 border">{order.phone}</td>
-                      <td className="p-2 border">Pending</td>
+                      <td className="p-2 border">{order.status}</td>
                       <td className="p-2 border">{order.date}</td>
                       <td className="p-2 border">
                         <button

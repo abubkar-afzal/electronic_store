@@ -64,7 +64,7 @@ const BestSeller = ({ addToCart, Bestseller }) => {
                           alt={`Slide ${index}`}
                           width={1020}
                           height={1020}
-                          className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full h-auto"
+                          className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full sm:h-[16rem] l:h-[22rem]"
                         />
 
                         <div className="ml-2 font-thin">{item.name}</div>
