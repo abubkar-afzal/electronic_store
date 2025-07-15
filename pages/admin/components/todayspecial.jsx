@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaEdit } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 const TodaySpecial = () => {
@@ -21,29 +21,31 @@ const TodaySpecial = () => {
     id: null,
   });
 
-  // Fetch from API on mount
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("/api/todayspecial");
       if (res.ok) {
         const dbData = await res.json();
-        setData(dbData && Object.keys(dbData).length > 0 ? dbData : {
-          img: "",
-          label: "",
-          title: "",
-          percent: "",
-          percent_label: "",
-          percentLabel: "",
-          note1: "",
-          note2: "",
-          button_text: "",
-        });
+        setData(
+          dbData && Object.keys(dbData).length > 0
+            ? dbData
+            : {
+                img: "",
+                label: "",
+                title: "",
+                percent: "",
+                percent_label: "",
+                percentLabel: "",
+                note1: "",
+                note2: "",
+                button_text: "",
+              }
+        );
       }
     };
     fetchData();
   }, []);
 
-  // Open modal and sync form with DB data
   const openEditModal = () => {
     setForm({
       img: data.image || data.img,
@@ -60,7 +62,7 @@ const TodaySpecial = () => {
     });
     setEditModalOpen(true);
   };
- const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
 
   const validateBestPrice = () => {
     const newErrors = {};
@@ -104,7 +106,6 @@ const TodaySpecial = () => {
   };
 
   const handleSave = async () => {
-    // Validate form data
     if (!validateBestPrice()) return;
     let image = form.img;
     if (form.file) {
@@ -126,7 +127,7 @@ const TodaySpecial = () => {
       note2: form.note2,
       button_text: form.button,
       image,
-      id: form.id, // for update if exists
+      id: form.id,
     };
 
     await fetch("/api/todayspecial", {
@@ -135,7 +136,6 @@ const TodaySpecial = () => {
       body: JSON.stringify(payload),
     });
 
-    // Refetch from DB after save
     const res = await fetch("/api/todayspecial");
     if (res.ok) {
       const dbData = await res.json();
@@ -176,8 +176,12 @@ const TodaySpecial = () => {
             <div className="text-[20px] l:text-[30px] font-semibold w-[80%]">
               {data.percentLabel}
             </div>
-            <div className="font-thin l:text-[20px] my-2 w-[80%]">{data.note1}</div>
-            <div className="font-thin l:text-[20px] my-2 w-[80%]">{data.note2}</div>
+            <div className="font-thin l:text-[20px] my-2 w-[80%]">
+              {data.note1}
+            </div>
+            <div className="font-thin l:text-[20px] my-2 w-[80%]">
+              {data.note2}
+            </div>
             <Link href="/components/category/allproducts">
               <button className="p-2 px-[2rem] bg-[var(---btncolor)] text-[var(---whitetext)] rounded-[1.5rem] l:text-[22px] l:px-[3rem] mb-[2rem] mt-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
                 {data.button_text}
@@ -186,263 +190,261 @@ const TodaySpecial = () => {
           </div>
         </div>
       </div>
-      
+
       {editModalOpen ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
-              >
-                <motion.div
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  exit={{ scale: 0.8 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] scrollbar-hide overflow-y-auto"
-                >
-                  
-                  <div className="text-2xl font-bold mb-4">Edit  Today's Special</div>
-                  <div className=" mb-4">Update the deal details and image.</div>
-                  <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    className="flex flex-col items-center"
-                  >
-                    {[
-                      {
-                        label: "Label:",
-                        htmlFor: "label",
-                        input: (
-                          <>
-                            <input
-                              type="text"
-                              id="label"
-                              name="label"
-                              value={form.label}
-                              onChange={handleFormChange}
-                              className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
-                                errors.label ? "border border-red-500" : ""
-                              }`}
-                            />
-                            {errors.label && (
-                              <div className="text-red-500 text-xs mb-1">
-                                {errors.lebel}
-                              </div>
-                            )}
-                          </>
-                        ),
-                      },
-                      {
-                        label: "Title:",
-                        htmlFor: "title",
-                        input: (
-                          <>
-                            <input
-                              type="text"
-                              id="title"
-                              name="title"
-                              value={form.title}
-                              onChange={handleFormChange}
-                              className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
-                                errors.title ? "border border-red-500" : ""
-                              }`}
-                            />
-                            {errors.title && (
-                              <div className="text-red-500 text-xs mb-1">
-                                {errors.title}
-                              </div>
-                            )}
-                          </>
-                        ),
-                      },
-                      {
-                        label: "Percent:",
-                        htmlFor: "percent",
-                        input: (
-                          <>
-                            <input
-                              type="number"
-                              id="percent"
-                              name="percent"
-                              value={form.percent}
-                              onChange={handleFormChange}
-                              className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
-                                errors.percent ? "border border-red-500" : ""
-                              }`}
-                            />
-                            {errors.percent && (
-                              <div className="text-red-500 text-xs mb-1">
-                                {errors.percent}
-                              </div>
-                            )}
-                          </>
-                        ),
-                      },
-                      {
-                        label: "Percentage Label:",
-                        htmlFor: "percentLabel",
-                        input: (
-                          <>
-                            <input
-                              type="text"
-                              id="percentLabel"
-                              name="percentLabel"
-                              value={form.percentLabel}
-                              onChange={handleFormChange}
-                              className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
-                                errors.percentLabel ? "border border-red-500" : ""
-                              }`}
-                            />
-                            {errors.percentLabel && (
-                              <div className="text-red-500 text-xs mb-1">
-                                {errors.percentLabel}
-                              </div>
-                            )}
-                          </>
-                        ),
-                      },
-                      {
-                        label: "Note 1:",
-                        htmlFor: "note1",
-                        input: (
-                          <>
-                            <input
-                              type="text"
-                              id="note1"
-                              name="note1"
-                              value={form.note1}
-                              onChange={handleFormChange}
-                              className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
-                                errors.note1 ? "border border-red-500" : ""
-                              }`}
-                            />
-                            {errors.note1 && (
-                              <div className="text-red-500 text-xs mb-1">
-                                {errors.note1}
-                              </div>
-                            )}
-                          </>
-                        ),
-                      },
-                      {
-                        label: "Note 2:",
-                        htmlFor: "note2",
-                        input: (
-                          <>
-                            <input
-                              type="text"
-                              id="note2"
-                              name="note2"
-                              value={form.note2}
-                              onChange={handleFormChange}
-                              className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
-                                errors.note2 ? "border border-red-500" : ""
-                              }`}
-                            />
-                            {errors.note2 && (
-                              <div className="text-red-500 text-xs mb-1">
-                                {errors.note2}
-                              </div>
-                            )}
-                          </>
-                        ),
-                      },
-                      {
-                        label: "Button Text:",
-                        htmlFor: "button",
-                        input: (
-                          <>
-                            <input
-                              type="text"
-                              id="button"
-                              name="button"
-                              value={form.button}
-                              onChange={handleFormChange}
-                              className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
-                                errors.button ? "border border-red-500" : ""
-                              }`}
-                            />
-                            {errors.button && (
-                              <div className="text-red-500 text-xs mb-1">
-                                {errors.button}
-                              </div>
-                            )}
-                          </>
-                        ),
-                      },
-                    ].map((field, i) => (
-                      <motion.div
-                        key={field.htmlFor}
-                        custom={i}
-                        variants={inputVariants}
-                        initial="hidden"
-                        animate="visible"
-                        className="w-full"
-                      >
-                        <label htmlFor={field.htmlFor}>{field.label}</label>
-                        {field.input}
-                      </motion.div>
-                    ))}
-      
-                    {/* File Upload with validation */}
-                    <motion.label
-                      custom={15}
-                      variants={inputVariants}
-                      initial="hidden"
-                      animate="visible"
-                      htmlFor="file"
-                      className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 cursor-pointer w-full justify-center hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px] "
-                    >
-                      Upload Image
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
+        >
+          <motion.div
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] scrollbar-hide overflow-y-auto"
+          >
+            <div className="text-2xl font-bold mb-4">Edit Today's Special</div>
+            <div className=" mb-4">Update the deal details and image.</div>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col items-center"
+            >
+              {[
+                {
+                  label: "Label:",
+                  htmlFor: "label",
+                  input: (
+                    <>
                       <input
-                        type="file"
-                        id="file"
-                        name="file"
-                        className="hidden"
-                        accept="image/*"
+                        type="text"
+                        id="label"
+                        name="label"
+                        value={form.label}
                         onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.label ? "border border-red-500" : ""
+                        }`}
                       />
-                    </motion.label>
-                    {errors.img && (
-                      <div className="text-red-500 text-xs mb-1">{errors.img}</div>
-                    )}
-                    {form.img && (
-                      <motion.div
-                        custom={16}
-                        variants={inputVariants}
-                        initial="hidden"
-                        animate="visible"
-                        className="w-full flex justify-center"
-                      >
-                        <Image
-                          src={form.img}
-                          alt="Preview"
-                          className="mt-2 w-24 h-24 object-cover rounded"
-                          width={96}
-                          height={96}
-                        />
-                      </motion.div>
-                    )}
-                  </motion.div>
-                  <div className="flex l:flex-row sm:flex-col l:space-x-[1rem] items-center justify-center l:w-[100%] l:mt-[2rem]">
-                    <button
-                      className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
-                      onClick={() => setEditModalOpen(false)}
-                    >
-                      Close
-                    </button>
-                    <button
-                      className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
-                      onClick={handleSave}
-                    >
-                      Update
-                    </button>
-                  </div>
+                      {errors.label && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.lebel}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Title:",
+                  htmlFor: "title",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value={form.title}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.title ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.title && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.title}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Percent:",
+                  htmlFor: "percent",
+                  input: (
+                    <>
+                      <input
+                        type="number"
+                        id="percent"
+                        name="percent"
+                        value={form.percent}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.percent ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.percent && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.percent}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Percentage Label:",
+                  htmlFor: "percentLabel",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="percentLabel"
+                        name="percentLabel"
+                        value={form.percentLabel}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.percentLabel ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.percentLabel && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.percentLabel}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Note 1:",
+                  htmlFor: "note1",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="note1"
+                        name="note1"
+                        value={form.note1}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.note1 ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.note1 && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.note1}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Note 2:",
+                  htmlFor: "note2",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="note2"
+                        name="note2"
+                        value={form.note2}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.note2 ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.note2 && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.note2}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  label: "Button Text:",
+                  htmlFor: "button",
+                  input: (
+                    <>
+                      <input
+                        type="text"
+                        id="button"
+                        name="button"
+                        value={form.button}
+                        onChange={handleFormChange}
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                          errors.button ? "border border-red-500" : ""
+                        }`}
+                      />
+                      {errors.button && (
+                        <div className="text-red-500 text-xs mb-1">
+                          {errors.button}
+                        </div>
+                      )}
+                    </>
+                  ),
+                },
+              ].map((field, i) => (
+                <motion.div
+                  key={field.htmlFor}
+                  custom={i}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="w-full"
+                >
+                  <label htmlFor={field.htmlFor}>{field.label}</label>
+                  {field.input}
                 </motion.div>
-              </motion.div>
-            ) : null}
+              ))}
+
+              <motion.label
+                custom={15}
+                variants={inputVariants}
+                initial="hidden"
+                animate="visible"
+                htmlFor="file"
+                className="mt-4 flex bg-[var(---btncolor)] text-[var(---whitetext)] px-4 py-2 cursor-pointer w-full justify-center hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px] "
+              >
+                Upload Image
+                <input
+                  type="file"
+                  id="file"
+                  name="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFormChange}
+                />
+              </motion.label>
+              {errors.img && (
+                <div className="text-red-500 text-xs mb-1">{errors.img}</div>
+              )}
+              {form.img && (
+                <motion.div
+                  custom={16}
+                  variants={inputVariants}
+                  initial="hidden"
+                  animate="visible"
+                  className="w-full flex justify-center"
+                >
+                  <Image
+                    src={form.img}
+                    alt="Preview"
+                    className="mt-2 w-24 h-24 object-cover rounded"
+                    width={96}
+                    height={96}
+                  />
+                </motion.div>
+              )}
+            </motion.div>
+            <div className="flex l:flex-row sm:flex-col l:space-x-[1rem] items-center justify-center l:w-[100%] l:mt-[2rem]">
+              <button
+                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
+                onClick={() => setEditModalOpen(false)}
+              >
+                Close
+              </button>
+              <button
+                className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
+                onClick={handleSave}
+              >
+                Update
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      ) : null}
     </>
   );
 };

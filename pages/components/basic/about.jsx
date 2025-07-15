@@ -1,9 +1,8 @@
-// pages/about.js or components/About.js
 import Image from "next/image";
 import React, { useState } from "react";
-import img from "../assets/img5.jpg";
-import { RiErrorWarningLine } from "react-icons/ri";
+import img from "../../../public/my_logo.jpg";
 import toast, { Toaster } from "react-hot-toast";
+import Head from "next/head";
 
 const About = () => {
   const [form, setForm] = useState({
@@ -49,8 +48,27 @@ const About = () => {
     }
   };
 
+   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}my_logo.jpg`;
   return (
     <>
+    <Head>
+  <title>AR Codes - About Page</title>
+  <meta name="description" content="Contact Us we will help you as we can." />
+  <meta name="author" content="Hafiz Abubakar Afzal" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={`${siteUrl}component/basic/about`} />
+  <meta property="og:title" content="AR Codes - About Page" />
+  <meta property="og:description" content="Contact Us we will help you as we can." />
+  <meta property="og:image" content={imageUrl} />
+
+  <link rel="canonical" href={`${siteUrl}component/basic/about`} />
+  <link rel="icon" href={imageUrl} />
+</Head>
       <Toaster />
       <div className="flex flex-col items-center justify-center p-4 bg-[var(---whitetext)]">
         <div className="text-[2rem] font-sans font-bold l:text-[40px]">About AR Codes</div>
@@ -59,9 +77,9 @@ const About = () => {
             src={img}
             width={1020}
             height={1020}
-            className="w-full h-[15rem] "
+            className="w-full h-[25rem] "
           />
-          <div className="text-center my-[2rem] l:text-[18px]">
+          <div className="text-center my-[2rem] l:text-[18px] content-center">
             I'm technically a full-stack developer with a passion for creating
             innovative web applications. My expertise lies in both front-end and
             back-end development, allowing me to build robust and user-friendly

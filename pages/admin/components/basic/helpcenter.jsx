@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaEdit } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaTwitter,
+  FaYoutube,
+  FaEdit,
+} from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -13,7 +19,6 @@ const Help_Center = () => {
   const [gen, setGen] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Fetch FAQs from API on mount and when category changes
   useEffect(() => {
     fetchFaqs();
   }, [selectedValue]);
@@ -27,7 +32,6 @@ const Help_Center = () => {
     }
   };
 
-  // Helper to get/set correct category
   const getCurrentList = () => (selectedValue === "generaloption" ? gen : faqs);
 
   const handleChange = (event) => {
@@ -53,7 +57,6 @@ const Help_Center = () => {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  // Add or update FAQ via API
   const handleSave = async () => {
     if (!form.q || !form.a) return;
     const payload = {
@@ -63,14 +66,12 @@ const Help_Center = () => {
       id: form.id,
     };
     if (editIndex !== null) {
-      // Update
       await fetch("/api/helpcenter", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
     } else {
-      // Add
       await fetch("/api/helpcenter", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -83,7 +84,6 @@ const Help_Center = () => {
     fetchFaqs();
   };
 
-  // Delete FAQ via API
   const handleDelete = async (index) => {
     const list = getCurrentList();
     const item = list[index];
@@ -95,12 +95,13 @@ const Help_Center = () => {
     fetchFaqs();
   };
 
-  // Dropdown options
   const dropdownOptions = [
     { value: "generaloption", label: "General" },
     { value: "settingupfaqsoption", label: "Setting up FAQs" },
   ];
-  const selectedLabel = dropdownOptions.find(opt => opt.value === selectedValue)?.label || "Choose a category";
+  const selectedLabel =
+    dropdownOptions.find((opt) => opt.value === selectedValue)?.label ||
+    "Choose a category";
 
   return (
     <>
@@ -149,7 +150,9 @@ const Help_Center = () => {
                     {dropdownOptions.map((opt) => (
                       <li
                         key={opt.value}
-                        className={`px-4 py-2 hover:bg-[var(---btncolor)] hover:text-white cursor-pointer ${selectedValue === opt.value ? "bg-gray-100" : ""}`}
+                        className={`px-4 py-2 hover:bg-[var(---btncolor)] hover:text-white cursor-pointer ${
+                          selectedValue === opt.value ? "bg-gray-100" : ""
+                        }`}
                         onClick={() => {
                           setSelectedValue(opt.value);
                           setShowDropdown(false);
@@ -174,7 +177,9 @@ const Help_Center = () => {
             {getCurrentList().map((item, index) => (
               <div key={item.id || index} className="border-b py-2 relative">
                 <button
-                  onClick={() => setOpenIndex(index === openIndex ? null : index)}
+                  onClick={() =>
+                    setOpenIndex(index === openIndex ? null : index)
+                  }
                   className="w-full text-left cursor-pointer font-medium flex justify-between"
                 >
                   {item.q}

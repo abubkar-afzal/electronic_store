@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaEdit } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { IoIosSearch } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
+import Head from "next/head";
+import Link from "next/link";
 
 const Help_Center = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [selectedValue, setSelectedValue] = useState("generaloption");
- const [faqs, setFaqs] = useState([]);
+  const [faqs, setFaqs] = useState([]);
   const [gen, setGen] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Fetch FAQs from API on mount and when category changes
   useEffect(() => {
     fetchFaqs();
   }, [selectedValue]);
@@ -24,19 +25,47 @@ const Help_Center = () => {
     }
   };
 
-  // Helper to get/set correct category
   const getCurrentList = () => (selectedValue === "generaloption" ? gen : faqs);
 
- 
-  // Dropdown options
   const dropdownOptions = [
     { value: "generaloption", label: "General" },
     { value: "settingupfaqsoption", label: "Setting up FAQs" },
   ];
-  const selectedLabel = dropdownOptions.find(opt => opt.value === selectedValue)?.label || "Choose a category";
+  const selectedLabel =
+    dropdownOptions.find((opt) => opt.value === selectedValue)?.label ||
+    "Choose a category";
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}main.jpeg`;
   return (
     <>
+      <Head>
+        <title>AR Codes - Help Center Page</title>
+        <meta
+          name="description"
+          content="Contact Us we will help you as we can."
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content={`${siteUrl}component/basic/helpcenter`}
+        />
+        <meta property="og:title" content="AR Codes - Help Center Page" />
+        <meta
+          property="og:description"
+          content="Contact Us we will help you as we can."
+        />
+        <meta property="og:image" content={imageUrl} />
+        <link rel="canonical" href={`${siteUrl}component/basic/helpcenter`} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
       <div className="flex flex-col items-center justify-center p-4 bg-[var(---whitetext)]">
         <div className="text-[2rem] font-sans font-bold text-center l:text-[45px]">
           AR Codes Help Center
@@ -82,7 +111,9 @@ const Help_Center = () => {
                     {dropdownOptions.map((opt) => (
                       <li
                         key={opt.value}
-                        className={`px-4 py-2 hover:bg-[var(---btncolor)] hover:text-white cursor-pointer ${selectedValue === opt.value ? "bg-gray-100" : ""}`}
+                        className={`px-4 py-2 hover:bg-[var(---btncolor)] hover:text-white cursor-pointer ${
+                          selectedValue === opt.value ? "bg-gray-100" : ""
+                        }`}
                         onClick={() => {
                           setSelectedValue(opt.value);
                           setShowDropdown(false);
@@ -96,18 +127,20 @@ const Help_Center = () => {
               </AnimatePresence>
             </div>
           </div>
-         
+
           <div className="w-full p-4">
             {getCurrentList().map((item, index) => (
               <div key={item.id || index} className="border-b py-2 relative">
                 <button
-                  onClick={() => setOpenIndex(index === openIndex ? null : index)}
+                  onClick={() =>
+                    setOpenIndex(index === openIndex ? null : index)
+                  }
                   className="w-full text-left font-medium cursor-pointer flex justify-between"
                 >
                   {item.q}
                   <span>{openIndex === index ? "∧" : "∨"}</span>
                 </button>
-                
+
                 <AnimatePresence initial={false}>
                   {openIndex === index && (
                     <motion.div
@@ -120,10 +153,18 @@ const Help_Center = () => {
                     >
                       <p className="mt-2 text-sm text-gray-600">{item.a}</p>
                       <div className="flex text-[16px] space-x-2 my-[2rem]">
-                        <FaFacebookF className="cursor-pointer" />
-                        <FaInstagram className="cursor-pointer" />
-                        <FaTwitter className="cursor-pointer" />
-                        <FaYoutube className="cursor-pointer" />
+                        <Link href={`https://www.facebook.com/ar.codes504`}>
+                          <FaFacebookF className="cursor-pointer" />
+                        </Link>
+                        <Link href={`https://www.instagram.com/ar_codes504/`}>
+                          <FaInstagram className="cursor-pointer" />
+                        </Link>
+                        <Link href={`https://www.tiktok.com/@ar_codes`}>
+                          <FaTiktok className="cursor-pointer" />
+                        </Link>
+                        <Link href={`https://www.threads.com/@ar_codes504`}>
+                          <FaYoutube className="cursor-pointer" />
+                        </Link>
                       </div>
                     </motion.div>
                   )}
@@ -133,7 +174,6 @@ const Help_Center = () => {
           </div>
         </div>
       </div>
-     
     </>
   );
 };

@@ -7,7 +7,6 @@ const StatusDropdown = ({ currentStatus, onChange }) => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

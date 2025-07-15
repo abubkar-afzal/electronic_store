@@ -1151,7 +1151,11 @@ const Mobiles = () => {
                     <div
                       key={color}
                       className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                        ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+                        ${
+                          selectedColor === color
+                            ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                            : "border-gray-300"
+                        }
                       `}
                       style={{ backgroundColor: color }}
                       title={color}
@@ -1370,7 +1374,10 @@ const Mobiles = () => {
                     }`}
                   >
                     <div>Color</div>
-                    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
+                    <RxMinus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
                   </div>
                   <div
                     className={`justify-between items-center text-[20px] font-thin ${
@@ -1378,7 +1385,10 @@ const Mobiles = () => {
                     } `}
                   >
                     <div>Color</div>
-                    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
+                    <RxPlus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
                   </div>
                   <AnimatePresence initial={false}>
                     {colorfilter && (
@@ -1395,12 +1405,18 @@ const Mobiles = () => {
                             <div
                               key={color}
                               className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+                                ${
+                                  selectedColor === color
+                                    ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                                    : "border-gray-300"
+                                }
                               `}
                               style={{ backgroundColor: color }}
                               title={color}
                               onClick={() =>
-                                setSelectedColor(selectedColor === color ? null : color)
+                                setSelectedColor(
+                                  selectedColor === color ? null : color
+                                )
                               }
                             >
                               {selectedColor === color && (

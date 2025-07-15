@@ -1,19 +1,18 @@
 import { MoonLoader } from "react-spinners";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-
 import { motion } from "framer-motion";
 import { HiMinus, HiPlus } from "react-icons/hi2";
-
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Link from "next/link";
+import Head from "next/head";
 const { useRouter } = require("next/router");
 const BuyNow = ({ account }) => {
   const router = useRouter();
   const { slug } = router.query;
   const [previousPage, setPreviousPage] = useState([]);
   const [cart, setcart] = useState([]);
-  console.log("cart and account" ,account.name,cart)
+  console.log("cart and account", account.name, cart);
   useEffect(() => {
     const prev = sessionStorage.getItem("previousPage");
 
@@ -57,8 +56,8 @@ const BuyNow = ({ account }) => {
   }, [slug]);
   const [errors, setErrors] = useState({});
   const [showErrorModal, setShowErrorModal] = useState(false);
-    const [errorModalContent, setErrorModalContent] = useState([]);
-    const [loading, setLoading] = useState(false);
+  const [errorModalContent, setErrorModalContent] = useState([]);
+  const [loading, setLoading] = useState(false);
   const inputVariants = {
     hidden: { opacity: 0, y: 16 },
     visible: (i) => ({
@@ -68,11 +67,11 @@ const BuyNow = ({ account }) => {
     }),
   };
   const [form, setForm] = useState({
-    name: account.name ,
-    email: account.email ,
-    phone: account.phone ,
-    address: account.address ,
-    postcode: account.postcode ,
+    name: account.name,
+    email: account.email,
+    phone: account.phone,
+    address: account.address,
+    postcode: account.postcode,
   });
   const [quantities, setQuantities] = useState([]);
 
@@ -153,9 +152,7 @@ const BuyNow = ({ account }) => {
   };
 
   const grandTotal = cart.reduce((acc, item, index) => {
-    const price = getNumericPrice(
-      item.on_sale ? item.sale_price : item.price
-    );
+    const price = getNumericPrice(item.on_sale ? item.sale_price : item.price);
     const quantity = parseInt(quantities[index]) || 1;
     return acc + price * quantity;
   }, 0);
@@ -164,16 +161,16 @@ const BuyNow = ({ account }) => {
     if (!validateForm()) return;
     setLoading(true);
     const orderItems = cart.map((item, index) => ({
-    product_id: item.id,
-    name: item.name,
-    image:item.image,
-    specification:item.specification,
-    onsale:item.on_sale,
-    color:item.color,
-    quantity: quantities[index],
-    price: item.on_sale ? item.sale_price : item.price,
-  }));
-  console.log(orderItems)
+      product_id: item.id,
+      name: item.name,
+      image: item.image,
+      specification: item.specification,
+      onsale: item.on_sale,
+      color: item.color,
+      quantity: quantities[index],
+      price: item.on_sale ? item.sale_price : item.price,
+    }));
+    console.log(orderItems);
     try {
       const res = await fetch("/api/addorder", {
         method: "POST",
@@ -217,10 +214,9 @@ const BuyNow = ({ account }) => {
       console.error("Order submission failed:", error);
       alert("Something went wrong while placing the order.");
     }
-     router.events.on("routeChangeComplete", () => {
+    router.events.on("routeChangeComplete", () => {
       setLoading(false);
     });
-   
   };
 
   if (!cart) {
@@ -234,40 +230,68 @@ const BuyNow = ({ account }) => {
     );
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}main.jpeg`;
   return (
     <>
-    {loading ? (
-           
-              <div className="fixed top-0 cursor-progress z-999 min-w-full min-h-full bg-[var(---blacktext)]  h-screen  inset-0 flex items-center justify-center col-span-5 bg-opacity-80 ">
-                <div className=" p-6 rounded-xl  text-xl font-bold flex items-center gap-2 bg-[var(---whitetext)]">
-                  <MoonLoader size={30} color="#7002ff" />
-                  Loading...
-                </div>
-              </div>
-          ) : null}
-          {showErrorModal && (
-            <motion.div
-              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-1050"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+      <Head>
+        <title>AR Codes - Affordable & Trendy Online Shopping</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
+        <meta
+          property="og:title"
+          content="AR Codes - Affordable & Trendy Online Shopping"
+        />
+        <meta
+          property="og:description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes."
+        />
+        <meta property="og:image" content={imageUrl} />
+        <link rel="canonical" href={siteUrl} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
+      {loading ? (
+        <div className="fixed top-0 cursor-progress z-999 min-w-full min-h-full bg-[var(---blacktext)]  h-screen  inset-0 flex items-center justify-center col-span-5 bg-opacity-80 ">
+          <div className=" p-6 rounded-xl  text-xl font-bold flex items-center gap-2 bg-[var(---whitetext)]">
+            <MoonLoader size={30} color="#7002ff" />
+            Loading...
+          </div>
+        </div>
+      ) : null}
+      {showErrorModal && (
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-1050"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="bg-white rounded-lg p-6 shadow-xl w-[90%] max-w-md justify-items-center">
+            <h2 className="text-xl font-semibold mb-4">Insufficient Stock</h2>
+            <ul className="list-disc list-inside text-red-600 text-sm space-y-2">
+              {errorModalContent.map((msg, idx) => (
+                <li key={idx}>{msg}</li>
+              ))}
+            </ul>
+            <button
+              onClick={() => setShowErrorModal(false)}
+              className="mt-4 bg-[var(---redstock)]  text-white px-4 py-2 rounded-[8px] border-[var(---redstock)] hover:bg-transparent hover:text-[var(---redstock)] cursor-pointer border-[1px] duration-[1s]"
             >
-              <div className="bg-white rounded-lg p-6 shadow-xl w-[90%] max-w-md justify-items-center">
-                <h2 className="text-xl font-semibold mb-4">Insufficient Stock</h2>
-                <ul className="list-disc list-inside text-red-600 text-sm space-y-2">
-                  {errorModalContent.map((msg, idx) => (
-                    <li key={idx}>{msg}</li>
-                  ))}
-                </ul>
-                <button
-                  onClick={() => setShowErrorModal(false)}
-                  className="mt-4 bg-[var(---redstock)]  text-white px-4 py-2 rounded-[8px] border-[var(---redstock)] hover:bg-transparent hover:text-[var(---redstock)] cursor-pointer border-[1px] duration-[1s]"
-                >
-                  Close
-                </button>
-              </div>
-            </motion.div>
-          )}
+              Close
+            </button>
+          </div>
+        </motion.div>
+      )}
       {placemessage ? (
         <motion.div
           initial={{ opacity: 0 }}
@@ -292,16 +316,17 @@ const BuyNow = ({ account }) => {
                 Thank you for your purchase. Your order will successfully placed
                 on your given address.
               </div>
-              <Link href={previousPage.href||""}>
-              <button
-                className="mt-4 px-6 py-2 bg-[var(---btncolor)] text-[var(---whitetext)] rounded-[8px] border-[var(---btncolor)]
+              <Link href={previousPage.href || ""}>
+                <button
+                  className="mt-4 px-6 py-2 bg-[var(---btncolor)] text-[var(---whitetext)] rounded-[8px] border-[var(---btncolor)]
                                   border-[1px] hover:bg-transparent hover:text-[var(---btncolor)] duration-[1s] cursor-pointer"
-                onClick={() => {
-                  setplacemessage(false);
-                }}
-              >
-                Close
-              </button></Link>
+                  onClick={() => {
+                    setplacemessage(false);
+                  }}
+                >
+                  Close
+                </button>
+              </Link>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -540,9 +565,7 @@ const BuyNow = ({ account }) => {
                             {(
                               quantities[index] *
                               getNumericPrice(
-                                item.on_sale
-                                  ? item.sale_price
-                                  : item.price
+                                item.on_sale ? item.sale_price : item.price
                               )
                             ).toFixed(2)}
                           </div>
@@ -579,18 +602,17 @@ const BuyNow = ({ account }) => {
             </div>
 
             <div className="flex justify-between mt-6">
-              <Link href={previousPage.href ||""}>
+              <Link href={previousPage.href || ""}>
+                <button className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]">
+                  Close
+                </button>
+              </Link>
               <button
-                
+                onClick={message}
                 className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]"
               >
-                Close
+                Confrim
               </button>
-              </Link>
-                <button onClick={message} className="px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white hover:bg-transparent hover:border hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] duration-[1s] rounded-[6px]">
-                  Confrim
-                </button>
-              
             </div>
           </motion.div>
         </motion.div>

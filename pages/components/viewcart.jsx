@@ -8,14 +8,14 @@ import { FaLock } from "react-icons/fa";
 import CheckDetails from "./checkdetails";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Head from "next/head";
 const ViewCart = ({ cart, removeFromCart, account, clearCart, setCart }) => {
   const [showloder, setshowloder] = useState(false);
   const [showresult, setshowresult] = useState(false);
   const [placemessage, setplacemessage] = useState(false);
-  let count = cart.length;
   const [quantities, setQuantities] = useState([]);
-const [previousPage, setPreviousPage] = useState([]);
- 
+  const [previousPage, setPreviousPage] = useState([]);
+
   useEffect(() => {
     const prev = sessionStorage.getItem("previousPage");
 
@@ -85,8 +85,39 @@ const [previousPage, setPreviousPage] = useState([]);
     return acc + price * quantity;
   }, 0);
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}main.jpeg`;
   return (
     <>
+      <Head>
+        <title>AR Codes - Affordable & Trendy Online Shopping</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
+        <meta
+          property="og:title"
+          content="AR Codes - Affordable & Trendy Online Shopping"
+        />
+        <meta
+          property="og:description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes."
+        />
+        <meta property="og:image" content={imageUrl} />
+
+        <link rel="canonical" href={siteUrl} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
       <div className="flex flex-col items-center justify-center p-4">
         <div className="text-[2rem] font-sans font-bold">View Cart</div>
         <div className="l:grid l:grid-cols-2 l:gap-[2rem] ">
@@ -126,18 +157,18 @@ const [previousPage, setPreviousPage] = useState([]);
                         <>
                           <div className="ml-2 flex text-[18px] ">
                             <div className="ml-2 text-[14px]">
-                              <s>{item.item_price}</s>
+                              <s>${item.item_price}</s>
                             </div>
 
                             <div className="ml-2 text-[14px]">
-                              {item.item_sale_price}
+                              ${item.item_sale_price}
                             </div>
                           </div>
                         </>
                       ) : (
                         <>
                           <div className="m-2 ml-4 text-[14px]">
-                            {item.item_price}
+                            ${item.item_price}
                           </div>
                         </>
                       )}
@@ -271,43 +302,45 @@ const [previousPage, setPreviousPage] = useState([]);
                   setCart={setCart}
                 />
                 {placemessage ? (
-                   <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            <motion.div
-                              initial={{ scale: 0.8 }}
-                              animate={{ scale: 1 }}
-                              exit={{ scale: 0.8 }}
-                              transition={{ duration: 0.3 }}
-                              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-1150"
-                            >
-                              <motion.div
-                                initial="hidden"
-                                animate="visible"
-                                className="bg-white rounded-lg p-8 shadow-lg max-w-sm w-full text-center"
-                              >
-                                <div className="text-2xl font-bold mb-4">Order Placed!</div>
-                                <div className="mb-4">
-                                  Thank you for your purchase. Your order will successfully placed
-                                  on your given address.
-                                </div>
-                                <Link href={previousPage.href||""}>
-                                <button
-                                  className="mt-4 px-6 py-2 bg-[var(---btncolor)] text-[var(---whitetext)] rounded-[8px] border-[var(---btncolor)]
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <motion.div
+                      initial={{ scale: 0.8 }}
+                      animate={{ scale: 1 }}
+                      exit={{ scale: 0.8 }}
+                      transition={{ duration: 0.3 }}
+                      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-1150"
+                    >
+                      <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        className="bg-white rounded-lg p-8 shadow-lg max-w-sm w-full text-center"
+                      >
+                        <div className="text-2xl font-bold mb-4">
+                          Order Placed!
+                        </div>
+                        <div className="mb-4">
+                          Thank you for your purchase. Your order will
+                          successfully placed on your given address.
+                        </div>
+                        <Link href={previousPage.href || ""}>
+                          <button
+                            className="mt-4 px-6 py-2 bg-[var(---btncolor)] text-[var(---whitetext)] rounded-[8px] border-[var(---btncolor)]
                                   border-[1px] hover:bg-transparent hover:text-[var(---btncolor)] duration-[1s] cursor-pointer"
-                                  onClick={() => {
-                                    setplacemessage(false),
-                                    setshowresult(false)
-                                  }}
-                                >
-                                  Close
-                                </button></Link>
-                              </motion.div>
-                            </motion.div>
-                          </motion.div>
+                            onClick={() => {
+                              setplacemessage(false), setshowresult(false);
+                            }}
+                          >
+                            Close
+                          </button>
+                        </Link>
+                      </motion.div>
+                    </motion.div>
+                  </motion.div>
                 ) : null}
               </>
             ) : null}

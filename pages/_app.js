@@ -10,7 +10,6 @@ import AdminFooter from "./admin/components/footer";
 import LoadingBar from "react-top-loading-bar";
 import { SessionProvider } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
-// ErrorBoundary component to catch errors and reload page
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -40,19 +39,17 @@ export default function App({ Component, pageProps }) {
   const router = useRouter();
   const [progress, setProgress] = useState(0);
   const [account, setAccount] = useState([]);
-    const [cartshow, setcartshow] = useState(true);
-  
+  const [cartshow, setcartshow] = useState(true);
   const [cart, setCart] = useState([]);
 
-
   useEffect(() => {
-  const existingCart = localStorage.getItem("user_cart");
-  if (existingCart) {
-    const parsedCart = JSON.parse(existingCart);
-    const filteredCart = parsedCart.filter((item) => item?.item_id); // keep only valid items
-    setCart(filteredCart);
-  }
-}, []);
+    const existingCart = localStorage.getItem("user_cart");
+    if (existingCart) {
+      const parsedCart = JSON.parse(existingCart);
+      const filteredCart = parsedCart.filter((item) => item?.item_id);
+      setCart(filteredCart);
+    }
+  }, []);
 
   useEffect(() => {
     router.events.on("routeChangeStart", () => {
@@ -82,7 +79,7 @@ export default function App({ Component, pageProps }) {
         }
       }
     }
-  }, [router.isReady, router.query, pageProps.session]);
+  }, [router.isReady, router.route, pageProps.session]);
   const fetchAccount = async (email) => {
     try {
       const response = await fetch("/api/getaccount", {
@@ -111,7 +108,6 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     const handleRouteChange = (url) => {
-      // Store current path before changing route
       sessionStorage.setItem("previousPage", window.location.pathname);
     };
 
@@ -120,73 +116,74 @@ export default function App({ Component, pageProps }) {
   }, [router]);
   const addToCart = (product) => {
     setcartshow(false);
-  setCart((prevCart) => {
-    const existingIndex = prevCart.findIndex(
-      (item) => item.item_id === product.id
-    );
+    setCart((prevCart) => {
+      const existingIndex = prevCart.findIndex(
+        (item) => item.item_id === product.id
+      );
 
-    let updatedCart;
+      let updatedCart;
 
-    if (existingIndex !== -1) {
-      updatedCart = [...prevCart];
-      updatedCart[existingIndex].item_quantity += 1;
-    } else {
-      updatedCart = [
-        ...prevCart,
-        {
-          item_id: product.id,
-          item_image: product.image,
-          item_name: product.name,
-          item_specification: product.specification,
-          item_quantity: 1,
-          item_color:product.color,
-          item_price: product.price,
-          item_sale_price: product.sale_price,
-          item_on_sale: product.onsale === 1 || product.onsale === true,
-        },
-      ];
-    }
+      if (existingIndex !== -1) {
+        updatedCart = [...prevCart];
+        updatedCart[existingIndex].item_quantity += 1;
+      } else {
+        updatedCart = [
+          ...prevCart,
+          {
+            item_id: product.id,
+            item_image: product.image,
+            item_name: product.name,
+            item_specification: product.specification,
+            item_quantity: 1,
+            item_color: product.color,
+            item_price: product.price,
+            item_sale_price: product.sale_price,
+            item_on_sale: product.onsale === 1 || product.onsale === true,
+          },
+        ];
+      }
 
-    localStorage.setItem("user_cart", JSON.stringify(updatedCart));
-    return updatedCart;
-  });
-};
-
+      localStorage.setItem("user_cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
+  };
 
   const clearCart = () => {
     setCart([]);
     localStorage.removeItem("user_cart");
-    router.push(`/`)
+    router.push(`/`);
   };
   const removeFromCart = (item_id) => {
-  setCart((prevCart) => {
-    const existingIndex = prevCart.findIndex((item) => item.item_id === item_id);
-    if (existingIndex === -1) return prevCart;
+    setCart((prevCart) => {
+      const existingIndex = prevCart.findIndex(
+        (item) => item.item_id === item_id
+      );
+      if (existingIndex === -1) return prevCart;
 
-    const updatedCart = [...prevCart];
+      const updatedCart = [...prevCart];
 
-    if (updatedCart[existingIndex].item_quantity > 1) {
-      updatedCart[existingIndex].item_quantity -= 1;
-    } else {
-      updatedCart.splice(existingIndex, 1);
-    }
+      if (updatedCart[existingIndex].item_quantity > 1) {
+        updatedCart[existingIndex].item_quantity -= 1;
+      } else {
+        updatedCart.splice(existingIndex, 1);
+      }
 
-    localStorage.setItem("user_cart", JSON.stringify(updatedCart));
-    return updatedCart;
-  });
-};
+      localStorage.setItem("user_cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
+  };
 
-const [orders, setOrders] = useState([]);
-      useEffect(() => {
-          const fetchProducts = async () => {
-            try {
-              const res = await fetch("/api/getallorders");
-              const data = await res.json();
-              setOrders(data);
-            } catch (error) {}
-          };
-          fetchProducts();
-        }, [router.route]);
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("/api/getallorders");
+        const data = await res.json();
+        setOrders(data);
+      } catch (error) {}
+    };
+    fetchProducts();
+  }, [router.route]);
   return (
     <ErrorBoundary>
       <SessionProvider session={pageProps.session}>
@@ -199,7 +196,7 @@ const [orders, setOrders] = useState([]);
           }}
         />
         {router.route.includes("admin/components") ? (
-          <AdminNavbar orders={orders}/>
+          <AdminNavbar orders={orders} />
         ) : (
           <Navbar
             account={account}
@@ -223,8 +220,16 @@ const [orders, setOrders] = useState([]);
           clearCart={clearCart}
           removeFromCart={removeFromCart}
         />
-        {router.route.includes("admin") ? <AdminHelpCenter /> : <HelpCenter />}
-        {router.route.includes("admin") ? <AdminFooter /> : <Footer />}
+        {router.route.includes("admin/components") ? (
+          <AdminHelpCenter />
+        ) : (
+          <HelpCenter />
+        )}
+        {router.route.includes("admin/components") ? (
+          <AdminFooter />
+        ) : (
+          <Footer />
+        )}
       </SessionProvider>
     </ErrorBoundary>
   );

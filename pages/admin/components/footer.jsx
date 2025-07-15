@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import visa from "./assets/visa.png";
-import master from "./assets/master.png";
-import american from "./assets/american.png";
-import unionpay from "./assets/unionpay.png";
-import UCB from "./assets/UCB.png";
-import discover from "./assets/discover.png";
-import paypal from "./assets/paypal.png";
+import visa from "../../../public/visa.png";
+import master from "../../../public/master.png";
+import american from "../../../public/american.png";
+import unionpay from "../../../public/unionpay.png";
+import UCB from "../../../public/UCB.png";
+import discover from "../../../public/discover.png";
+import paypal from "../../../public/paypal.png";
 import Image from "next/image";
 import Link from "next/link";
 
 const AdminFooter = () => {
+  const [StoreInfo, setStoreInfo] = useState([]);
+  useEffect(() => {
+    const fetchStoreInfo = async () => {
+      const res = await fetch("/api/contact");
+      if (res.ok) {
+        const dbData = await res.json();
+        setStoreInfo(
+          dbData && Object.keys(dbData).length > 0
+            ? dbData
+            : {
+                location: "",
+                email: "",
+                phone: "",
+                hours: [],
+                id: null,
+              }
+        );
+      }
+    };
+    fetchStoreInfo();
+  }, []);
+  const phoneNumber = "923270972423";
+  const message =
+    "Hello, I'm interested in your product! Can you send more info?";
+
+  const encodedMessage = encodeURIComponent(message);
+
   return (
     <>
       <div className="bg-[var(---whitetext)]">
@@ -20,14 +47,14 @@ const AdminFooter = () => {
               Store Location
             </div>
             <div className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left">
-              500 Japan Bara Market, Shah Allam Market, Lahore, Punjab, Pakisatn
-              54000
+              {StoreInfo.location}
+            </div>
+
+            <div className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left">
+              {StoreInfo.email}
             </div>
             <div className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left">
-              arcodes504@gmail.com
-            </div>
-            <div className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left">
-              +923270972423
+              {StoreInfo.phone}
             </div>
             <div className="flex text-[20px] space-x-4 mt-[2rem]">
               <FaFacebookF className="cursor-pointer" />
@@ -40,36 +67,66 @@ const AdminFooter = () => {
             <div className="text-[18px] font-bold my-[1rem] l:w-[50%] l:text-left">
               Shope
             </div>
-            <Link href={`/admin/components/category/allproducts`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              All Products
-            </div></Link>
-            <Link href={`/admin/components/category/computers`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Computers
-            </div></Link>
-            <Link href={`/admin/components/category/tablets`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Tablets
-            </div></Link>
-            <Link href={`/admin/components/category/drones&cameras`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Drones & Cameras
-            </div></Link>
-            <Link href={`/admin/components/category/headphones&speakers`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Headphones & Speakers
-            </div></Link>
-            <Link href={`/admin/components/category/mobiles`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Mobiles
-            </div></Link>
-            <Link href={`/admin/components/category/tv&homecinema`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              T.V & Home Cinema
-            </div></Link>
-            <Link href={`/admin/components/category/wearabletech`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Wearable Tech
-            </div></Link>
-            <Link href={`/admin/components/category/sale`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Sale
-            </div></Link>
-            <Link href={`/admin/components/category/bestseller`} className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"><div>
-              Best Seller
-            </div></Link>
+            <Link
+              href={`/admin/components/category/allproducts`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>All Products</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/computers`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Computers</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/tablets`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Tablets</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/drones&cameras`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Drones & Cameras</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/headphones&speakers`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Headphones & Speakers</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/mobiles`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Mobiles</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/tv&homecinema`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>T.V & Home Cinema</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/wearabletech`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Wearable Tech</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/sale`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Sale</div>
+            </Link>
+            <Link
+              href={`/admin/components/category/bestseller`}
+              className="font-thin text-center my-1 cursor-pointer l:w-[50%] l:text-left hover:text-[var(---btncolor)]"
+            >
+              <div>Best Seller</div>
+            </Link>
           </div>
           <div className="flex flex-col items-center px-[4rem] py-[2rem]">
             <div className="text-[18px] font-bold my-[1rem] l:w-[80%] l:text-left">

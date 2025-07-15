@@ -24,7 +24,6 @@ const Contact = () => {
   const day = [
     "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
   ];
-  // Fetch store info from API on mount
   useEffect(() => {
     const fetchStoreInfo = async () => {
       const res = await fetch("/api/contact");
@@ -67,7 +66,6 @@ const Contact = () => {
   };
 
   const handleSave = async () => {
-    // Save to API (update or insert)
     const payload = {
       location: form.location,
       email: form.email,
@@ -82,7 +80,6 @@ const Contact = () => {
       body: JSON.stringify(payload),
     });
 
-    // Refetch from DB after save
     const res = await fetch("/api/contact");
     if (res.ok) {
       const dbData = await res.json();
@@ -232,7 +229,6 @@ const Contact = () => {
     } else if (typeof h === "string" && h.includes(" to ")) {
       [from, to] = h.split(" to ");
     }
-    // Format time to 12-hour with AM/PM
     function formatTime(t) {
       if (!t) return "";
       const [hour, minute] = t.split(":");
@@ -300,7 +296,6 @@ const Contact = () => {
                 <div className="w-full h-[10rem] overflow-y-scroll scrollbar-hide">
                
 {form.hours.map((h, idx) => {
-  // Safely extract day, from, to from each hour object
   const dayValue = typeof h === "object" && h !== null ? h.day || "" : "";
   const from = typeof h === "object" && h !== null ? h.from || "" : "";
   const to = typeof h === "object" && h !== null ? h.to || "" : "";

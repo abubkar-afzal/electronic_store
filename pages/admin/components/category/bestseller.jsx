@@ -1115,60 +1115,64 @@ const BestSeller = () => {
           </div>
         </div>
 
-       <div
-         className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
-           colorfilter ? "h-auto" : "h-auto "
-         }`}
-       >
-         <div
-           className={`justify-between items-center  text-[20px] font-thin flex ${
-             colorfilter ? "block" : "hidden"
-           }`}
-         >
-           <div>Color</div>
-           <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
-         </div>
-         <div
-           className={`justify-between items-center text-[20px] font-thin ${
-             colorfilter ? "hidden" : "flex"
-           } `}
-         >
-           <div>Color</div>
-           <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
-         </div>
-         <AnimatePresence initial={false}>
-           {colorfilter && (
-             <motion.div
-               key="colorfilter"
-               initial={{ height: 0, opacity: 0, y: -20 }}
-               animate={{ height: "auto", opacity: 1, y: 0 }}
-               exit={{ height: 0, opacity: 0, y: -20 }}
-               transition={{ duration: 0.4, ease: "easeInOut" }}
-               className="overflow-hidden"
-             >
-               <div className="m-[1rem] flex gap-2 flex-wrap">
-                 {uniqueColors.map((color) => (
-                   <div
-                     key={color}
-                     className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                       ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+        <div
+          className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
+            colorfilter ? "h-auto" : "h-auto "
+          }`}
+        >
+          <div
+            className={`justify-between items-center  text-[20px] font-thin flex ${
+              colorfilter ? "block" : "hidden"
+            }`}
+          >
+            <div>Color</div>
+            <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
+          </div>
+          <div
+            className={`justify-between items-center text-[20px] font-thin ${
+              colorfilter ? "hidden" : "flex"
+            } `}
+          >
+            <div>Color</div>
+            <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
+          </div>
+          <AnimatePresence initial={false}>
+            {colorfilter && (
+              <motion.div
+                key="colorfilter"
+                initial={{ height: 0, opacity: 0, y: -20 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="m-[1rem] flex gap-2 flex-wrap">
+                  {uniqueColors.map((color) => (
+                    <div
+                      key={color}
+                      className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+                       ${
+                         selectedColor === color
+                           ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                           : "border-gray-300"
+                       }
                      `}
-                     style={{ backgroundColor: color }}
-                     title={color}
-                     onClick={() =>
-                       setSelectedColor(selectedColor === color ? null : color)
-                     }
-                   >
-                     {selectedColor === color && (
-                       <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
-                     )}
-                   </div>
-                 ))}
-               </div>
-             </motion.div>
-           )}
-         </AnimatePresence>
-       </div>
+                      style={{ backgroundColor: color }}
+                      title={color}
+                      onClick={() =>
+                        setSelectedColor(selectedColor === color ? null : color)
+                      }
+                    >
+                      {selectedColor === color && (
+                        <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* laptop */}
@@ -1370,7 +1374,10 @@ const BestSeller = () => {
                     }`}
                   >
                     <div>Color</div>
-                    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
+                    <RxMinus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
                   </div>
                   <div
                     className={`justify-between items-center text-[20px] font-thin ${
@@ -1378,7 +1385,10 @@ const BestSeller = () => {
                     } `}
                   >
                     <div>Color</div>
-                    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
+                    <RxPlus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
                   </div>
                   <AnimatePresence initial={false}>
                     {colorfilter && (
@@ -1395,12 +1405,18 @@ const BestSeller = () => {
                             <div
                               key={color}
                               className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+                                ${
+                                  selectedColor === color
+                                    ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                                    : "border-gray-300"
+                                }
                               `}
                               style={{ backgroundColor: color }}
                               title={color}
                               onClick={() =>
-                                setSelectedColor(selectedColor === color ? null : color)
+                                setSelectedColor(
+                                  selectedColor === color ? null : color
+                                )
                               }
                             >
                               {selectedColor === color && (

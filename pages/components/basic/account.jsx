@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import defaultImage from "../assets/img3.jpg";
+import defaultImage from "../../../public/img3.jpg";
 import { FaEdit, FaOutdent, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
@@ -9,31 +9,6 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { MoonLoader } from "react-spinners";
-const initialOrders = [
-  {
-    id: 1,
-    customer: "Ali Raza",
-    email: "ali@example.com",
-    phone: "+923001234567",
-    address: "123 Main St, Lahore",
-    items: [
-      { name: "FaPhone", qty: 2, price: 70 },
-      { name: "Tablet", qty: 1, price: 120 },
-    ],
-    status: "Pending",
-    date: "2025-06-30",
-  },
-  {
-    id: 2,
-    customer: "Sara Khan",
-    email: "sara@example.com",
-    phone: "+923004567890",
-    address: "456 Market Rd, Karachi",
-    items: [{ name: "Headphones", qty: 1, price: 30 }],
-    status: "Shipped",
-    date: "2025-06-29",
-  },
-];
 
 const Account = ({ account, setAccount }) => {
   const router = useRouter();
@@ -196,7 +171,7 @@ const Account = ({ account, setAccount }) => {
             name: item.name,
             image: item.image,
             specification: item.specification,
-            color:item.color,
+            color: item.color,
             onsale: item.onsale,
             quantity: item.quantity,
             price: item.price,
@@ -215,7 +190,6 @@ const Account = ({ account, setAccount }) => {
     <>
       <Toaster />
 
-      {/* Edit Modal */}
       {editModalOpen && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -395,7 +369,6 @@ const Account = ({ account, setAccount }) => {
                 </motion.div>
               ))}
 
-              {/* File Upload with validation */}
               <motion.label
                 custom={15}
                 variants={inputVariants}
@@ -663,11 +636,11 @@ const Account = ({ account, setAccount }) => {
                     <tr>
                       <td colSpan={7} className="text-center p-4">
                         <div className=" inset-0  flex items-center justify-center col-span-5 bg-opacity-80 z-999">
-                  <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
-                    <MoonLoader size={30} color="#7002ff" />
-                    Loading...
-                  </div>
-                </div>
+                          <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+                            <MoonLoader size={30} color="#7002ff" />
+                            Loading...
+                          </div>
+                        </div>
                       </td>
                     </tr>
                   )}
@@ -682,81 +655,104 @@ const Account = ({ account, setAccount }) => {
               </Link>
             </div>
 
-            {/* Order Details Modal */}
-<AnimatePresence>
-  {selectedOrder && (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
-    >
-      <div className="bg-white rounded-lg p-8 shadow-lg max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide">
-        <div className="text-2xl font-bold mb-4">
-          Order #{selectedOrder.id}
-        </div>
-        <div className="grid grid-cols-1  gap-4 text-[16px]">
-          <div><b>Customer:</b> {selectedOrder.customer}</div>
-          <div><b>Email:</b> {selectedOrder.email}</div>
-          <div><b>Phone:</b> {selectedOrder.phone}</div>
-          <div><b>Address:</b> {selectedOrder.address}</div>
-          <div><b>Status:</b> {selectedOrder.status}</div>
-          <div><b>Post Code:</b> {selectedOrder.postcode}</div>
-          <div><b>Date:</b> {selectedOrder.date}</div>
-        </div>
+            <AnimatePresence>
+              {selectedOrder && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
+                >
+                  <div className="bg-white rounded-lg p-8 shadow-lg max-w-2xl max-h-[90vh] overflow-y-auto scrollbar-hide">
+                    <div className="text-2xl font-bold mb-4">
+                      Order #{selectedOrder.id}
+                    </div>
+                    <div className="grid grid-cols-1  gap-4 text-[16px]">
+                      <div>
+                        <b>Customer:</b> {selectedOrder.customer}
+                      </div>
+                      <div>
+                        <b>Email:</b> {selectedOrder.email}
+                      </div>
+                      <div>
+                        <b>Phone:</b> {selectedOrder.phone}
+                      </div>
+                      <div>
+                        <b>Address:</b> {selectedOrder.address}
+                      </div>
+                      <div>
+                        <b>Status:</b> {selectedOrder.status}
+                      </div>
+                      <div>
+                        <b>Post Code:</b> {selectedOrder.postcode}
+                      </div>
+                      <div>
+                        <b>Date:</b> {selectedOrder.date}
+                      </div>
+                    </div>
 
-        <div className="mt-6">
-          <div className="text-lg font-semibold mb-2">Items:</div>
-          <ul className="space-y-4">
-            {selectedOrder.items.map((item, idx) => (
-              <li key={idx} className="grid grid-cols-2 items-start gap-4 border l:px-[3rem] p-3 rounded-md">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={1020}
-                  height={1020}
-                  className="w-30 h-30 object-cover rounded-md border col-span-2"
-                />
-                <div className="flex-1 col-start-3 ">
-                  <div className="font-bold text-[17px]">{item.name}</div>
-                  <div className="text-sm text-gray-600">{item.specification}</div>
-                  <div className="text-sm flex items-center">
-                    Color: <div className="rounded-full w-[1.2rem] h-[1.2rem] mx-1" style={{backgroundColor: item.color}}></div>
-                  </div>
-                  <div className="text-sm">
-                    Quantity: <b>{item.quantity}</b>
-                  </div>
-                  <div className="text-sm">
-                    Price:{" "}
-                    <b className="text-[var(---price)]">
-                      ${item.price}
-                    </b>
-                  </div>
-                  {item.onsale && (
-                    <span className="bg-[var(---salelabel)] text-white text-xs px-2 py-0.5 rounded inline-block mt-1">
-                      On Sale
-                    </span>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                    <div className="mt-6">
+                      <div className="text-lg font-semibold mb-2">Items:</div>
+                      <ul className="space-y-4">
+                        {selectedOrder.items.map((item, idx) => (
+                          <li
+                            key={idx}
+                            className="grid grid-cols-2 items-start gap-4 border l:px-[3rem] p-3 rounded-md"
+                          >
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              width={1020}
+                              height={1020}
+                              className="w-30 h-30 object-cover rounded-md border col-span-2"
+                            />
+                            <div className="flex-1 col-start-3 ">
+                              <div className="font-bold text-[17px]">
+                                {item.name}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                {item.specification}
+                              </div>
+                              <div className="text-sm flex items-center">
+                                Color:
+                                <div
+                                  className="rounded-full w-[1.2rem] h-[1.2rem] mx-1"
+                                  style={{ backgroundColor: item.color }}
+                                ></div>
+                              </div>
+                              <div className="text-sm">
+                                Quantity: <b>{item.quantity}</b>
+                              </div>
+                              <div className="text-sm">
+                                Price:
+                                <b className="text-[var(---price)]">
+                                  ${item.price}
+                                </b>
+                              </div>
+                              {item.onsale && (
+                                <span className="bg-[var(---salelabel)] text-white text-xs px-2 py-0.5 rounded inline-block mt-1">
+                                  On Sale
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-        <div className="text-center mt-6">
-          <button
-            className="hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] duration-[1s] px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
-            onClick={() => setSelectedOrder(null)}
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  )}
-</AnimatePresence>
-
+                    <div className="text-center mt-6">
+                      <button
+                        className="hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[1px] hover:border-[var(---btncolor)] duration-[1s] px-6 py-2 bg-[var(---btncolor)] cursor-pointer text-white rounded"
+                        onClick={() => setSelectedOrder(null)}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </div>

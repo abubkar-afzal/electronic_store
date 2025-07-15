@@ -1,16 +1,16 @@
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import img1 from "./assets/img1.jpg";
-import img2 from "./assets/img2.jpg";
-import img3 from "./assets/img3.jpg";
-import img4 from "./assets/img4.jpg";
-import img5 from "./assets/img5.jpg";
-import img6 from "./assets/img6.jpg";
-import img7 from "./assets/img7.jpg";
-import img8 from "./assets/img8.jpg";
-import img9 from "./assets/img9.jpg";
-import img10 from "./assets/img1.jpg";
+import img1 from "../../public/allproducts.png";
+import img2 from "../../public/computer.png";
+import img3 from "../../public/tablet.png";
+import img4 from "../../public/drone.png";
+import img5 from "../../public/speakers.png";
+import img6 from "../../public/mobile.png";
+import img7 from "../../public/tv.png";
+import img8 from "../../public/wearable.png";
+import img9 from "../../public/sale.png";
+import img10 from "../../public/bestseller.jpeg";
 
 const ShopeCategory = () => {
   const [categories, setCategories] = useState([
@@ -75,14 +75,14 @@ const ShopeCategory = () => {
       label: "Sale",
       img: img9,
       link: "/components/category/Sale",
-      bg: "bg-[var(---pagecolor)]",
+      bg: "bg-[var(---btncolor)]",
     },
     {
       id: 10,
       label: "Best Seller",
       img: img10,
       link: "/components/category/bestseller",
-      bg: "bg-[var(---pagecolor)]",
+      bg: "bg-[var(---whitetext)]",
     },
   ]);
 
@@ -92,13 +92,13 @@ const ShopeCategory = () => {
         <div className="text-[25px] l:text-[35px] font-semibold text-center my-[2rem]">
           Shope by Category
         </div>
-        <div className="flex flex-col l:grid l:grid-cols-5 l:gap-[1rem] items-center">
+        <div className="flex flex-col l:grid l:grid-cols-5 t:grid t:grid-cols-3 t:gap-[1rem] items-center">
           {categories.map((item, index) => (
             <div key={item.id || index} className="relative">
               <Link href={item.link}>
                 <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                   <div
-                    className={`w-[15rem] h-[15rem] ${item.bg} rounded-full overflow-hidden p-4`}
+                    className={`l:w-[10rem] l:h-[10rem] ll:w-[15rem] ll:h-[15rem] ${item.bg} rounded-full overflow-hidden p-4`}
                   >
                     <Image
                       src={item.img}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { RiErrorWarningLine } from "react-icons/ri";
 import Newsletter from "../newsletter";
+import Head from "next/head";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -79,8 +79,34 @@ const Contact = () => {
     }
   };
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}main.jpeg`;
   return (
     <>
+      <Head>
+        <title>AR Codes - Contact Page</title>
+        <meta
+          name="description"
+          content="Contact Us we will help you as we can."
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${siteUrl}component/basic/contact`} />
+        <meta property="og:title" content="AR Codes - Contact Page" />
+        <meta
+          property="og:description"
+          content="Contact Us we will help you as we can."
+        />
+        <meta property="og:image" content={imageUrl} />
+        <link rel="canonical" href={`${siteUrl}component/basic/contact`} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
       <div className="flex flex-col items-center justify-center p-4 bg-[var(---whitetext)]">
         <div className="w-[80vw] pb-[2rem] text-center text-[2rem] font-sans font-bold border-b-[1px]">
           Get in Touch
@@ -97,7 +123,10 @@ const Contact = () => {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="w-full l:grid l:grid-cols-4 l:gap-[1rem] l:text-[18px]">
+            <form
+              onSubmit={handleSubmit}
+              className="w-full l:grid l:grid-cols-4 l:gap-[1rem] l:text-[18px]"
+            >
               {[
                 { label: "First Name*", name: "FirstName", col: "1-3" },
                 { label: "Last Name*", name: "LastName", col: "3-5" },
@@ -106,7 +135,9 @@ const Contact = () => {
               ].map((field, i) => (
                 <div
                   key={i}
-                  className={`px-[1rem] my-[1rem] l:col-start-${field.col.split("-")[0]} l:col-end-${field.col.split("-")[1]}`}
+                  className={`px-[1rem] my-[1rem] l:col-start-${
+                    field.col.split("-")[0]
+                  } l:col-end-${field.col.split("-")[1]}`}
                 >
                   <div className="font-thin">{field.label}</div>
                   <input
@@ -138,7 +169,9 @@ const Contact = () => {
                 >
                   Submit
                 </button>
-                {message && <p className="mt-2 text-center text-sm">{message}</p>}
+                {message && (
+                  <p className="mt-2 text-center text-sm">{message}</p>
+                )}
               </div>
             </form>
           </div>
@@ -164,7 +197,9 @@ const Contact = () => {
                 Opening Hours
               </div>
               {storeInfo.hours?.map((h, i) => {
-                let from = "", to = "", day = "";
+                let from = "",
+                  to = "",
+                  day = "";
                 if (typeof h === "object" && h !== null) {
                   from = h.from || "";
                   to = h.to || "";
@@ -186,7 +221,9 @@ const Contact = () => {
                     className="text-[13px] font-thin text-center my-1 cursor-pointer l:text-[16px]"
                   >
                     {day && <span className="font-semibold">{day}: </span>}
-                    {from && to ? `${formatTime(from)} to ${formatTime(to)}` : ""}
+                    {from && to
+                      ? `${formatTime(from)} to ${formatTime(to)}`
+                      : ""}
                   </div>
                 );
               })}

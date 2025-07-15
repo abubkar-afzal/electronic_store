@@ -155,8 +155,27 @@ const Mobiles = ({addToCart}) => {
       }
     });
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}mobile.png`;
   return (
     <>
+    <Head>
+  <title>AR Codes - Mobiles Page</title>
+  <meta name="description" content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!" />
+  <meta name="author" content="Hafiz Abubakar Afzal" />
+  <meta name="robots" content="index, follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={`${siteUrl}components/category/mobiles`} />
+  <meta property="og:title" content="AR Codes - Affordable & Trendy Online Shopping" />
+  <meta property="og:description" content="Shop the latest electronics and accessories at the best prices with AR Codes." />
+  <meta property="og:image" content={imageUrl} />
+  
+  <link rel="canonical" href={`${siteUrl}components/category/mobiles`} />
+  <link rel="icon" href={imageUrl} />
+</Head>
       <button
         onClick={scrollToTop}
         className={`${
@@ -220,7 +239,7 @@ const Mobiles = ({addToCart}) => {
                                     onClick={() =>
                                       setFlippedCards((prev) => ({
                                         ...prev,
-                                        [item.id]: !prev[item.id], // flip only this card
+                                        [item.id]: !prev[item.id], 
                                       }))
                                     }
                                     className="w-full h-[20rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
@@ -234,7 +253,7 @@ const Mobiles = ({addToCart}) => {
                                           : "rotateY(0deg)",
                                       }}
                                     >
-                                      {/* FRONT SIDE */}
+                                      
                                     <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
                                       {item.avaliable_quantity <= 0 ? (
                                         <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -264,22 +283,22 @@ const Mobiles = ({addToCart}) => {
                                       </div>
               
                                       {item.onsale ? (
-                                        <div className="flex text-[18px] ml-2">
-                                          <div className="font-bold text-[var(---price)]">
-                                            <s>{item.price}</s>
-                                          </div>
-                                          <div className="ml-2 font-bold text-[var(---price)]">
-                                            {item.sale_price}
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
-                                          {item.price}
-                                        </div>
-                                      )}
-                                    </div>
+                          <div className="flex sm:flex-col l:flex-row text-[18px] l:ml-2">
+                            <div className="font-bold text-[var(---price)]">
+                              <s>${item.price}</s>
+                            </div>
+                            <div className="l:ml-2 font-bold text-[var(---price)]">
+                              ${item.sale_price}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
+                            ${item.price}
+                          </div>
+                        )}
+                      </div>
               
-                                    {/* BACK SIDE */}
+                                    
                                     <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                                       {item.avaliable_quantity <= 0 ? (
                                         <div className="text-red-600 font-black text-center">
@@ -834,7 +853,7 @@ const Mobiles = ({addToCart}) => {
                       onClick={() =>
                         setFlippedCards((prev) => ({
                           ...prev,
-                          [item.id]: !prev[item.id], // flip only this card
+                          [item.id]: !prev[item.id], 
                         }))
                       }
                       className="w-full h-[25rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
@@ -848,7 +867,7 @@ const Mobiles = ({addToCart}) => {
                             : "rotateY(0deg)",
                         }}
                       >
-                        {/* FRONT SIDE */}
+                        
                       <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
                         {item.avaliable_quantity <= 0 ? (
                           <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -880,20 +899,20 @@ const Mobiles = ({addToCart}) => {
                         {item.onsale ? (
                           <div className="flex sm:flex-col l:flex-row text-[18px] l:ml-2">
                             <div className="font-bold text-[var(---price)]">
-                              <s>{item.price}</s>
+                              <s>${item.price}</s>
                             </div>
                             <div className="l:ml-2 font-bold text-[var(---price)]">
-                              {item.sale_price}
+                              ${item.sale_price}
                             </div>
                           </div>
                         ) : (
                           <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
-                            {item.price}
+                            ${item.price}
                           </div>
                         )}
                       </div>
 
-                      {/* BACK SIDE */}
+                      
                       <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                         {item.avaliable_quantity <= 0 ? (
                           <div className="text-red-600 font-black text-center">

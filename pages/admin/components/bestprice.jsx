@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaEdit } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 const BestPrice = () => {
@@ -45,7 +45,6 @@ const BestPrice = () => {
       transition: { delay: i * 0.04, type: "spring", stiffness: 120 },
     }),
   };
-  // Fetch data from API on mount
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("/api/bestprice");
@@ -57,7 +56,6 @@ const BestPrice = () => {
     fetchData();
   }, []);
 
-  // Keep form in sync with data when opening modal
   const openEditModal = () => {
     setForm({
       img: data.image || data.img,
@@ -109,11 +107,10 @@ const BestPrice = () => {
         terms: form.terms,
         button_text: form.button,
         image,
-        id: form.id, // for update if exists
+        id: form.id,
       }),
     });
 
-    // Refetch from DB after save
     const res = await fetch("/api/bestprice");
     if (res.ok) {
       const dbData = await res.json();
@@ -131,7 +128,7 @@ const BestPrice = () => {
           title="Edit Section"
         />
         <div className="bg-[var(---whitetext)] my-[1rem] l:grid l:grid-cols-2 l:gap-[1rem] l:h-[90vh]">
-          <div className="relative t:w-[120%]">
+          <div className="relative t:w-[98%]">
             <Image
               src={data.image || data.img}
               width={1020}
@@ -139,7 +136,7 @@ const BestPrice = () => {
               alt="img1"
               className="w-full h-[30%] l:h-[90vh] rounded-br-[10rem]"
             />
-            <div className="absolute top-10 l:top-[30%] l:right-[-3rem] right-3 bg-[var(---salelabel)] text-[var(---whitetext)] font-bold text-[20px] l:text-[2rem] w-[5rem] l:w-[9rem] t:p-5 text-center p-3 rounded-full rotate-24">
+            <div className="absolute top-10 l:top-[30%]  l:right-[-3rem] right-3 bg-[var(---salelabel)] text-[var(---whitetext)] font-bold text-[20px] l:text-[2rem] w-[5rem] l:w-[9rem] t:p-5 text-center p-3 rounded-full rotate-24">
               {data.label}
             </div>
           </div>
@@ -177,8 +174,9 @@ const BestPrice = () => {
             transition={{ duration: 0.3 }}
             className="bg-white rounded-lg p-8 shadow-lg w-[400px] max-h-[90vh] scrollbar-hide overflow-y-auto"
           >
-            
-            <div className="text-2xl font-bold mb-4">Edit Best Price Deal!!</div>
+            <div className="text-2xl font-bold mb-4">
+              Edit Best Price Deal!!
+            </div>
             <div className=" mb-4">Update the deal details and image.</div>
             <motion.div
               initial="hidden"
@@ -338,7 +336,6 @@ const BestPrice = () => {
                 </motion.div>
               ))}
 
-              {/* File Upload with validation */}
               <motion.label
                 custom={15}
                 variants={inputVariants}

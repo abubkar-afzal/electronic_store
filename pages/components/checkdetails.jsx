@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { HiMinus, HiPlus } from "react-icons/hi2";
-
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MoonLoader } from "react-spinners";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const CheckDetails = ({
   cart,
@@ -17,7 +16,6 @@ const CheckDetails = ({
   clearCart,
   setCart,
 }) => {
- 
   const [errors, setErrors] = useState({});
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorModalContent, setErrorModalContent] = useState([]);
@@ -128,15 +126,15 @@ const CheckDetails = ({
     if (!validateForm()) return;
     setLoading(true);
     const orderItems = cart.map((item, index) => ({
-    product_id: item.item_id,
-    name: item.item_name,
-    image:item.item_image,
-    specification:item.item_specification,
-    onsale:item.item_on_sale,
-    color:item.item_color,
-    quantity: quantities[index],
-    price: item.item_on_sale ? item.item_sale_price : item.item_price,
-  }));
+      product_id: item.item_id,
+      name: item.item_name,
+      image: item.item_image,
+      specification: item.item_specification,
+      onsale: item.item_on_sale,
+      color: item.item_color,
+      quantity: quantities[index],
+      price: item.item_on_sale ? item.item_sale_price : item.item_price,
+    }));
 
     try {
       const res = await fetch("/api/addorder", {
@@ -157,7 +155,6 @@ const CheckDetails = ({
       const data = await res.json();
 
       if (data.insufficient) {
-        // Show modal with stock error
         const messages = data.details.map(
           (item) =>
             `🛑 Product ID ${item.product_id}: Requested ${item.requested}, Available ${item.available}`
@@ -169,7 +166,6 @@ const CheckDetails = ({
       }
 
       if (data.success) {
-        // Delay before showing place message
         setTimeout(() => {
           setplacemessage(true);
           clearCart();
@@ -182,22 +178,51 @@ const CheckDetails = ({
       console.error("Order submission failed:", error);
       alert("Something went wrong while placing the order.");
     }
-     router.events.on("routeChangeComplete", () => {
+    router.events.on("routeChangeComplete", () => {
       setLoading(false);
     });
-   
   };
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}main.jpeg`;
   return (
     <>
+      <Head>
+        <title>AR Codes - Affordable & Trendy Online Shopping</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+
+              <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
+        <meta
+          property="og:title"
+          content="AR Codes - Affordable & Trendy Online Shopping"
+        />
+        <meta
+          property="og:description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes."
+        />
+        <meta property="og:image" content={imageUrl} />
+
+        <link rel="canonical" href={siteUrl} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
       {loading ? (
-       
-          <div className="fixed top-0 cursor-progress z-999 min-w-full min-h-full bg-[var(---blacktext)]  h-screen  inset-0 flex items-center justify-center col-span-5 bg-opacity-80 ">
-            <div className=" p-6 rounded-xl  text-xl font-bold flex items-center gap-2 bg-[var(---whitetext)]">
-              <MoonLoader size={30} color="#7002ff" />
-              Loading...
-            </div>
+        <div className="fixed top-0 cursor-progress z-999 min-w-full min-h-full bg-[var(---blacktext)]  h-screen  inset-0 flex items-center justify-center col-span-5 bg-opacity-80 ">
+          <div className=" p-6 rounded-xl  text-xl font-bold flex items-center gap-2 bg-[var(---whitetext)]">
+            <MoonLoader size={30} color="#7002ff" />
+            Loading...
           </div>
+        </div>
       ) : null}
       {showErrorModal && (
         <motion.div
@@ -412,18 +437,18 @@ const CheckDetails = ({
                           <>
                             <div className="ml-2 flex text-[18px] ">
                               <div className="ml-2 text-[14px]">
-                                <s>{item.item_price}</s>
+                                <s>${item.item_price}</s>
                               </div>
 
                               <div className="ml-2 text-[14px]">
-                                {item.item_sale_price}
+                                ${item.item_sale_price}
                               </div>
                             </div>
                           </>
                         ) : (
                           <>
                             <div className="m-2 ml-4 text-[14px]">
-                              {item.item_price}
+                              ${item.item_price}
                             </div>
                           </>
                         )}

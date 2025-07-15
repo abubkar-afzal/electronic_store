@@ -5,7 +5,6 @@ import { FaBox } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { BiSolidMessage } from "react-icons/bi";
-import { useRouter } from "next/router";
 import { MoonLoader } from "react-spinners";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -26,7 +25,7 @@ const AdminNavbar = ({ orders }) => {
         const json = await res.json();
         if (json) {
           setAllProducts(json);
-          setFiltered(json); // initial
+          setFiltered(json);
         }
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -67,9 +66,9 @@ const AdminNavbar = ({ orders }) => {
   const controlAdminNavbar = () => {
     if (typeof window !== "undefined") {
       if (window.scrollY > lastScrollY) {
-        setShow(false); // scroll down → hide
+        setShow(false);
       } else {
-        setShow(true); // scroll up → show
+        setShow(true);
       }
       setLastScrollY(window.scrollY);
     }
@@ -90,7 +89,7 @@ const AdminNavbar = ({ orders }) => {
         <Link href={`/`}>
           <div className="absolute top-[-3rem] left-[-4rem] w-[5rem] h-[5rem] rounded-full cursor-not-allowed bg-[var(---salelabel)]"></div>
         </Link>
-        {/* Admin navbar */}
+        {/*  navbar */}
         <div className="sm:h-[10vh] l:h-[5rem] w-full bg-[var(---Adminnavbar)] ">
           <div className="flex sm:h-[10vh] l:h-[5rem] justify-between px-2 sm:text-[22px] place-items-center">
             <Link href={`/admin/components/`}>
@@ -148,7 +147,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] "
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px] "
               >
                 All Products
               </div>
@@ -158,7 +157,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 Computers
               </div>
@@ -168,7 +167,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 Tablets
               </div>
@@ -178,7 +177,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 Drones & Cameras
               </div>
@@ -188,7 +187,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 Head Phones & Speakers
               </div>
@@ -198,7 +197,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 Mobiles
               </div>
@@ -208,7 +207,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 T.V & Home Cinema
               </div>
@@ -218,7 +217,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 Wearable Tech
               </div>
@@ -228,7 +227,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]"
+                className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] t:text-[12px]"
               >
                 Sale
               </div>
@@ -240,7 +239,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="underline text-[15px] cursor-pointer"
+                className="underline text-[15px] cursor-pointer t:text-[12px]"
               >
                 About
               </div>
@@ -250,7 +249,7 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="underline text-[15px] cursor-pointer"
+                className="underline text-[15px] cursor-pointer t:text-[12px]"
               >
                 Contact
               </div>
@@ -260,12 +259,12 @@ const AdminNavbar = ({ orders }) => {
                 onClick={() => {
                   showmenu();
                 }}
-                className="underline text-[15px] cursor-pointer"
+                className="underline text-[15px] cursor-pointer t:text-[12px]"
               >
                 Help Center
               </div>
             </Link>
-            <div className="flex text-[15px] cursor-pointer">
+            <div className="flex text-[15px] t:text-[12px] cursor-pointer">
               Call Us{" "}
               <Link
                 href={`https://wa.me/${923270972423}?text=${encodeURIComponent(
@@ -505,7 +504,7 @@ const AdminNavbar = ({ orders }) => {
                                 : "rotateY(0deg)",
                             }}
                           >
-                            {/* FRONT SIDE */}
+                            
                             <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow shadow-black p-2">
                               {item.avaliable_quantity <= 0 ? (
                                 <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -550,7 +549,7 @@ const AdminNavbar = ({ orders }) => {
                               )}
                             </div>
 
-                            {/* BACK SIDE */}
+                            
                             <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                               {item.avaliable_quantity <= 0 ? (
                                 <div className="text-red-600 font-black text-center">
@@ -623,7 +622,7 @@ const AdminNavbar = ({ orders }) => {
                             : "rotateY(0deg)",
                         }}
                       >
-                        {/* FRONT SIDE */}
+                        
                         <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow shadow-black p-2">
                           {item.avaliable_quantity <= 0 ? (
                             <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -668,7 +667,7 @@ const AdminNavbar = ({ orders }) => {
                           )}
                         </div>
 
-                        {/* BACK SIDE */}
+                        
                         <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                           {item.avaliable_quantity <= 0 ? (
                             <div className="text-red-600 font-black text-center">

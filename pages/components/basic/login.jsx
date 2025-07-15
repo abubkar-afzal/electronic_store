@@ -1,28 +1,35 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import loginimage from "../assets/login.png";
-import signupimage from "../assets/signup.png";
-import forgotimage from "../assets/forgot.png";
+import loginimage from "../../../public/login.png";
+import signupimage from "../../../public/signup.png";
+import forgotimage from "../../../public/forgot.png";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import googleimg from "../assets/google.png";
+import googleimg from "../../../public/google.png";
+import Head from "next/head";
 
 const Login = () => {
   const route = useRouter();
-  const { data: session } = useSession();
 
+  const { data: session, status } = useSession();
+
+  console.log(session, status);
   useEffect(() => {
-    if (session?.user?.customToken) {
-      localStorage.setItem("custom_jwt", session.user.customToken);
-      console.log("✅ JWT saved to localStorage:", session.user.customToken);
-    }
-  }, [session]);
-  useEffect(() => {
-    const token = localStorage.getItem("custom_jwt");
-    if (token) {
+    if (status === "loading") return;
+    if (status === "authenticated") {
+      if (session?.user?.customToken) {
+        localStorage.setItem("custom_jwt", session.user.customToken);
+        console.log("✅ JWT stored:", session.user.customToken);
+      }
       route.push("/");
     }
-  }, [session]);
+
+    if (status === "unauthenticated") {
+      localStorage.removeItem("custom_jwt");
+      console.log("🧹 JWT cleared (unauthenticated)");
+    }
+  }, [status, session]);
+
   const [login, setlogin] = useState(true);
   const [forgot, setforgot] = useState(false);
   const changeforgot = () => {
@@ -31,11 +38,40 @@ const Login = () => {
   const changetosignup = () => {
     setlogin(!login);
   };
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}login.png`;
   return (
     <>
+      <Head>
+        <title>AR Codes - Login Page</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${siteUrl}components/basic/login`} />
+        <meta
+          property="og:title"
+          content="AR Codes - Affordable & Trendy Online Shopping"
+        />
+        <meta
+          property="og:description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes."
+        />
+        <meta property="og:image" content={imageUrl} />
+        <link rel="canonical" href={`${siteUrl}components/basic/login`} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
       <div className=" l:w-[99vw] l:overflow-hidden">
         <div
-          className={` l:grid l:grid-cols-2 l:gap-4 l:px-[4rem] l:m-[2rem] l:py-[2rem] sm:h-[40rem] l:h-[38rem]  l:bg-[var(---loginpage)] sm:overflow-x-hidden relative`}
+          className={` l:grid l:grid-cols-2 l:gap-4 l:px-[4rem] l:m-[2rem] l:py-[2rem] sm:h-[40rem] l:h-[70vh]   l:bg-[var(---loginpage)] sm:overflow-x-hidden relative`}
         >
           <>
             {/* forgot */}
@@ -52,7 +88,7 @@ const Login = () => {
                 src={forgotimage}
                 width={1020}
                 height={1020}
-                className="l:w-[35rem]"
+                className="l:w-[70vh]"
               />
             </div>
             {/* forgot */}
@@ -61,11 +97,11 @@ const Login = () => {
                 forgot
                   ? "l:translate-x-[2vw] sm:translate-x-[5vw] duration-[2s] "
                   : "l:translate-x-[-120vw]  sm:translate-x-[-100vw] duration-[2s]"
-              } l:m-4 l:h-[35rem] l:p-0 sm:my-[2rem] sm:h-[36rem] sm:bg-[var(---loginpage)] rounded-[2rem] l:bg-[var(---whitetext)] absolute sm:overflow-x-hidden sm:w-[90%] l:w-auto ${
+              } l:m-4 l:h-[90%] l:p-0 sm:my-[2rem] sm:h-[36rem] sm:bg-[var(---loginpage)] rounded-[2rem] l:bg-[var(---whitetext)] absolute sm:overflow-x-hidden sm:w-[90%] l:w-[30%] ${
                 forgot ? "opacity-100" : "opacity-0 hidethis"
               }`}
             >
-              <div className=" items-center justify-center space-y-[1rem]  p-[2rem] l:px-[6rem]">
+              <div className=" items-center justify-center space-y-[1rem]  sm:p-[2rem] l:p-0 l:pt-[1rem] l:px-[6rem]">
                 <div className="text-[1.5rem] font-sans font-bold text-center l:text-[35px]">
                   Forgot
                 </div>
@@ -76,7 +112,7 @@ const Login = () => {
               <div className="flex flex-col items-center justify-center px-4 sm:bg-transparent l:bg-[var(---whitetext)] ">
                 <form
                   action="post"
-                  className="w-full l:text-[14px] sm:h-[16rem] sm:text-[12px] l:h-[18rem] mt-[4rem]"
+                  className="w-full l:text-[14px] sm:h-[16rem] sm:text-[12px] l:h-[35vh] "
                 >
                   <div className="px-[1rem] my-[1rem]">
                     <div htmlFor="Email" className="font-thin">
@@ -125,7 +161,7 @@ const Login = () => {
                 src={loginimage}
                 width={1020}
                 height={1020}
-                className="l:w-[35rem]"
+                className="l:w-[70vh]"
               />
             </div>
 
@@ -141,7 +177,7 @@ const Login = () => {
                 src={signupimage}
                 width={1020}
                 height={1020}
-                className="l:w-[35rem]"
+                className="l:w-[70vh]"
               />
             </div>
 
@@ -149,9 +185,9 @@ const Login = () => {
             <div
               className={`${
                 login
-                  ? "l:translate-x-[53vw] sm:translate-x-[5vw] duration-[2s]"
+                  ? "l:translate-x-[60vw] sm:translate-x-[5vw] duration-[2s]"
                   : "l:translate-x-[120vw] sm:translate-x-[100vw] duration-[2s] hidethis"
-              } l:m-4 l:h-[35rem]  l:p-0 sm:my-[2rem] sm:h-[36rem] sm:bg-[var(---loginpage)] rounded-[2rem] l:bg-[var(---whitetext)] absolute sm:overflow-x-hidden sm:w-[90%] l:w-[40%] ${
+              } l:m-4 l:h-[90%]  l:p-0 sm:my-[2rem] sm:h-[36rem] sm:bg-[var(---loginpage)] rounded-[2rem] l:bg-[var(---whitetext)] absolute sm:overflow-x-hidden scrollbar-hide sm:w-[90%] l:w-[30%] ${
                 forgot ? "opacity-0 hidethis" : "opacity-100"
               }`}
             >
@@ -166,25 +202,29 @@ const Login = () => {
               <div className="flex flex-col items-center justify-center p-4 sm:bg-transparent l:bg-[var(---whitetext)] ">
                 <form
                   action="post"
-                  className="w-full l:text-[14px] sm:h-[22rem] sm:text-[12px] l:h-[23rem] overflow-y-scroll"
+                  className="w-full l:text-[14px] sm:h-[22rem] sm:text-[12px] l:h-[35vh] overflow-y-scroll"
                 >
                   <div className="flex justify-center items-center space-x-2">
-                  <div className=" text-center text-[18px] font-bold font-sans">
-                  Login with:
-                </div>
-                <div
+                    <div className=" text-center text-[18px] font-bold font-sans">
+                      Login with:
+                    </div>
+                    <div
                       onClick={() => signIn("google")}
                       className="bg-[var(---pagecolor)] text-white my-[1rem] text-center content-center l:w-[20%] sm:w-[20%] h-[3rem] rounded-[2rem] hover:border-[var(---btncolor)] hover:bg-transparent hover:border-[1px] cursor-pointer hover:text-[var(---btncolor)] duration-[1s] l:text-[14px]"
                     >
-                      <Image src={googleimg} width={1020} height={1020} alt="google signup" className="w-[2rem] h-[2rem] mx-auto"/>
+                      <Image
+                        src={googleimg}
+                        width={1020}
+                        height={1020}
+                        alt="google signup"
+                        className="w-[2rem] h-[2rem] mx-auto"
+                      />
                     </div>
-                    </div>
-                    <div className=" text-center text-[18px]  font-sans">
-                  Or
-                </div>
-                <div className=" text-center text-[16px] font-thin font-sans">
-                  Login with email:
-                </div>
+                  </div>
+                  <div className=" text-center text-[18px]  font-sans">Or</div>
+                  <div className=" text-center text-[16px] font-thin font-sans">
+                    Login with email:
+                  </div>
                   <div className="px-[1rem] my-[1rem]">
                     <div htmlFor="Email" className="font-thin">
                       Email*
@@ -224,15 +264,14 @@ const Login = () => {
                     >
                       Login
                     </button>
-                     <div
-                  onClick={changetosignup}
-                  className="bg-[var(---btncolor)] text-white sm:w-[50%] l:w-[40%] h-[3rem] rounded-[2rem] hover:border-[var(---btncolor)] l:m-0 sm:mt-[1rem] sm:text-[12px] hover:bg-transparent hover:border-[1px] cursor-pointer hover:text-[var(---btncolor)] duration-[1s] l:text-[14px] mb-[1rem] text-center content-center"
-                >
-                  Sign Up
-                </div>
+                    <div
+                      onClick={changetosignup}
+                      className="bg-[var(---btncolor)] text-white sm:w-[50%] l:w-[40%] h-[3rem] rounded-[2rem] hover:border-[var(---btncolor)] l:m-0 sm:mt-[1rem] sm:text-[12px] hover:bg-transparent hover:border-[1px] cursor-pointer hover:text-[var(---btncolor)] duration-[1s] l:text-[14px] mb-[1rem] text-center content-center"
+                    >
+                      Sign Up
+                    </div>
                   </div>
                 </form>
-               
               </div>
             </div>
 
@@ -242,7 +281,7 @@ const Login = () => {
                 login
                   ? "l:translate-x-[-120vw] sm:translate-x-[-100vw] duration-[2s] "
                   : "l:translate-x-[1vw] sm:translate-x-[5vw] duration-[2s]"
-              } l:m-4 l:h-[35rem] l:p-0 sm:my-[2rem] sm:h-[36rem] sm:bg-[var(---loginpage)] rounded-[2rem] l:bg-[var(---whitetext)] absolute sm:overflow-x-hidden sm:w-[90%] l:w-[40%]`}
+              } l:m-4 l:h-[90%] l:p-0 sm:my-[2rem] sm:h-[36rem] sm:bg-[var(---loginpage)] rounded-[2rem] l:bg-[var(---whitetext)] absolute sm:overflow-x-hidden scrollbar-hide sm:w-[90%] l:w-[30%]`}
             >
               <div className=" items-center justify-center space-y-[1rem]  p-[2rem] l:px-[6rem]">
                 <div className="text-[1.5rem] font-sans font-bold text-center l:text-[35px]">
@@ -251,29 +290,33 @@ const Login = () => {
                 <div className="w-full pb-[2rem] text-center text-[14px] font-sans font-bold border-b-[1px]">
                   Welcome to our store. Please sign up to continue.
                 </div>
-                
               </div>
               <div className="flex flex-col items-center justify-center px-4 sm:bg-transparent l:bg-[var(---whitetext)] ">
                 <form
                   action="post"
-                  className="w-full l:text-[14px] sm:h-[22rem] sm:text-[12px] l:h-[22rem] overflow-y-scroll"
-                ><div className="flex justify-center items-center space-x-2">
-                  <div className=" text-center text-[18px] font-bold font-sans">
-                  Signup with:
-                </div>
-                <div
+                  className="w-full l:text-[14px] sm:h-[22rem] sm:text-[12px] l:h-[33vh] overflow-y-scroll"
+                >
+                  <div className="flex justify-center items-center space-x-2">
+                    <div className=" text-center text-[18px] font-bold font-sans">
+                      Signup with:
+                    </div>
+                    <div
                       onClick={() => signIn("google")}
                       className="bg-[var(---pagecolor)] text-white my-[1rem] text-center content-center l:w-[20%] sm:w-[20%] h-[3rem] rounded-[2rem] hover:border-[var(---btncolor)] hover:bg-transparent hover:border-[1px] cursor-pointer hover:text-[var(---btncolor)] duration-[1s] l:text-[14px]"
                     >
-                      <Image src={googleimg} width={1020} height={1020} alt="google signup" className="w-[2rem] h-[2rem] mx-auto"/>
+                      <Image
+                        src={googleimg}
+                        width={1020}
+                        height={1020}
+                        alt="google signup"
+                        className="w-[2rem] h-[2rem] mx-auto"
+                      />
                     </div>
-                    </div>
-                    <div className=" text-center text-[18px]  font-sans">
-                  Or
-                </div>
-                <div className=" text-center text-[16px] font-thin font-sans">
-                  Create an account with form:
-                </div>
+                  </div>
+                  <div className=" text-center text-[18px]  font-sans">Or</div>
+                  <div className=" text-center text-[16px] font-thin font-sans">
+                    Create an account with form:
+                  </div>
                   <div className="px-[1rem] my-[1rem]">
                     <div htmlFor="Name" className="font-thin">
                       Name*
@@ -336,7 +379,6 @@ const Login = () => {
                     >
                       Login
                     </div>
-                    
                   </div>
                 </form>
               </div>

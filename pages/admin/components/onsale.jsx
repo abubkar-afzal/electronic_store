@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { RxCross2, RxMinus, RxPlus } from "react-icons/rx";
-import { FaArrowCircleUp, FaEdit } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Fade } from "react-awesome-reveal";
 import toast, { Toaster } from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -242,7 +240,6 @@ const OnSale = () => {
     <>
       <Toaster />
 
-      {/* Edit Modal */}
       {editModalOpen && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -504,7 +501,6 @@ const OnSale = () => {
                 </motion.div>
               ))}
 
-              {/* Display Place Dropdown with validation */}
               <motion.div
                 custom={13}
                 variants={inputVariants}
@@ -583,7 +579,6 @@ const OnSale = () => {
                 )}
               </motion.div>
 
-              {/* Category Dropdown with validation */}
               <motion.div
                 custom={14}
                 variants={inputVariants}
@@ -660,7 +655,6 @@ const OnSale = () => {
                 )}
               </motion.div>
 
-              {/* File Upload with validation */}
               <motion.label
                 custom={15}
                 variants={inputVariants}
@@ -766,7 +760,7 @@ const OnSale = () => {
                       alt={`Slide ${index}`}
                       width={1020}
                       height={1020}
-                      className="transition-transform duration-500 my-2 hover:scale-102 hover:duration-500 hover:ease-in-out rounded-[1rem] w-full h-auto"
+                      className="transition-transform duration-500 my-2 hover:scale-102 hover:duration-500 hover:ease-in-out rounded-[1rem] w-full sm:h-[16rem] l:h-[22rem]"
                     />
                   </div>
                   <div className="ml-2 font-thin">{item.name}</div>

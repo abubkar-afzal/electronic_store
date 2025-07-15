@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
-import img1 from "./assets/scoter.png"
-import img2 from "./assets/shipping.png"
-import img3 from "./assets/low-price.png"
-import img4 from "./assets/clock.png"
+import img1 from "../../../public/scoter.png"
+import img2 from "../../../public/shipping.png"
+import img3 from "../../../public/low-price.png"
+import img4 from "../../../public/clock.png"
 
 const Services = ()=>{
 return(

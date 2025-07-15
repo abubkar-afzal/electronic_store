@@ -11,40 +11,37 @@ const TodaySpecial = ({ Todayspecial }) => {
       <div className="relative">
         {data.length > 0 ? (
           data.map((data) => (
-            <div className="bg-[var(---whitetext)] l:grid l:h-[90vh] l:grid-cols-2 l:gap-[1rem] l:overflow-hidden mb-[1rem]">
-              <div className="relative l:col-start-2 l:row-start-1 l:w-[130%] l:ml-[-11rem]">
+            <div className="bg-[var(---whitetext)] t:grid t:h-[70vh] l:h-[90vh] t:grid-cols-2 t:gap-[1rem] t:overflow-hidden mb-[1rem]">
+              <div className="relative t:col-start-2 t:row-start-1 ">
                 <Image
                   src={data.image || data.img}
                   width={1020}
                   height={100}
                   alt="img1"
-                  className="w-full h-[30%] l:h-[90vh] rounded-bl-[10rem]"
+                  className="w-full h-[30%] t:h-[70vh] l:h-[90vh] rounded-bl-[10rem]"
                 />
               </div>
-              <div className="ml-5 mt-4 l:flex l:flex-col l:justify-center l:items-start l:content-center l:w-[80%] l:ml-[15%]">
-                <div className="text-[20px] l:text-[22px] font-thin bg-[var(---salelabel)] inline text-[var(---whitetext)] px-2 mt-2">
+              <div className="ml-5 mt-4 t:flex t:flex-col t:justify-center t:items-start t:content-center t:w-[80%] t:ml-[15%]">
+                <div className="text-[20px] t:text-[2vw] font-thin bg-[var(---salelabel)] inline text-[var(---whitetext)] px-2 mt-2">
                   {data.label}
                 </div>
-                <div className="text-[20px] l:text-[30px] font-semibold my-2 w-[80%]">
+                <div className="text-[20px] t:text-[2.5vw] font-semibold my-2 w-[80%]">
                   {data.title}
                 </div>
-                <div className="text-[55px] font-bold flex l:text-[6rem]">
+                <div className="text-[55px] font-bold flex t:text-[7vw]">
                   <div className="text-[var(---btncolor)] mr-2">
                     {data.percent}
                   </div>
                   {data.percent_label}
                 </div>
-                <div className="text-[20px] l:text-[30px] font-semibold w-[80%]">
-                  {data.percentLabel}
-                </div>
-                <div className="font-thin l:text-[20px] my-2 w-[80%]">
+                <div className="font-thin t:text-[1.8vw] my-2 w-[80%]">
                   {data.note1}
                 </div>
-                <div className="font-thin l:text-[20px] my-2 w-[80%]">
+                <div className="font-thin t:text-[1.8vw] my-2 w-[80%]">
                   {data.note2}
                 </div>
                 <Link href="/components/category/allproducts">
-                  <button className="p-2 px-[2rem] bg-[var(---btncolor)] text-[var(---whitetext)] rounded-[1.5rem] l:text-[22px] l:px-[3rem] mb-[2rem] mt-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
+                  <button className="p-2 px-[2rem] bg-[var(---btncolor)] text-[var(---whitetext)] rounded-[8px] t:text-[22px] t:px-[6vw] mb-[2rem] mt-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]">
                     {data.button_text}
                   </button>
                 </Link>

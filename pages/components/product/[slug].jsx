@@ -3,17 +3,17 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { MoonLoader } from "react-spinners";
-
 const { motion, AnimatePresence } = require("framer-motion");
 const { default: Link } = require("next/link");
 const { useRouter } = require("next/router");
 const { useState, useEffect } = require("react");
 const { FaMinus, FaPlus } = require("react-icons/fa");
 import { PiShareNetworkFill } from "react-icons/pi";
+import Head from "next/head";
+
 const ProductPage = ({ addToCart }) => {
   const router = useRouter();
   const { slug } = router.query;
-
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [productInfo, setproductInfo] = useState(false);
@@ -100,9 +100,50 @@ const ProductPage = ({ addToCart }) => {
       </div>
     );
   }
-
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   return (
     <>
+      <Head>
+        <title>AR Codes - {product.map((item) => item.name)} Page</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content={`${product.map((item) => item.name)}, ${product.map(
+            (item) => item.category
+          )}, online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones`}
+        />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content={`${siteUrl}components/product/${product.map(
+            (item) => item.id
+          )}`}
+        />
+        <meta
+          property="og:title"
+          content={`Buy ${product.map((item) => item.name)} - AR Codes`}
+        />
+        <meta
+          property="og:description"
+          content={`Get ${product.map(
+            (item) => item.name
+          )} with fast shipping and exclusive deals only at AR Codes.`}
+        />
+        <meta property="og:image" content={product.map((item) => item.image)} />
+        <link
+          rel="canonical"
+          href={`${siteUrl}components/product/${product.map(
+            (item) => item.id
+          )}`}
+        />
+        <link rel="icon" href={product.map((item) => item.image)} />
+      </Head>
       {product.map((product) => (
         <>
           <div className="l:px-[10rem] sm:px-[2rem] flex space-x-2 text-[18px] mb-[1rem]">
@@ -160,7 +201,6 @@ const ProductPage = ({ addToCart }) => {
                 <p className="regular-price">${product.price}</p>
               )}
 
-              {/* Quantity Input */}
               <div className="text-[20px] font-thin my-[1rem]">
                 <p className="text-[18px]">Quantity:</p>
                 <div className="bg-[var(---whitetext)] w-[7rem] p-2 flex items-center space-x-2 border">
@@ -213,7 +253,6 @@ const ProductPage = ({ addToCart }) => {
               <p className="sm:block l:hidden text-[20px] font-thin my-[1rem]">
                 {product.description}
               </p>
-              {/* Accordions */}
               {[
                 {
                   title: "Product Info",
@@ -281,7 +320,7 @@ const ProductPage = ({ addToCart }) => {
                     onClick={() =>
                       setFlippedCards((prev) => ({
                         ...prev,
-                        [item.id]: !prev[item.id], // flip only this card
+                        [item.id]: !prev[item.id],
                       }))
                     }
                     className="sm:w-[17rem] sm:mx-auto l:w-full sm:h-[26rem] l:h-[30rem] relative my-[2rem] l:mx-2 perspective-[1000px] cursor-pointer"
@@ -295,7 +334,6 @@ const ProductPage = ({ addToCart }) => {
                           : "rotateY(0deg)",
                       }}
                     >
-                      {/* FRONT SIDE */}
                       <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow shadow-black p-2">
                         {item.avaliable_quantity <= 0 ? (
                           <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -327,20 +365,19 @@ const ProductPage = ({ addToCart }) => {
                         {item.onsale ? (
                           <div className="flex text-[18px] ml-2">
                             <div className="font-bold text-[var(---price)]">
-                              <s>{item.price}</s>
+                              <s>${item.price}</s>
                             </div>
                             <div className="ml-2 font-bold text-[var(---price)]">
-                              {item.sale_price}
+                              ${item.sale_price}
                             </div>
                           </div>
                         ) : (
                           <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
-                            {item.price}
+                            ${item.price}
                           </div>
                         )}
                       </div>
 
-                      {/* BACK SIDE */}
                       <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                         {item.avaliable_quantity <= 0 ? (
                           <div className="text-red-600 font-black text-center">

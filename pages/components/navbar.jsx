@@ -40,7 +40,7 @@ const Navbar = ({
         const json = await res.json();
         if (json) {
           setAllProducts(json);
-          setFiltered(json); // initial
+          setFiltered(json);
         }
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -169,7 +169,7 @@ const Navbar = ({
     window.addEventListener("scroll", controlNavbar);
     return () => window.removeEventListener("scroll", controlNavbar);
   }, [lastScrollY]);
-  const phoneNumber = "923270972423"; // without '+' or '0'
+  const phoneNumber = "923270972423";
   const message =
     "Hello, I'm interested in your product! Can you send more info?";
 
@@ -255,66 +255,68 @@ const Navbar = ({
         <div className="hidden w-full l:flex justify-between sm:text-[18px] px-2 py-2 bg-[var(---pagecolor)]">
           <div className="flex items-center space-x-[1rem] pl-[1rem]">
             <Link href={`/components/category/allproducts`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] ">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw] ">
                 All Products
               </div>
             </Link>
             <Link href={`/components/category/computers`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 Computers
               </div>
             </Link>
             <Link href={`/components/category/tablets`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 Tablets
               </div>
             </Link>
             <Link href={`/components/category/drones&cameras`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 Drones & Cameras
               </div>
             </Link>
             <Link href={`/components/category/headphones&speakers`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 Head Phones & Speakers
               </div>
             </Link>
             <Link href={`/components/category/mobiles`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 Mobiles
               </div>
             </Link>
             <Link href={`/components/category/tv&homecinema`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 T.V & Home Cinema
               </div>
             </Link>
             <Link href={`/components/category/wearabletech`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 Wearable Tech
               </div>
             </Link>
             <Link href={`/components/category/sale`}>
-              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)]">
+              <div className="text-center text-[16px] py-2 cursor-pointer hover:text-[var(---btncolor)] l:text-[1.05vw]">
                 Sale
               </div>
             </Link>
           </div>
           <div className="flex py-2 space-x-[1rem] pr-[1rem]">
             <Link href={`/components/basic/about`}>
-              <div className="underline text-[15px] cursor-pointer">About</div>
+              <div className="underline text-[15px] cursor-pointer l:text-[1.05vw]">
+                About
+              </div>
             </Link>
             <Link href={`/components/basic/contact`}>
-              <div className="underline text-[15px] cursor-pointer">
+              <div className="underline text-[15px] cursor-pointer l:text-[1.05vw]">
                 Contact
               </div>
             </Link>
             <Link href={`/components/basic/helpcenter`}>
-              <div className="underline text-[15px] cursor-pointer">
+              <div className="underline text-[15px] cursor-pointer l:text-[1.05vw]">
                 Help Center
               </div>
             </Link>
-            <div className="flex text-[15px] cursor-pointer">
+            <div className="flex text-[15px] cursor-pointer l:text-[1.05vw]">
               Call Us{" "}
               <Link
                 href={`https://wa.me/${phoneNumber}?text=${encodedMessage}`}
@@ -573,7 +575,6 @@ const Navbar = ({
                                 : "rotateY(0deg)",
                             }}
                           >
-                            {/* FRONT SIDE */}
                             <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow shadow-black p-2">
                               {item.avaliable_quantity <= 0 ? (
                                 <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -605,20 +606,19 @@ const Navbar = ({
                               {item.onsale ? (
                                 <div className="flex text-[18px] ml-2">
                                   <div className="font-bold text-[var(---price)]">
-                                    <s>{item.price}</s>
+                                    <s>${item.price}</s>
                                   </div>
                                   <div className="ml-2 font-bold text-[var(---price)]">
-                                    {item.sale_price}
+                                    ${item.sale_price}
                                   </div>
                                 </div>
                               ) : (
                                 <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
-                                  {item.price}
+                                  ${item.price}
                                 </div>
                               )}
                             </div>
 
-                            {/* BACK SIDE */}
                             <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                               {item.avaliable_quantity <= 0 ? (
                                 <div className="text-red-600 font-black text-center">
@@ -691,7 +691,6 @@ const Navbar = ({
                             : "rotateY(0deg)",
                         }}
                       >
-                        {/* FRONT SIDE */}
                         <div className="absolute inset-0 backface-hidden  rounded-[1rem] shadow shadow-black p-2">
                           {item.avaliable_quantity <= 0 ? (
                             <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -723,20 +722,19 @@ const Navbar = ({
                           {item.onsale ? (
                             <div className="flex text-[18px] ml-2">
                               <div className="font-bold text-[var(---price)]">
-                                <s>{item.price}</s>
+                                <s>${item.price}</s>
                               </div>
                               <div className="ml-2 font-bold text-[var(---price)]">
-                                {item.sale_price}
+                                ${item.sale_price}
                               </div>
                             </div>
                           ) : (
                             <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
-                              {item.price}
+                              ${item.price}
                             </div>
                           )}
                         </div>
 
-                        {/* BACK SIDE */}
                         <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                           {item.avaliable_quantity <= 0 ? (
                             <div className="text-red-600 font-black text-center">
@@ -832,18 +830,18 @@ const Navbar = ({
                       <>
                         <div className="ml-2 flex text-[18px] ">
                           <div className="ml-2 text-[14px]">
-                            <s>{item.item_price}</s>
+                            <s>${item.item_price}</s>
                           </div>
 
                           <div className="ml-2 text-[14px]">
-                            {item.item_sale_price}
+                            ${item.item_sale_price}
                           </div>
                         </div>
                       </>
                     ) : (
                       <>
                         <div className="m-2 ml-4 text-[14px]">
-                          {item.item_price}
+                          ${item.item_price}
                         </div>
                       </>
                     )}

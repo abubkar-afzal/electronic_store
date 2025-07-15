@@ -1,13 +1,15 @@
 import Image from "next/image";
 import React from "react";
-import img from "../assets/img5.jpg";
+import img from "../../../../public/my_logo.jpg";
 import { RiErrorWarningLine } from "react-icons/ri";
 
 const About = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center p-4 bg-[var(---whitetext)]">
-        <div className="text-[2rem] font-sans font-bold l:text-[40px]">About AR Codes</div>
+        <div className="text-[2rem] font-sans font-bold l:text-[40px]">
+          About AR Codes
+        </div>
         <div className="my-[2rem] border-y-[1px] py-[1rem] l:grid l:grid-cols-2 l:gap-[2rem]">
           <Image
             src={img}
@@ -32,9 +34,14 @@ const About = () => {
             Check out our job postings & apportunites waiting for you.
           </div>
           <div>
-            <form action="post" className="l:grid l:grid-cols-4 l:gap-[1rem] l:w-[70vw] l:text-[18px]">
+            <form
+              action="post"
+              className="l:grid l:grid-cols-4 l:gap-[1rem] l:w-[70vw] l:text-[18px]"
+            >
               <div className="px-[1rem] my-[1rem] l:col-start-1 l:col-end-3">
-                <div htmlFor="FirstName" className="font-thin">First Name*</div>
+                <div htmlFor="FirstName" className="font-thin">
+                  First Name*
+                </div>
                 <input
                   type="text"
                   id="FirstName"
@@ -48,7 +55,9 @@ const About = () => {
                 </div>
               </div>
               <div className="px-[1rem] my-[1rem] l:col-start-3 l:col-end-5">
-                <div htmlFor="LastName" className="font-thin">Last Name*</div>
+                <div htmlFor="LastName" className="font-thin">
+                  Last Name*
+                </div>
                 <input
                   type="text"
                   id="LastName"
@@ -62,7 +71,9 @@ const About = () => {
                 </div>
               </div>
               <div className="px-[1rem] my-[1rem] l:col-start-1 l:col-end-3">
-                <div htmlFor="Email" className="font-thin">Email*</div>
+                <div htmlFor="Email" className="font-thin">
+                  Email*
+                </div>
                 <input
                   type="email"
                   id="Email"
@@ -76,7 +87,9 @@ const About = () => {
                 </div>
               </div>
               <div className="px-[1rem] my-[1rem] l:col-start-3 l:col-end-5">
-                <div htmlFor="Phone" className="font-thin">Phone*</div>
+                <div htmlFor="Phone" className="font-thin">
+                  Phone*
+                </div>
                 <input
                   type="tel"
                   id="Phone"
@@ -91,7 +104,9 @@ const About = () => {
               </div>
 
               <div className="px-[1rem] my-[1rem] l:col-start-1 l:col-end-3">
-                <div htmlFor="Position" className="font-thin">Position You Apply For</div>
+                <div htmlFor="Position" className="font-thin">
+                  Position You Apply For
+                </div>
                 <select
                   id="Position"
                   name="Position"
@@ -99,7 +114,12 @@ const About = () => {
                   className="border-b-[2px] w-full h-[3rem] focus:outline-none border-[var(---inputborder)] hover:border-[var(---inputhoverborder)] "
                 >
                   <option value=""></option>
-                  <option value="frontend" className="cursor-pointer hover:bg-[var(---btncolor)] hover:text-[var(---whitetext)] selection:bg-[var(---btncolor)] selection:text-[var(---whitetext)]">Frontend Developer</option>
+                  <option
+                    value="frontend"
+                    className="cursor-pointer hover:bg-[var(---btncolor)] hover:text-[var(---whitetext)] selection:bg-[var(---btncolor)] selection:text-[var(---whitetext)]"
+                  >
+                    Frontend Developer
+                  </option>
                   <option value="backend">Backend Developer</option>
                   <option value="fullstack">Full Stack Developer</option>
                   <option value="designer">UI/UX Designer</option>
@@ -112,7 +132,10 @@ const About = () => {
               </div>
 
               <div className="px-[1rem] my-[1rem] l:col-start-3 l:col-end-5">
-                <div htmlFor="Available Date" className="font-thin"> Available Start Date*</div>
+                <div htmlFor="Available Date" className="font-thin">
+                  {" "}
+                  Available Start Date*
+                </div>
                 <input
                   type="date"
                   id="AvailableDate"
@@ -126,7 +149,9 @@ const About = () => {
                 </div>
               </div>
               <div className="px-[1rem] my-[1rem] l:col-start-1 l:col-end-4">
-                <div htmlFor="Resume" className="font-thin">Link to Resume*</div>
+                <div htmlFor="Resume" className="font-thin">
+                  Link to Resume*
+                </div>
                 <input
                   type="text"
                   id="Resume"
@@ -140,7 +165,12 @@ const About = () => {
                 </div>
               </div>
               <div className="px-[1rem] my-[1rem] l:col-start-4 l:col-end-5 l:content-center">
-                <button id="submit" className="cursor-pointer w-full rounded-[2rem] bg-[var(---btncolor)] p-2 text-[var(---whitetext)] font-thin hover:bg-[var(---whitetext)] hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] hover:border-[1px] duration-[1s]">Submit</button>
+                <button
+                  id="submit"
+                  className="cursor-pointer w-full rounded-[2rem] bg-[var(---btncolor)] p-2 text-[var(---whitetext)] font-thin hover:bg-[var(---whitetext)] hover:border-[var(---btncolor)] hover:text-[var(---btncolor)] hover:border-[1px] duration-[1s]"
+                >
+                  Submit
+                </button>
               </div>
             </form>
           </div>

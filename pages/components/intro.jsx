@@ -112,28 +112,28 @@ const Intro = ({ IntroImages }) => {
       ) : null}
       <Fade duration={1000} triggerOnce cascade>
         <div className="l:relative">
-          <div className="sm:flex sm:flex-col l:absolute l:z-20 sm:items-center l:items-start l:left-40 l:top-[15vh] my-4">
-            <div className="bg-[var(---bestpricelabel)] inline text-[var(---whitetext)] px-2 my-2 l:text-[22px]">
+          <div className="sm:flex sm:flex-col l:absolute l:z-20 sm:items-center l:items-start l:left-40 l:top-[8vh] my-4">
+            <div className="bg-[var(---bestpricelabel)] inline text-[var(---whitetext)] px-2 my-2 l:text-[3.5vh]">
               Best Prices
             </div>
-            <div className="sm:text-[35px] l:text-[50px] l:w-[30vw] l:text-left text-center font-black">
+            <div className="sm:text-[35px] l:text-[6.5vh] l:w-[30vw] l:text-left text-center font-black px-[1rem]">
               Incredible Prices on All Your Favorite Items
             </div>
-            <div className="sm:text-[16px] l:text-[20px] sm:font-thin my-2">
+            <div className="sm:text-[16px] l:text-[4vh] sm:font-thin my-2">
               Get more for less on selected brands
             </div>
             <div className="">
               <Link href={`/components/category/allproducts`}>
                 <button
-                  className="p-3 px-6 my-4
-            bg-[var(---btncolor)] hover:text-[var(---btncolor)] hover:bg-[var(---whitetext)] hover:border-[1px] border-[1px] border-[var(---btncolor)] cursor-pointer duration-[1s] l:text-[16px] l:py-[1.2rem] l:px-[4rem] text-[var(---whitetext)] rounded-[1.5rem]"
+                  className="p-3 px-6 my-4 l:my-[1vh]
+            bg-[var(---btncolor)] hover:text-[var(---btncolor)] hover:bg-[var(---whitetext)] hover:border-[1px] border-[1px] border-[var(---btncolor)] cursor-pointer duration-[1s] l:text-[2vh] l:py-[1.2rem] l:px-[4rem] text-[var(---whitetext)] rounded-[1.5rem]"
                 >
                   Shope Now
                 </button>
               </Link>
             </div>
           </div>
-          <div className="relative w-full max-w-lg l:max-w-full h-64 l:h-[100vh]  overflow-hidden">
+          <div className="relative w-full  l:max-w-full h-[50vh] l:h-[90vh]  overflow-hidden">
             {imagefordisplay.map((img, i) => (
               <Fade duration={1000} triggerOnce>
                 <Image
