@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import defaultImage from "../../../public/img3.jpg";
+import defaultImage from "../../../public/my_logo.jpg";
 import { FaEdit, FaOutdent, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
