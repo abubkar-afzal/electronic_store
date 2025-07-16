@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MoonLoader } from "react-spinners";
 
 const TodaySpecial = ({ Todayspecial }) => {
-  const [data, setData] = useState(Todayspecial);
+  const [data, setData] = useState(Todayspecial||[]);
 
   return (
     <>

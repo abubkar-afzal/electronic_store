@@ -3,7 +3,7 @@ import Image from "next/image";
 import { MoonLoader } from "react-spinners";
 
 const Brands = ({ Brand }) => {
-  const [brands, setBrands] = useState(Brand);
+  const [brands, setBrands] = useState(Brand||[]);
 
   return (
     <>

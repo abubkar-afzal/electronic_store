@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { MoonLoader } from "react-spinners";
 const OnSale = ({ addToCart, Onsale }) => {
-  const [items, setItems] = useState(Onsale);
+  const [items, setItems] = useState(Onsale||[]);
   const [flippedCards, setFlippedCards] = useState({});
 
   return (

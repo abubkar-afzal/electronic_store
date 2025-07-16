@@ -4,7 +4,7 @@ import Link from "next/link";
 import { MoonLoader } from "react-spinners";
 
 const BestPrice = ({ Bestprice }) => {
-  const [data, setData] = useState(Bestprice);
+  const [data, setData] = useState(Bestprice||[]);
   return (
     <>
       <div className="relative">
