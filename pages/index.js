@@ -37,25 +37,37 @@ export default function Home({
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const imageUrl = `${siteUrl}main.jpeg`;
   return (
     <>
-    <Head>
-  <title>AR Codes - Affordable & Trendy Online Shopping</title>
-  <meta name="description" content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!" />
-  <meta name="author" content="Hafiz Abubakar Afzal" />
-  <meta name="robots" content="index, follow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="keywords" content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={siteUrl} />
-  <meta property="og:title" content="AR Codes - Affordable & Trendy Online Shopping" />
-  <meta property="og:description" content="Shop the latest electronics and accessories at the best prices with AR Codes." />
-  <meta property="og:image" content={imageUrl} />
-  <link rel="canonical" href={siteUrl} />
-  <link rel="icon" href={imageUrl} />
-</Head>
+      <Head>
+        <title>AR Codes - Affordable & Trendy Online Shopping</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
+        <meta
+          property="og:title"
+          content="AR Codes - Affordable & Trendy Online Shopping"
+        />
+        <meta
+          property="og:description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes."
+        />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
+        <link rel="canonical" href={siteUrl} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
 
       <button
         onClick={scrollToTop}

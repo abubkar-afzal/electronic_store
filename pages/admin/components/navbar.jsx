@@ -13,8 +13,14 @@ const AdminNavbar = ({ orders }) => {
   const [mobilemenu, setmonbilemenu] = useState(true);
   const [search, setsearch] = useState(true);
   const [trendproduct, settrendproduct] = useState([]);
-  const [flippedCards, setFlippedCards] = useState({});
-  const [allProducts, setAllProducts] = useState([]);
+const [flippedCards, setFlippedCards] = useState({});
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient){ return null}   const [allProducts, setAllProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filtered, setFiltered] = useState([]);
 

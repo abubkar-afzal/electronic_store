@@ -10,10 +10,15 @@ import { Fade } from "react-awesome-reveal";
 import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 
-const Mobiles = ({addToCart}) => {
+const Mobiles = ({ addToCart }) => {
   const pageName = "Mobiles";
-    const [flippedCards, setFlippedCards] = useState({});
-  
+  const [flippedCards, setFlippedCards] = useState({});
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filter, setfilter] = useState(false);
@@ -35,7 +40,7 @@ const Mobiles = ({addToCart}) => {
   const [colorfilter, setcolorfilter] = useState(false);
   const router = useRouter();
   let currentpage;
- 
+
   const maxItemPrice =
     items.length > 0
       ? Math.max(...items.map((item) => Number(item.price) || 0)) + 10
@@ -85,9 +90,7 @@ const Mobiles = ({addToCart}) => {
     currentpage = "tv&homecinema";
   } else if (router.route === "/components/category/tablets") {
     currentpage = "tablets";
-  } else if (
-    router.route === "/components/category/headphones&speakers"
-  ) {
+  } else if (router.route === "/components/category/headphones&speakers") {
     currentpage = "headphones&speakers";
   } else if (router.route === "/components/category/wearabletech") {
     currentpage = "wearabletech";
@@ -98,7 +101,6 @@ const Mobiles = ({addToCart}) => {
   } else {
     currentpage = "no route found";
   }
-
 
   const showfilter = () => {
     setfilter(!filter);
@@ -157,25 +159,44 @@ const Mobiles = ({addToCart}) => {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const imageUrl = `${siteUrl}mobile.png`;
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <>
-    <Head>
-  <title>AR Codes - Mobiles Page</title>
-  <meta name="description" content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!" />
-  <meta name="author" content="Hafiz Abubakar Afzal" />
-  <meta name="robots" content="index, follow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="keywords" content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones" />
+      <Head>
+        <title>AR Codes - Mobiles Page</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
 
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={`${siteUrl}components/category/mobiles`} />
-  <meta property="og:title" content="AR Codes - Affordable & Trendy Online Shopping" />
-  <meta property="og:description" content="Shop the latest electronics and accessories at the best prices with AR Codes." />
-  <meta property="og:image" content={imageUrl} />
-  
-  <link rel="canonical" href={`${siteUrl}components/category/mobiles`} />
-  <link rel="icon" href={imageUrl} />
-</Head>
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content={`${siteUrl}components/category/mobiles`}
+        />
+        <meta
+          property="og:title"
+          content="AR Codes - Affordable & Trendy Online Shopping"
+        />
+        <meta
+          property="og:description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes."
+        />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
+
+        <link rel="canonical" href={`${siteUrl}components/category/mobiles`} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
       <button
         onClick={scrollToTop}
         className={`${
@@ -186,8 +207,6 @@ const Mobiles = ({addToCart}) => {
       >
         <FaArrowCircleUp />
       </button>
-
-     
 
       {/* mobile  */}
       <Fade duration={2000} cascade>
@@ -203,7 +222,6 @@ const Mobiles = ({addToCart}) => {
           </div>
           <div className="text-[30px] font-bold my-[1rem] flex items-center justify-between">
             {pageName}
-            
           </div>
           <div className="flex justify-between font-thin items-center">
             <div>{filteredAndSortedItems.length} Products</div>
@@ -228,61 +246,60 @@ const Mobiles = ({addToCart}) => {
               </div>
             ) : (
               filteredAndSortedItems.map((item, index) => (
-                                <Fade
-                                  key={item.id}
-                                  duration={1000}
-                                  cascade
-                                  fraction={0.3}
-                                  triggerOnce
-                                >
-                                  <div
-                                    onClick={() =>
-                                      setFlippedCards((prev) => ({
-                                        ...prev,
-                                        [item.id]: !prev[item.id], 
-                                      }))
-                                    }
-                                    className="w-full h-[20rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
-                                  >
-                                    <div
-                                      className={`transition-transform duration-[1s] w-full h-full relative`}
-                                      style={{
-                                        transformStyle: "preserve-3d",
-                                        transform: flippedCards[item.id]
-                                          ? "rotateY(180deg)"
-                                          : "rotateY(0deg)",
-                                      }}
-                                    >
-                                      
-                                    <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
-                                      {item.avaliable_quantity <= 0 ? (
-                                        <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
-                                          OUT OF STOCK
-                                        </div>
-                                      ) : item.onsale ? (
-                                        <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
-                                          SALE
-                                        </div>
-                                      ) : (
-                                        <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
-                                          SALE
-                                        </div>
-                                      )}
-              
-                                      <Image
-                                        src={item.image}
-                                        alt={`Slide ${index}`}
-                                        width={1020}
-                                        height={1020}
-                                        className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full h-[10rem]"
-                                      />
-              
-                                      <div className="ml-2 font-thin">{item.name}</div>
-                                      <div className="ml-2 font-thin">
-                                        {item.specification}
-                                      </div>
-              
-                                      {item.onsale ? (
+                <Fade
+                  key={item.id}
+                  duration={1000}
+                  cascade
+                  fraction={0.3}
+                  triggerOnce
+                >
+                  <div
+                    onClick={() =>
+                      setFlippedCards((prev) => ({
+                        ...prev,
+                        [item.id]: !prev[item.id],
+                      }))
+                    }
+                    className="w-full h-[20rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
+                  >
+                    <div
+                      className={`transition-transform duration-[1s] w-full h-full relative`}
+                      style={{
+                        transformStyle: "preserve-3d",
+                        transform: flippedCards[item.id]
+                          ? "rotateY(180deg)"
+                          : "rotateY(0deg)",
+                      }}
+                    >
+                      <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
+                        {item.avaliable_quantity <= 0 ? (
+                          <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
+                            OUT OF STOCK
+                          </div>
+                        ) : item.onsale ? (
+                          <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                            SALE
+                          </div>
+                        ) : (
+                          <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                            SALE
+                          </div>
+                        )}
+
+                        <Image
+                          src={item.image}
+                          alt={`Slide ${index}`}
+                          width={1020}
+                          height={1020}
+                          className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full h-[10rem]"
+                        />
+
+                        <div className="ml-2 font-thin">{item.name}</div>
+                        <div className="ml-2 font-thin">
+                          {item.specification}
+                        </div>
+
+                        {item.onsale ? (
                           <div className="flex sm:flex-col l:flex-row text-[18px] l:ml-2">
                             <div className="font-bold text-[var(---price)]">
                               <s>${item.price}</s>
@@ -297,39 +314,38 @@ const Mobiles = ({addToCart}) => {
                           </div>
                         )}
                       </div>
-              
-                                    
-                                    <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
-                                      {item.avaliable_quantity <= 0 ? (
-                                        <div className="text-red-600 font-black text-center">
-                                          Not Available
-                                        </div>
-                                      ) : (
-                                        <>
-                                          <button
-                                            onClick={() => addToCart(item)}
-                                            className="text-[14px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]"
-                                          >
-                                            Add to Cart
-                                          </button>
-                                          <Link href={`/components/buynow/${item.id}`}>
-                                            <button className="text-[14px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
-                                              Buy Now
-                                            </button>
-                                          </Link>
-                                          <Link href={`/components/product/${item.id}`}>
-                                            <div className="underline text-blue-600 text-[14px] cursor-pointer hover:scale-110 duration-[1s]">
-                                              Details
-                                            </div>
-                                          </Link>
-                                        </>
-                                      )}
-                                    </div>
-                                    </div>
-                                  </div>
-                                </Fade>
-                              ))
-                            )}
+
+                      <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
+                        {item.avaliable_quantity <= 0 ? (
+                          <div className="text-red-600 font-black text-center">
+                            Not Available
+                          </div>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => addToCart(item)}
+                              className="text-[14px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]"
+                            >
+                              Add to Cart
+                            </button>
+                            <Link href={`/components/buynow/${item.id}`}>
+                              <button className="text-[14px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
+                                Buy Now
+                              </button>
+                            </Link>
+                            <Link href={`/components/product/${item.id}`}>
+                              <div className="underline text-blue-600 text-[14px] cursor-pointer hover:scale-110 duration-[1s]">
+                                Details
+                              </div>
+                            </Link>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Fade>
+              ))
+            )}
           </div>
         </div>
       </Fade>
@@ -486,59 +502,63 @@ const Mobiles = ({addToCart}) => {
         </div>
 
         <div
-  className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
-    colorfilter ? "h-auto" : "h-auto "
-  }`}
->
-  <div
-    className={`justify-between items-center  text-[20px] font-thin flex ${
-      colorfilter ? "block" : "hidden"
-    }`}
-  >
-    <div>Color</div>
-    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <div
-    className={`justify-between items-center text-[20px] font-thin ${
-      colorfilter ? "hidden" : "flex"
-    } `}
-  >
-    <div>Color</div>
-    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <AnimatePresence initial={false}>
-    {colorfilter && (
-      <motion.div
-        key="colorfilter"
-        initial={{ height: 0, opacity: 0, y: -20 }}
-        animate={{ height: "auto", opacity: 1, y: 0 }}
-        exit={{ height: 0, opacity: 0, y: -20 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className="overflow-hidden"
-      >
-        <div className="m-[1rem] flex gap-2 flex-wrap">
-          {uniqueColors.map((color) => (
-            <div
-              key={color}
-              className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+          className={`p-4 mb-[4rem] border-b-[1px] duration-700 overflow-y-hidden ${
+            colorfilter ? "h-auto" : "h-auto "
+          }`}
+        >
+          <div
+            className={`justify-between items-center  text-[20px] font-thin flex ${
+              colorfilter ? "block" : "hidden"
+            }`}
+          >
+            <div>Color</div>
+            <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
+          </div>
+          <div
+            className={`justify-between items-center text-[20px] font-thin ${
+              colorfilter ? "hidden" : "flex"
+            } `}
+          >
+            <div>Color</div>
+            <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
+          </div>
+          <AnimatePresence initial={false}>
+            {colorfilter && (
+              <motion.div
+                key="colorfilter"
+                initial={{ height: 0, opacity: 0, y: -20 }}
+                animate={{ height: "auto", opacity: 1, y: 0 }}
+                exit={{ height: 0, opacity: 0, y: -20 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="m-[1rem] flex gap-2 flex-wrap">
+                  {uniqueColors.map((color) => (
+                    <div
+                      key={color}
+                      className={`w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+                ${
+                  selectedColor === color
+                    ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                    : "border-gray-300"
+                }
               `}
-              style={{ backgroundColor: color }}
-              title={color}
-              onClick={() =>
-                setSelectedColor(selectedColor === color ? null : color)
-              }
-            >
-              {selectedColor === color && (
-                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
-              )}
-            </div>
-          ))}
+                      style={{ backgroundColor: color }}
+                      title={color}
+                      onClick={() =>
+                        setSelectedColor(selectedColor === color ? null : color)
+                      }
+                    >
+                      {selectedColor === color && (
+                        <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
       </div>
 
       {/* laptop */}
@@ -730,66 +750,77 @@ const Mobiles = ({addToCart}) => {
                 </div>
 
                 <div
-  className={`p-4 mb-[4rem] duration-700 border-b-[1px] overflow-y-hidden ${
-    colorfilter ? "h-auto" : "h-auto "
-  }`}
->
-  <div
-    className={`justify-between items-center  text-[20px] font-thin flex ${
-      colorfilter ? "block" : "hidden"
-    }`}
-  >
-    <div>Color</div>
-    <RxMinus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <div
-    className={`justify-between items-center text-[20px] font-thin ${
-      colorfilter ? "hidden" : "flex"
-    }`}
-  >
-    <div>Color</div>
-    <RxPlus className="cursor-pointer" onClick={showcolorfilter} />
-  </div>
-  <AnimatePresence initial={false}>
-    {colorfilter && (
-      <motion.div
-        key="colorfilter"
-        initial={{ height: 0, opacity: 0, y: -20 }}
-        animate={{ height: "auto", opacity: 1, y: 0 }}
-        exit={{ height: 0, opacity: 0, y: -20 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className="overflow-hidden"
-      >
-        <div className="m-[1rem] flex gap-2 flex-wrap">
-          {uniqueColors.map((color) => (
-            <div
-              key={color}
-              className={` w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
-                ${selectedColor === color ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]" : "border-gray-300"}
+                  className={`p-4 mb-[4rem] duration-700 border-b-[1px] overflow-y-hidden ${
+                    colorfilter ? "h-auto" : "h-auto "
+                  }`}
+                >
+                  <div
+                    className={`justify-between items-center  text-[20px] font-thin flex ${
+                      colorfilter ? "block" : "hidden"
+                    }`}
+                  >
+                    <div>Color</div>
+                    <RxMinus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
+                  </div>
+                  <div
+                    className={`justify-between items-center text-[20px] font-thin ${
+                      colorfilter ? "hidden" : "flex"
+                    }`}
+                  >
+                    <div>Color</div>
+                    <RxPlus
+                      className="cursor-pointer"
+                      onClick={showcolorfilter}
+                    />
+                  </div>
+                  <AnimatePresence initial={false}>
+                    {colorfilter && (
+                      <motion.div
+                        key="colorfilter"
+                        initial={{ height: 0, opacity: 0, y: -20 }}
+                        animate={{ height: "auto", opacity: 1, y: 0 }}
+                        exit={{ height: 0, opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="m-[1rem] flex gap-2 flex-wrap">
+                          {uniqueColors.map((color) => (
+                            <div
+                              key={color}
+                              className={` w-[2rem] h-[2rem] rounded-full cursor-pointer flex items-center justify-center transition-all duration-200
+                ${
+                  selectedColor === color
+                    ? " scale-110 shadow-lg ring-2 ring-[var(---btncolor)]"
+                    : "border-gray-300"
+                }
               `}
-              style={{ backgroundColor: color }}
-              title={color}
-              onClick={() =>
-                setSelectedColor(selectedColor === color ? null : color)
-              }
-            >
-              {selectedColor === color && (
-                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
-              )}
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-</div>
+                              style={{ backgroundColor: color }}
+                              title={color}
+                              onClick={() =>
+                                setSelectedColor(
+                                  selectedColor === color ? null : color
+                                )
+                              }
+                            >
+                              {selectedColor === color && (
+                                <span className="block w-3 h-3 rounded-full border-2 border-white bg-white opacity-80"></span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
             </Fade>
           </div>
           <div className="col-span-4 scrollbar-hide">
             <div className="text-[50px] font-bold my-[1rem] flex items-center justify-between">
               {pageName}
-              
             </div>
             <div className="flex justify-between font-thin text-[20px] items-center">
               <div>{filteredAndSortedItems.length} Products</div>
@@ -853,7 +884,7 @@ const Mobiles = ({addToCart}) => {
                       onClick={() =>
                         setFlippedCards((prev) => ({
                           ...prev,
-                          [item.id]: !prev[item.id], 
+                          [item.id]: !prev[item.id],
                         }))
                       }
                       className="w-full h-[25rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
@@ -867,78 +898,76 @@ const Mobiles = ({addToCart}) => {
                             : "rotateY(0deg)",
                         }}
                       >
-                        
-                      <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
-                        {item.avaliable_quantity <= 0 ? (
-                          <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
-                            OUT OF STOCK
-                          </div>
-                        ) : item.onsale ? (
-                          <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
-                            SALE
-                          </div>
-                        ) : (
-                          <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
-                            SALE
-                          </div>
-                        )}
+                        <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
+                          {item.avaliable_quantity <= 0 ? (
+                            <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
+                              OUT OF STOCK
+                            </div>
+                          ) : item.onsale ? (
+                            <div className="p-0.5 px-4 bg-[var(---salelabel)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                              SALE
+                            </div>
+                          ) : (
+                            <div className="p-0.5 px-4 bg-[var(---whitetext)] inline text-[var(---whitetext)] rounded-[1rem] m-2 font-thin">
+                              SALE
+                            </div>
+                          )}
 
-                        <Image
-                          src={item.image}
-                          alt={`Slide ${index}`}
-                          width={1020}
-                          height={1020}
-                          className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full h-[16rem]"
-                        />
+                          <Image
+                            src={item.image}
+                            alt={`Slide ${index}`}
+                            width={1020}
+                            height={1020}
+                            className="transition-transform duration-500 my-2 hover:scale-102 rounded-[1rem] w-full h-[16rem]"
+                          />
 
-                        <div className="ml-2 font-thin">{item.name}</div>
-                        <div className="ml-2 font-thin">
-                          {item.specification}
+                          <div className="ml-2 font-thin">{item.name}</div>
+                          <div className="ml-2 font-thin">
+                            {item.specification}
+                          </div>
+
+                          {item.onsale ? (
+                            <div className="flex sm:flex-col l:flex-row text-[18px] l:ml-2">
+                              <div className="font-bold text-[var(---price)]">
+                                <s>${item.price}</s>
+                              </div>
+                              <div className="l:ml-2 font-bold text-[var(---price)]">
+                                ${item.sale_price}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
+                              ${item.price}
+                            </div>
+                          )}
                         </div>
 
-                        {item.onsale ? (
-                          <div className="flex sm:flex-col l:flex-row text-[18px] l:ml-2">
-                            <div className="font-bold text-[var(---price)]">
-                              <s>${item.price}</s>
+                        <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
+                          {item.avaliable_quantity <= 0 ? (
+                            <div className="text-red-600 font-black text-center">
+                              Not Available
                             </div>
-                            <div className="l:ml-2 font-bold text-[var(---price)]">
-                              ${item.sale_price}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="text-[18px] ml-2 font-bold text-[var(---price)]">
-                            ${item.price}
-                          </div>
-                        )}
-                      </div>
-
-                      
-                      <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
-                        {item.avaliable_quantity <= 0 ? (
-                          <div className="text-red-600 font-black text-center">
-                            Not Available
-                          </div>
-                        ) : (
-                          <>
-                            <button
-                              onClick={() => addToCart(item)}
-                              className="text-[16px] l:text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]"
-                            >
-                              Add to Cart
-                            </button>
-                            <Link href={`/components/buynow/${item.id}`}>
-                              <button className="text-[16px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
-                                Buy Now
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => addToCart(item)}
+                                className="text-[16px] l:text-[16px] font-semibold bg-[var(---btncolor)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] my-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---btncolor)] hover:border-[var(---btncolor)] hover:border-[1px] duration-[1s]"
+                              >
+                                Add to Cart
                               </button>
-                            </Link>
-                            <Link href={`/components/product/${item.id}`}>
-                              <div className="underline text-blue-600 text-[16px] cursor-pointer hover:scale-110 duration-[1s]">
-                                Details
-                              </div>
-                            </Link>
-                          </>
-                        )}
-                      </div>
+                              <Link href={`/components/buynow/${item.id}`}>
+                                <button className="text-[16px] l:text-[16px] font-semibold bg-[var(---blacktext)] text-[var(---whitetext)] p-2 l:p-4 l:px-[2rem] px-[1.5rem] rounded-[8px] mb-[1rem] cursor-pointer hover:bg-transparent hover:text-[var(---blacktext)] hover:border-[var(---blacktext)] hover:border-[1px] duration-[1s]">
+                                  Buy Now
+                                </button>
+                              </Link>
+                              <Link href={`/components/product/${item.id}`}>
+                                <div className="underline text-blue-600 text-[16px] cursor-pointer hover:scale-110 duration-[1s]">
+                                  Details
+                                </div>
+                              </Link>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </Fade>

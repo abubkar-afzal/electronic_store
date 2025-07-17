@@ -103,7 +103,7 @@ const Contact = () => {
           property="og:description"
           content="Contact Us we will help you as we can."
         />
-        <meta property="og:image" content={imageUrl} />
+  <meta property="og:image" content={`${siteUrl}logo.png`} />
         <link rel="canonical" href={`${siteUrl}component/basic/contact`} />
         <link rel="icon" href={imageUrl} />
       </Head>

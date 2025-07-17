@@ -58,7 +58,7 @@ const Admin = () => {
           property="og:description"
           content="Shop the latest electronics and accessories at the best prices with AR Codes."
         />
-        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
         <link rel="canonical" href={siteUrl} />
         <link rel="icon" href={imageUrl} />
       </Head>

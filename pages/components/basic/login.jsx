@@ -32,6 +32,12 @@ const Login = () => {
 
   const [login, setlogin] = useState(true);
   const [forgot, setforgot] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const changeforgot = () => {
     setforgot(!forgot);
   };
@@ -40,6 +46,9 @@ const Login = () => {
   };
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const imageUrl = `${siteUrl}login.png`;
+  if (!isClient) {
+    return null;
+  }
   return (
     <>
       <Head>
@@ -65,7 +74,7 @@ const Login = () => {
           property="og:description"
           content="Shop the latest electronics and accessories at the best prices with AR Codes."
         />
-        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
         <link rel="canonical" href={`${siteUrl}components/basic/login`} />
         <link rel="icon" href={imageUrl} />
       </Head>

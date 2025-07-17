@@ -12,6 +12,12 @@ import Head from "next/head";
 const AllProducts = ({ addToCart }) => {
   const pageName = "All Products";
   const [flippedCards, setFlippedCards] = useState({});
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filter, setfilter] = useState(false);
@@ -152,6 +158,9 @@ const AllProducts = ({ addToCart }) => {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const imageUrl = `${siteUrl}allproducts.png`;
+  if (!isClient) {
+    return null;
+  }
   return (
     <>
       <Head>
@@ -180,7 +189,7 @@ const AllProducts = ({ addToCart }) => {
           property="og:description"
           content="Shop the latest electronics and accessories at the best prices with AR Codes."
         />
-        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
         <link
           rel="canonical"
           href={`${siteUrl}components/category/allproducts`}
@@ -261,7 +270,6 @@ const AllProducts = ({ addToCart }) => {
                           : "rotateY(0deg)",
                       }}
                     >
-                      
                       <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
                         {item.avaliable_quantity <= 0 ? (
                           <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -306,7 +314,6 @@ const AllProducts = ({ addToCart }) => {
                         )}
                       </div>
 
-                      
                       <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                         {item.avaliable_quantity <= 0 ? (
                           <div className="text-red-600 font-black text-center">
@@ -890,7 +897,6 @@ const AllProducts = ({ addToCart }) => {
                             : "rotateY(0deg)",
                         }}
                       >
-                        
                         <div className="absolute inset-0 backface-hidden bg-[var(---whitetext)] rounded-[1rem] shadow shadow-black p-2">
                           {item.avaliable_quantity <= 0 ? (
                             <div className=" bg-red-600 text-white font-bold w-full top-[50%] relative text-center z-20">
@@ -935,7 +941,6 @@ const AllProducts = ({ addToCart }) => {
                           )}
                         </div>
 
-                        
                         <div className="absolute inset-0 backface-hidden rotate-y-180 border shadow-black bg-[var(---whitetext)] shadow-sm rounded-[1rem] flex flex-col justify-center items-center p-4 space-y-4">
                           {item.avaliable_quantity <= 0 ? (
                             <div className="text-red-600 font-black text-center">

@@ -64,7 +64,7 @@ const About = () => {
   <meta property="og:url" content={`${siteUrl}component/basic/about`} />
   <meta property="og:title" content="AR Codes - About Page" />
   <meta property="og:description" content="Contact Us we will help you as we can." />
-  <meta property="og:image" content={imageUrl} />
+    <meta property="og:image" content={`${siteUrl}logo.png`} />
 
   <link rel="canonical" href={`${siteUrl}component/basic/about`} />
   <link rel="icon" href={imageUrl} />

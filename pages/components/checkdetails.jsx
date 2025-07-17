@@ -201,7 +201,7 @@ const CheckDetails = ({
           content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
         />
 
-              <meta property="og:type" content="website" />
+        <meta property="og:type" content="website" />
         <meta property="og:url" content={siteUrl} />
         <meta
           property="og:title"
@@ -211,7 +211,7 @@ const CheckDetails = ({
           property="og:description"
           content="Shop the latest electronics and accessories at the best prices with AR Codes."
         />
-        <meta property="og:image" content={imageUrl} />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
 
         <link rel="canonical" href={siteUrl} />
         <link rel="icon" href={imageUrl} />

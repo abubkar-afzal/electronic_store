@@ -27,6 +27,12 @@ const Navbar = ({
   const [showresult, setshowresult] = useState(false);
   const [trendproduct, settrendproduct] = useState([]);
   const [flippedCards, setFlippedCards] = useState({});
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const [placemessage, setplacemessage] = useState(false);
   const [previousPage, setPreviousPage] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
@@ -174,7 +180,9 @@ const Navbar = ({
     "Hello, I'm interested in your product! Can you send more info?";
 
   const encodedMessage = encodeURIComponent(message);
-
+  if (!isClient) {
+    return null;
+  }
   return (
     <>
       <nav

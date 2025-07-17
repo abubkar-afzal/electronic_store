@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { MoonLoader } from "react-spinners";
 const OnSale = ({ addToCart, Onsale }) => {
-  const [items, setItems] = useState(Onsale||[]);
+  const [items, setItems] = useState(Onsale || []);
   const [flippedCards, setFlippedCards] = useState({});
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
   return (
     <>
       <div className="w-full bg-[var(---whitetext)] my-[1rem]">

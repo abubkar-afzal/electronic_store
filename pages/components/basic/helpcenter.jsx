@@ -62,7 +62,7 @@ const Help_Center = () => {
           property="og:description"
           content="Contact Us we will help you as we can."
         />
-        <meta property="og:image" content={imageUrl} />
+  <meta property="og:image" content={`${siteUrl}logo.png`} />
         <link rel="canonical" href={`${siteUrl}component/basic/helpcenter`} />
         <link rel="icon" href={imageUrl} />
       </Head>

@@ -22,6 +22,12 @@ const ProductPage = ({ addToCart }) => {
   const [previousPage, setPreviousPage] = useState(null);
   const [items, setItems] = useState([]);
   const [flippedCards, setFlippedCards] = useState({});
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -101,10 +107,18 @@ const ProductPage = ({ addToCart }) => {
     );
   }
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const productName = product[0]?.name || "Product";
+  const productCategory = product[0]?.category || "Category";
+  const productId = product[0]?.id || "0";
+  const productImage = product[0]?.image || `${siteUrl}fallback.jpg`;
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <>
       <Head>
-        <title>AR Codes - {product.map((item) => item.name)} Page</title>
+        <title>AR Codes - {productName} Page</title>
         <meta
           name="description"
           content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
@@ -114,36 +128,28 @@ const ProductPage = ({ addToCart }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="keywords"
-          content={`${product.map((item) => item.name)}, ${product.map(
-            (item) => item.category
-          )}, online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones`}
+          content={`${productName}, ${productCategory}, online shopping, electronics, AR Codes, mobile, laptop`}
         />
+
         <meta property="og:type" content="website" />
         <meta
           property="og:url"
-          content={`${siteUrl}components/product/${product.map(
-            (item) => item.id
-          )}`}
+          content={`${siteUrl}components/product/${productId}`}
         />
-        <meta
-          property="og:title"
-          content={`Buy ${product.map((item) => item.name)} - AR Codes`}
-        />
+        <meta property="og:title" content={`Buy ${productName} - AR Codes`} />
         <meta
           property="og:description"
-          content={`Get ${product.map(
-            (item) => item.name
-          )} with fast shipping and exclusive deals only at AR Codes.`}
+          content={`Get ${productName} with fast shipping and exclusive deals only at AR Codes.`}
         />
-        <meta property="og:image" content={product.map((item) => item.image)} />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
+
         <link
           rel="canonical"
-          href={`${siteUrl}components/product/${product.map(
-            (item) => item.id
-          )}`}
+          href={`${siteUrl}components/product/${productId}`}
         />
-        <link rel="icon" href={product.map((item) => item.image)} />
+        <link rel="icon" href={productImage} />
       </Head>
+
       {product.map((product) => (
         <>
           <div className="l:px-[10rem] sm:px-[2rem] flex space-x-2 text-[18px] mb-[1rem]">
