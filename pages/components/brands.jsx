@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { MoonLoader } from "react-spinners";
+import dynamic from "next/dynamic";
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
 
 const Brands = ({ Brand }) => {
   const [brands, setBrands] = useState(Brand||[]);

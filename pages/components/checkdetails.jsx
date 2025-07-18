@@ -1,9 +1,30 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { HiMinus, HiPlus } from "react-icons/hi2";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { MoonLoader } from "react-spinners";
+import dynamic from "next/dynamic";
+
+const motion = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion),
+  { ssr: false }
+);
+
+const HiMinus = dynamic(
+  () => import("react-icons/hi2").then((mod) => mod.HiMinus),
+  { ssr: false }
+);
+
+const HiPlus = dynamic(
+  () => import("react-icons/hi2").then((mod) => mod.HiPlus),
+  { ssr: false }
+);
+
+const RiDeleteBin6Line = dynamic(
+  () => import("react-icons/ri").then((mod) => mod.RiDeleteBin6Line),
+  { ssr: false }
+);
+const MoonLoader = dynamic(
+  () => import("react-spinners").then((mod) => mod.MoonLoader),
+  { ssr: false }
+);
 import { useRouter } from "next/router";
 import Head from "next/head";
 

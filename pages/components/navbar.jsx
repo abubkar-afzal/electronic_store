@@ -1,17 +1,63 @@
 import React, { useEffect, useState } from "react";
-import { IoIosSearch } from "react-icons/io";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
-import { FaLock, FaUserCircle } from "react-icons/fa";
-import { HiMinus, HiPlus } from "react-icons/hi2";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { Swiper, SwiperSlide } from "swiper/react";
+const CheckDetails = dynamic(() => import("./checkdetails"), { ssr: false });
+const IoIosSearch = dynamic(
+  () => import("react-icons/io").then((mod) => mod.IoIosSearch),
+  { ssr: false }
+);
+const AiOutlineShoppingCart = dynamic(
+  () => import("react-icons/ai").then((mod) => mod.AiOutlineShoppingCart),
+  { ssr: false }
+);
+const RxCross2 = dynamic(
+  () => import("react-icons/rx").then((mod) => mod.RxCross2),
+  { ssr: false }
+);
+const RxHamburgerMenu = dynamic(
+  () => import("react-icons/rx").then((mod) => mod.RxHamburgerMenu),
+  { ssr: false }
+);
+const FaLock = dynamic(
+  () => import("react-icons/fa").then((mod) => mod.FaLock),
+  { ssr: false }
+);
+const FaUserCircle = dynamic(
+  () => import("react-icons/fa").then((mod) => mod.FaUserCircle),
+  { ssr: false }
+);
+const HiMinus = dynamic(
+  () => import("react-icons/hi2").then((mod) => mod.HiMinus),
+  { ssr: false }
+);
+const HiPlus = dynamic(
+  () => import("react-icons/hi2").then((mod) => mod.HiPlus),
+  { ssr: false }
+);
+const RiDeleteBin6Line = dynamic(
+  () => import("react-icons/ri").then((mod) => mod.RiDeleteBin6Line),
+  { ssr: false }
+);
+
+const Swiper = dynamic(() => import("swiper/react").then((mod) => mod.Swiper), {
+  ssr: false,
+});
+const SwiperSlide = dynamic(
+  () => import("swiper/react").then((mod) => mod.SwiperSlide),
+  { ssr: false }
+);
+const MoonLoader = dynamic(
+  () => import("react-spinners").then((mod) => mod.MoonLoader),
+  { ssr: false }
+);
+const motion = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion),
+  { ssr: false }
+);
+
 import "swiper/css";
-import CheckDetails from "./checkdetails";
-import { MoonLoader } from "react-spinners";
-import { motion } from "framer-motion";
+
 const Navbar = ({
   account,
   cartshow,
@@ -28,10 +74,6 @@ const Navbar = ({
   const [trendproduct, settrendproduct] = useState([]);
   const [flippedCards, setFlippedCards] = useState({});
   const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const [placemessage, setplacemessage] = useState(false);
   const [previousPage, setPreviousPage] = useState([]);
@@ -53,21 +95,7 @@ const Navbar = ({
       }
     };
     fetchProducts();
-  }, []);
-
-  useEffect(() => {
-    const q = searchQuery.toLowerCase();
-    const f = allProducts.filter(
-      (item) =>
-        item.name.toLowerCase().includes(q) ||
-        item.category.toLowerCase().includes(q) ||
-        item.specification?.toLowerCase().includes(q) ||
-        String(item.price).includes(q) ||
-        String(item.sale_price || "").includes(q)
-    );
-    setFiltered(f);
-  }, [searchQuery, allProducts]);
-  useEffect(() => {
+    setIsClient(true);
     const prev = sessionStorage.getItem("previousPage");
 
     if (prev && prev !== window.location.pathname) {
@@ -83,17 +111,29 @@ const Navbar = ({
         label: label || "Back",
       });
     }
-  }, []);
-  useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProduct = async () => {
       try {
         const res = await fetch("/api/bestsellermain");
         const data = await res.json();
         settrendproduct(data);
       } catch (error) {}
     };
-    fetchProducts();
+    fetchProduct();
   }, []);
+
+  useEffect(() => {
+    const q = searchQuery.toLowerCase();
+    const f = allProducts.filter(
+      (item) =>
+        item.name.toLowerCase().includes(q) ||
+        item.category.toLowerCase().includes(q) ||
+        item.specification?.toLowerCase().includes(q) ||
+        String(item.price).includes(q) ||
+        String(item.sale_price || "").includes(q)
+    );
+    setFiltered(f);
+  }, [searchQuery, allProducts]);
+
   const handleShowLoader = () => {
     setshowloder(!showloder);
     setTimeout(() => {

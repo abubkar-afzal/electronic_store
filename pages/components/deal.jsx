@@ -1,8 +1,10 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { MoonLoader } from "react-spinners";
 
 const Deal = () => {
+  const [loading, setloading] = useState(true);
   const [mobileDeal, setMobileDeal] = useState({
     line1: "",
     line2: "",
@@ -28,8 +30,16 @@ const Deal = () => {
       if (data.mobile) setMobileDeal(data.mobile);
       if (data.headphone) setHeadphoneDeal(data.headphone);
     }
+    setloading(false);
   };
-
+  if(loading){
+     <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Deals...
+      </div>
+    </div>
+  }
   return (
     <>
       <div className="t:grid t:grid-cols-2 t:gap-[1rem] t:h-full t:overflow-hidden t:justify-between t:w-full px-[1rem]">

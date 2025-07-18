@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MoonLoader } from "react-spinners";
+import dynamic from "next/dynamic";
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
 
 const TodaySpecial = ({ Todayspecial }) => {
   const [data, setData] = useState(Todayspecial||[]);

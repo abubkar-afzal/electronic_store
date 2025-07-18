@@ -1,17 +1,118 @@
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
+
 import Intro from "./components/intro";
-import Deal from "./components/deal";
-import Services from "./components/services";
-import BestSeller from "./components/bestsellers";
-import BestPrice from "./components/bestprice";
-import ShopeCategory from "./components/shopcategory";
-import OnSale from "./components/onsale";
-import TodaySpecial from "./components/todayspecial";
-import Brands from "./components/brands";
-import Newsletter from "./components/newsletter";
-import pool from "./api/db";
-import { FaArrowCircleUp } from "react-icons/fa";
+const Deal = dynamic(() => import("./components/deal"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Deals...
+      </div>
+    </div>
+  ),
+});
+const Services = dynamic(() => import("./components/services"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Services...
+      </div>
+    </div>
+  ),
+});
+const BestSeller = dynamic(() => import("./components/bestsellers"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Best Seller Products...
+      </div>
+    </div>
+  ),
+});
+const BestPrice = dynamic(() => import("./components/bestprice"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Best Price Offer...
+      </div>
+    </div>
+  ),
+});
+const ShopeCategory = dynamic(() => import("./components/shopcategory"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Shope Categories...
+      </div>
+    </div>
+  ),
+});
+const OnSale = dynamic(() => import("./components/onsale"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading On Sale Offer...
+      </div>
+    </div>
+  ),
+});
+const TodaySpecial = dynamic(() => import("./components/todayspecial"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Today Special Offer...
+      </div>
+    </div>
+  ),
+});
+const Brands = dynamic(() => import("./components/brands"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading Brands...
+      </div>
+    </div>
+  ),
+});
+const Newsletter = dynamic(() => import("./components/newsletter"), {
+  ssr: false,
+  loading: () => (
+    <div className=" inset-0 flex items-center justify-center col-span-5 bg-opacity-80 z-999">
+      <div className=" p-6 rounded  text-xl font-bold flex items-center gap-2">
+        <MoonLoader size={30} color="#7002ff" />
+        Loading News Letter...
+      </div>
+    </div>
+  ),
+});
+
 import Head from "next/head";
+
+
+import pool from "./api/db";
+
+const FaArrowCircleUp = dynamic(
+  () => import("react-icons/fa").then((mod) => mod.FaArrowCircleUp),
+  { ssr: false }
+);
+
 
 export default function Home({
   addToCart,

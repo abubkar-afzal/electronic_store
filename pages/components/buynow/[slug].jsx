@@ -1,12 +1,17 @@
-import { MoonLoader } from "react-spinners";
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { HiMinus, HiPlus } from "react-icons/hi2";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import Link from "next/link";
 import Head from "next/head";
-const { useRouter } = require("next/router");
+import { useRouter } from "next/router";
+
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
+const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });
+
+
+import { HiMinus, HiPlus } from "react-icons/hi2";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
 const BuyNow = ({ account }) => {
   const router = useRouter();
   const { slug } = router.query;

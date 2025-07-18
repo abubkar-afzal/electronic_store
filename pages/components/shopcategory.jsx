@@ -98,7 +98,7 @@ const ShopeCategory = () => {
               <Link href={item.link}>
                 <div className="flex flex-col items-center my-[2rem] cursor-pointer">
                   <div
-                    className={`l:w-[10rem] l:h-[10rem] ll:w-[15rem] ll:h-[15rem] ${item.bg} rounded-full overflow-hidden p-4`}
+                    className={`sm:w-[60vw] sm:h-[60vw] t:w-[10rem] t:h-[10rem] ll:w-[15rem] ll:h-[15rem] ${item.bg} rounded-full overflow-hidden p-4`}
                   >
                     <Image
                       src={item.img}

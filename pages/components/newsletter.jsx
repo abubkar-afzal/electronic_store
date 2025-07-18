@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { RiErrorWarningLine } from "react-icons/ri";
+import dynamic from "next/dynamic";
+
+const RiErrorWarningLine = dynamic(() =>
+  import("react-icons/ri").then((mod) => mod.RiErrorWarningLine)
+);
+
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");

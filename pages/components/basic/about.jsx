@@ -1,8 +1,16 @@
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
-import img from "../../../public/my_logo.jpg";
-import toast, { Toaster } from "react-hot-toast";
+import Image from "next/image";
 import Head from "next/head";
+
+import img from "../../../public/my_logo.jpg";
+
+const toast = dynamic(() => import("react-hot-toast").then((mod) => mod.default), {
+  ssr: false,
+});
+const Toaster = dynamic(() => import("react-hot-toast").then((mod) => mod.Toaster), {
+  ssr: false,
+});
 
 const About = () => {
   const [form, setForm] = useState({

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaTiktok,
-  FaYoutube,
-} from "react-icons/fa";
+import dynamic from "next/dynamic";
+
+const FaFacebookF = dynamic(() => import("react-icons/fa").then(mod => mod.FaFacebookF), { ssr: false });
+const FaInstagram = dynamic(() => import("react-icons/fa").then(mod => mod.FaInstagram), { ssr: false });
+const FaTiktok = dynamic(() => import("react-icons/fa").then(mod => mod.FaTiktok), { ssr: false });
+const FaYoutube = dynamic(() => import("react-icons/fa").then(mod => mod.FaYoutube), { ssr: false });
+
 import visa from "../../public/visa.png";
 import master from "../../public/master.png";
 import american from "../../public/american.png";

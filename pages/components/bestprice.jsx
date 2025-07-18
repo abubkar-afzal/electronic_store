@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { MoonLoader } from "react-spinners";
+import dynamic from "next/dynamic";
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
 
 const BestPrice = ({ Bestprice }) => {
   const [data, setData] = useState(Bestprice||[]);
@@ -19,7 +20,7 @@ const BestPrice = ({ Bestprice }) => {
                   alt="img1"
                   className="w-full h-[30%] t:h-[60vh] l:h-[90vh] rounded-br-[10rem]"
                 />
-                <div className="absolute top-10 t:top-[30%] t:right-[-3vw] right-3 bg-[var(---salelabel)] text-[var(---whitetext)] font-bold text-[20px] t:text-[2vw] w-[5vw] t:w-[11vw] l:w-[9vw] t:p-5 text-center p-3 rounded-full rotate-24">
+                <div className="absolute top-10 t:top-[30%] t:right-[-3vw] right-3 bg-[var(---salelabel)] text-[var(---whitetext)] font-bold sm:text-[5vw] t:text-[2vw] sm:w-[22vw] t:w-[11vw] l:w-[9vw] t:p-5 text-center p-3 rounded-full rotate-24">
                   {data.label}
                 </div>
               </div>

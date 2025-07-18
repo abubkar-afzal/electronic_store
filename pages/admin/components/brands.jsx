@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
-import { motion } from "framer-motion";
-import Image from "next/image";
+const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });import Image from "next/image";
 
 const Brands = () => {
   const [brands, setBrands] = useState([]);

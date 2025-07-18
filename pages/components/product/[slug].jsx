@@ -1,21 +1,19 @@
-import React from "react";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { MoonLoader } from "react-spinners";
-const { motion, AnimatePresence } = require("framer-motion");
-const { default: Link } = require("next/link");
-const { useRouter } = require("next/router");
-const { useState, useEffect } = require("react");
-const { FaMinus, FaPlus } = require("react-icons/fa");
-import { PiShareNetworkFill } from "react-icons/pi";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
-
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { MoonLoader } from "react-spinners";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaPlus, FaMinus } from "react-icons/fa";
+import { PiShareNetworkFill } from "react-icons/pi";
+import "swiper/css";
+import { FaDotCircle } from "react-icons/fa";
 const ProductPage = ({ addToCart }) => {
   const router = useRouter();
   const { slug } = router.query;
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
   const [productInfo, setproductInfo] = useState(false);
   const [refund, setrefund] = useState(false);
   const [shippingInfo, setshippingInfo] = useState(false);
@@ -23,10 +21,6 @@ const ProductPage = ({ addToCart }) => {
   const [items, setItems] = useState([]);
   const [flippedCards, setFlippedCards] = useState({});
   const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -37,9 +31,7 @@ const ProductPage = ({ addToCart }) => {
       } catch (error) {}
     };
     fetchProducts();
-  }, []);
-
-  useEffect(() => {
+    setIsClient(true);
     const prev = sessionStorage.getItem("previousPage");
 
     if (prev && prev !== window.location.pathname) {
@@ -55,9 +47,6 @@ const ProductPage = ({ addToCart }) => {
         label: label || "Back",
       });
     }
-  }, []);
-
-  useEffect(() => {
     if (slug) {
       const fetchProduct = async () => {
         try {
@@ -80,13 +69,12 @@ const ProductPage = ({ addToCart }) => {
       };
       fetchProduct();
     }
-  }, [slug]);
+  }, []);
+
   const handleShare = async () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Check this out!",
-          text: "This is something cool!",
           url: window.location.href,
         });
       } catch (error) {
@@ -197,34 +185,28 @@ const ProductPage = ({ addToCart }) => {
               </p>
 
               {product.onsale ? (
-                <div className="flex space-x-2 my-[1rem] text-[18px]">
+                <div className="flex space-x-2 my-[1rem] text-[2vw]">
                   <p className="opacity-45">
                     <s>${product.price}</s>
                   </p>
                   <p className="sale-price">${product.sale_price}</p>
                 </div>
               ) : (
-                <p className="regular-price">${product.price}</p>
+                <p className="regular-price text-[2vw]">${product.price}</p>
               )}
 
               <div className="text-[20px] font-thin my-[1rem]">
-                <p className="text-[18px]">Quantity:</p>
+                <p className="text-[18px]">Available Quantity:</p>
                 <div className="bg-[var(---whitetext)] w-[7rem] p-2 flex items-center space-x-2 border">
-                  <FaMinus
-                    className="cursor-pointer"
-                    onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
-                  />
+                  <FaDotCircle />
                   <input
                     type="number"
-                    value={quantity}
+                    value={product.avaliable_quantity}
                     min="1"
-                    className="w-12 text-center appearance-none focus:outline-none bg-transparent text-[var(---blacktext)]"
+                    className="w-12 pl-2 text-center appearance-none focus:outline-none bg-transparent text-[var(---blacktext)]"
                     readOnly
                   />
-                  <FaPlus
-                    className="cursor-pointer"
-                    onClick={() => setQuantity((prev) => prev + 1)}
-                  />
+                  <FaDotCircle />
                 </div>
               </div>
               <p className="text-[18px] font-thin">Color:</p>

@@ -2,7 +2,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import StatusDropdown from "./dropdown";
 import Image from "next/image";
-import { MoonLoader } from "react-spinners";
+import dynamic from "next/dynamic";
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
 import toast, { Toaster } from "react-hot-toast";
 
 const Orders = () => {

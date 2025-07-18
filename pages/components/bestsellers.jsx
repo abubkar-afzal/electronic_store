@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { MoonLoader } from "react-spinners";
+import dynamic from "next/dynamic";
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
 const BestSeller = ({ addToCart, Bestseller }) => {
   const [items, setItems] = useState(Bestseller || []);
   const [flippedCards, setFlippedCards] = useState({});

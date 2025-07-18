@@ -5,9 +5,10 @@ import { FaBox } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { BiSolidMessage } from "react-icons/bi";
-import { MoonLoader } from "react-spinners";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import dynamic from "next/dynamic";
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
+const Swiper = dynamic(() => import("swiper/react").then(mod => mod.Swiper), { ssr: false });
+const SwiperSlide = dynamic(() => import("swiper/react").then(mod => mod.SwiperSlide), { ssr: false });import "swiper/css";
 
 const AdminNavbar = ({ orders }) => {
   const [mobilemenu, setmonbilemenu] = useState(true);

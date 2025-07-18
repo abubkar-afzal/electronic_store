@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { HiMinus, HiPlus } from "react-icons/hi2";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { RiDeleteBin6Line } from "react-icons/ri";
-import { IoPricetagOutline } from "react-icons/io5";
-import { LuStickyNote } from "react-icons/lu";
-import { FaLock } from "react-icons/fa";
-import CheckDetails from "./checkdetails";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import Head from "next/head";
+
+const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });
+const HiMinus = dynamic(() => import("react-icons/hi2").then(mod => mod.HiMinus), { ssr: false });
+const HiPlus = dynamic(() => import("react-icons/hi2").then(mod => mod.HiPlus), { ssr: false });
+const RiDeleteBin6Line = dynamic(() => import("react-icons/ri").then(mod => mod.RiDeleteBin6Line), { ssr: false });
+const IoPricetagOutline = dynamic(() => import("react-icons/io5").then(mod => mod.IoPricetagOutline), { ssr: false });
+const LuStickyNote = dynamic(() => import("react-icons/lu").then(mod => mod.LuStickyNote), { ssr: false });
+const FaLock = dynamic(() => import("react-icons/fa").then(mod => mod.FaLock), { ssr: false });
+
+const CheckDetails = dynamic(() => import("./checkdetails"), { ssr: false });
+
 const ViewCart = ({ cart, removeFromCart, account, clearCart, setCart }) => {
   const [showloder, setshowloder] = useState(false);
   const [showresult, setshowresult] = useState(false);

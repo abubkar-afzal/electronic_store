@@ -1,14 +1,49 @@
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import defaultImage from "../../../public/my_logo.jpg";
-import { FaEdit, FaOutdent, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
-import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { MoonLoader } from "react-spinners";
+import dynamic from "next/dynamic";
+
+const MoonLoader = dynamic(() =>
+  import("react-spinners").then((mod) => mod.MoonLoader),
+  { ssr: false }
+);
+const motion = dynamic(() =>
+  import("framer-motion").then((mod) => mod.motion),
+  { ssr: false }
+);
+const AnimatePresence = dynamic(() =>
+  import("framer-motion").then((mod) => mod.AnimatePresence),
+  { ssr: false }
+);
+
+const FaEdit = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaEdit),
+  { ssr: false }
+);
+const FaOutdent = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaOutdent),
+  { ssr: false }
+);
+const FaPlus = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaPlus),
+  { ssr: false }
+);
+const FaSignOutAlt = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaSignOutAlt),
+  { ssr: false }
+);
+const RxCross2 = dynamic(() =>
+  import("react-icons/rx").then((mod) => mod.RxCross2),
+  { ssr: false }
+);
+const RxHamburgerMenu = dynamic(() =>
+  import("react-icons/rx").then((mod) => mod.RxHamburgerMenu),
+  { ssr: false }
+);
 
 const Account = ({ account, setAccount }) => {
   const router = useRouter();

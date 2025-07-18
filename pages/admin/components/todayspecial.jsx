@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaEdit } from "react-icons/fa";
-import { motion } from "framer-motion";
-import Link from "next/link";
+const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });import Link from "next/link";
 
 const TodaySpecial = () => {
   const [data, setData] = useState({});

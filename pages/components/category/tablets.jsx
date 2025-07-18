@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { RxCross2, RxMinus, RxPlus } from "react-icons/rx";
-import { FaArrowCircleUp, FaEdit } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { MoonLoader } from "react-spinners";
-import { motion, AnimatePresence } from "framer-motion";
-import { Fade } from "react-awesome-reveal";
-import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
+
+const RxCross2 = dynamic(() => import("react-icons/rx").then(mod => mod.RxCross2), { ssr: false });
+const RxMinus = dynamic(() => import("react-icons/rx").then(mod => mod.RxMinus), { ssr: false });
+const RxPlus = dynamic(() => import("react-icons/rx").then(mod => mod.RxPlus), { ssr: false });
+const FaArrowCircleUp = dynamic(() => import("react-icons/fa").then(mod => mod.FaArrowCircleUp), { ssr: false });
+
+const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
+const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });
+const AnimatePresence = dynamic(() => import("framer-motion").then(mod => mod.AnimatePresence), { ssr: false });
+const Fade = dynamic(() => import("react-awesome-reveal").then(mod => mod.Fade), { ssr: false });
+
 
 const Tablets = ({ addToCart }) => {
   const pageName = "Tablets";
