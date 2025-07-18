@@ -4,9 +4,7 @@ import { FaEdit } from "react-icons/fa";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
-const Swiper = dynamic(() => import("swiper/react").then(mod => mod.Swiper), { ssr: false });
-const SwiperSlide = dynamic(() => import("swiper/react").then(mod => mod.SwiperSlide), { ssr: false });import "swiper/css";
-
+import { Swiper, SwiperSlide } from "swiper/react";
 const BestSeller = () => {
   const [items, setItems] = useState([]);
   const [displayPlaceOpen, setDisplayPlaceOpen] = useState(false);

@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
-const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });
+import { motion } from "framer-motion";
 const Deal = () => {
   const [mobileEdit, setMobileEdit] = useState(false);
   const [mobileImages, setMobileImages] = useState([]);

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
-const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });
-
-
+import { motion } from "framer-motion";
+import { MoonLoader } from "react-spinners";
 import { HiMinus, HiPlus } from "react-icons/hi2";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
