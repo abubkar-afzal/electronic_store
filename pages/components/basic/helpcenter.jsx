@@ -1,33 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import dynamic from "next/dynamic";
-
-const FaFacebookF = dynamic(() =>
-  import("react-icons/fa").then((mod) => mod.FaFacebookF),
-  { ssr: false }
-);
-const FaInstagram = dynamic(() =>
-  import("react-icons/fa").then((mod) => mod.FaInstagram),
-  { ssr: false }
-);
-const FaYoutube = dynamic(() =>
-  import("react-icons/fa").then((mod) => mod.FaYoutube),
-  { ssr: false }
-);
-const IoIosSearch = dynamic(() =>
-  import("react-icons/io").then((mod) => mod.IoIosSearch),
-  { ssr: false }
-);
-const motion = dynamic(() =>
-  import("framer-motion").then((mod) => mod.motion),
-  { ssr: false }
-);
-const AnimatePresence = dynamic(() =>
-  import("framer-motion").then((mod) => mod.AnimatePresence),
-  { ssr: false }
-);
-
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { IoIosSearch } from "react-icons/io";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Help_Center = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -86,7 +62,7 @@ const Help_Center = () => {
           property="og:description"
           content="Contact Us we will help you as we can."
         />
-  <meta property="og:image" content={`${siteUrl}logo.png`} />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
         <link rel="canonical" href={`${siteUrl}component/basic/helpcenter`} />
         <link rel="icon" href={imageUrl} />
       </Head>
