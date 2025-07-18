@@ -10,6 +10,7 @@ import AdminFooter from "./admin/components/footer";
 import LoadingBar from "react-top-loading-bar";
 import { SessionProvider } from "next-auth/react";
 import { jwtDecode } from "jwt-decode";
+import Head from "next/head";
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -184,9 +185,41 @@ export default function App({ Component, pageProps }) {
     };
     fetchProducts();
   }, [router.route]);
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const imageUrl = `${siteUrl}logo.png`;
+  
   return (
     <ErrorBoundary>
       <SessionProvider session={pageProps.session}>
+  
+      <Head>
+        <title>AR Codes - Affordable & Trendy Online Shopping</title>
+        <meta
+          name="description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes. Fast delivery and exclusive deals!"
+        />
+        <meta name="author" content="Hafiz Abubakar Afzal" />
+        <meta name="robots" content="index, follow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="keywords"
+          content="online shopping, best prices, electronics, AR Codes, sale, deals, e-commerce, mobile, laptop, lcd, tablet, drone, camera, headphone, mobiles, laptops, lcds, tablets, drones, cameras, headphones"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteUrl} />
+        <meta
+          property="og:title"
+          content="AR Codes - Affordable & Trendy Online Shopping"
+        />
+        <meta
+          property="og:description"
+          content="Shop the latest electronics and accessories at the best prices with AR Codes."
+        />
+        <meta property="og:image" content={`${siteUrl}logo.png`} />
+        <link rel="canonical" href={siteUrl} />
+        <link rel="icon" href={imageUrl} />
+      </Head>
+
         <LoadingBar
           color="#7002ff"
           progress={progress}
