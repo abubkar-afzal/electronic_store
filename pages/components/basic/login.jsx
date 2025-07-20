@@ -7,6 +7,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import googleimg from "../../../public/google.png";
 import Head from "next/head";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const route = useRouter();
@@ -44,13 +45,66 @@ const Login = () => {
   const changetosignup = () => {
     setlogin(!login);
   };
+  
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+  const email = e.target.Email.value;
+  const password = e.target.Password.value;
+
+  const res = await signIn("credentials", {
+    redirect: false,
+    email,
+    password,
+  });
+
+  if (res.ok) {
+    // redirect or show success
+          toast.success("Login Successfully.");
+
+    route.push("/components/basic/account");
+  } else {
+          toast.error("Give right information ?");
+
+    console.error("Login failed:", res);
+  }
+};
+
+const handleSignup = async (e) => {
+  e.preventDefault();
+  const name = e.target.Name.value;
+  const email = e.target.Email.value;
+  const phone = e.target.Phone.value;
+  const password = e.target.Password.value;
+
+  try {
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      toast.success("Signup successful! Please login.");
+      setlogin(true); // Switch to login form
+    } else {
+      toast(data.message || "Signup failed");
+    }
+  } catch (error) {
+    console.error("Signup Error:", error);
+    toast("Something went wrong during signup");
+  }
+};
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
   const imageUrl = `${siteUrl}login.png`;
   if (!isClient) {
     return null;
   }
   return (
-    <>
+    <><Toaster/>
       <Head>
         <title>AR Codes - Login Page</title>
         <meta
@@ -210,6 +264,7 @@ const Login = () => {
               </div>
               <div className="flex flex-col items-center justify-center p-4 sm:bg-transparent l:bg-[var(---whitetext)] ">
                 <form
+                onSubmit={handleLogin}
                   action="post"
                   className="w-full l:text-[14px] sm:h-[22rem] sm:text-[12px] l:h-[35vh] overflow-y-scroll"
                 >
@@ -254,7 +309,7 @@ const Login = () => {
                       type="password"
                       id="Password"
                       name="Password"
-                      required
+                      
                       className="border-b-[2px] w-full h-[2rem] appearance-none focus:outline-none border-[var(---inputborder)] hover:border-[var(---inputhoverborder)]"
                     />
                   </div>
@@ -302,6 +357,7 @@ const Login = () => {
               </div>
               <div className="flex flex-col items-center justify-center px-4 sm:bg-transparent l:bg-[var(---whitetext)] ">
                 <form
+                 onSubmit={handleSignup}
                   action="post"
                   className="w-full l:text-[14px] sm:h-[22rem] sm:text-[12px] l:h-[33vh] overflow-y-scroll"
                 >

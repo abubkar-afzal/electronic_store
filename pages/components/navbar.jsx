@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
+import defaultImage from "../../public/my_logo.jpg"
 const CheckDetails = dynamic(() => import("./checkdetails"), { ssr: false });
 const IoIosSearch = dynamic(
   () => import("react-icons/io").then((mod) => mod.IoIosSearch),
@@ -67,6 +68,7 @@ const Navbar = ({
   clearCart,
   setCart,
 }) => {
+  console.log(account)
   const [mobilemenu, setmonbilemenu] = useState(true);
   const [search, setsearch] = useState(true);
   const [showloder, setshowloder] = useState(false);
@@ -245,7 +247,7 @@ const Navbar = ({
               <div className="cursor-pointer" onClick={showsearch}>
                 <IoIosSearch />
               </div>
-              {account.image ? (
+              {account.email ? (
                 <>
                   <Link
                     href={`/components/basic/account`}
@@ -254,7 +256,7 @@ const Navbar = ({
                     <div className="flex items-center space-x-2 mx-4 cursor-pointer">
                       <div className="w-[2rem] h-[2rem] rounded-full overflow-hidden">
                         <Image
-                          src={account.image}
+                          src={account.image || defaultImage}
                           width={200}
                           height={200}
                           alt="profile"
@@ -389,7 +391,7 @@ const Navbar = ({
             <RxCross2 />
           </div>
 
-          {account.image ? (
+          {account.email ? (
             <>
               <Link href={`/components/basic/account`} className="">
                 <div
@@ -401,7 +403,7 @@ const Navbar = ({
                   <div className="text-[20px]  hover:underline">Account</div>
                   <div className="w-[1.5rem] h-[1.5rem] rounded-full overflow-hidden">
                     <Image
-                      src={account.image}
+                      src={account.image || defaultImage}
                       width={200}
                       height={200}
                       alt="profile"

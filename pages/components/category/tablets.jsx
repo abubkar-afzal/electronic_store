@@ -5,16 +5,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
+
 const RxCross2 = dynamic(() => import("react-icons/rx").then(mod => mod.RxCross2), { ssr: false });
 const RxMinus = dynamic(() => import("react-icons/rx").then(mod => mod.RxMinus), { ssr: false });
 const RxPlus = dynamic(() => import("react-icons/rx").then(mod => mod.RxPlus), { ssr: false });
 const FaArrowCircleUp = dynamic(() => import("react-icons/fa").then(mod => mod.FaArrowCircleUp), { ssr: false });
 
-const MoonLoader = dynamic(() => import("react-spinners").then(mod => mod.MoonLoader), { ssr: false });
-const motion = dynamic(() => import("framer-motion").then(mod => mod.motion), { ssr: false });
-const AnimatePresence = dynamic(() => import("framer-motion").then(mod => mod.AnimatePresence), { ssr: false });
-const Fade = dynamic(() => import("react-awesome-reveal").then(mod => mod.Fade), { ssr: false });
-
+import { Fade } from "react-awesome-reveal";
+import { motion,AnimatePresence } from "framer-motion";
+import { MoonLoader } from "react-spinners";
 
 const Tablets = ({ addToCart }) => {
   const pageName = "Tablets";
@@ -266,7 +265,7 @@ const Tablets = ({ addToCart }) => {
                         [item.id]: !prev[item.id],
                       }))
                     }
-                    className="w-full h-[20rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
+                    className="w-full h-[22rem] relative my-[1rem] mx-2 perspective-[1000px] cursor-pointer"
                   >
                     <div
                       className={`transition-transform duration-[1s] w-full h-full relative`}

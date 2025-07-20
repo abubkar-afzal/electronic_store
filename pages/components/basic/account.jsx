@@ -7,27 +7,13 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const MoonLoader = dynamic(() =>
-  import("react-spinners").then((mod) => mod.MoonLoader),
-  { ssr: false }
-);
-const motion = dynamic(() =>
-  import("framer-motion").then((mod) => mod.motion),
-  { ssr: false }
-);
-const AnimatePresence = dynamic(() =>
-  import("framer-motion").then((mod) => mod.AnimatePresence),
-  { ssr: false }
-);
-
+import { MoonLoader } from "react-spinners";
+import { motion, AnimatePresence } from "framer-motion";
 const FaEdit = dynamic(() =>
   import("react-icons/fa").then((mod) => mod.FaEdit),
   { ssr: false }
 );
-const FaOutdent = dynamic(() =>
-  import("react-icons/fa").then((mod) => mod.FaOutdent),
-  { ssr: false }
-);
+
 const FaPlus = dynamic(() =>
   import("react-icons/fa").then((mod) => mod.FaPlus),
   { ssr: false }
@@ -231,7 +217,7 @@ const Account = ({ account, setAccount }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-200"
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-999"
         >
           <motion.div
             initial={{ scale: 0.8 }}
@@ -329,10 +315,11 @@ const Account = ({ account, setAccount }) => {
                       <input
                         type="password"
                         id="password"
+                        disabled={form.password.length > 0 ? true:false}
                         name="password"
                         value={form.password}
                         onChange={handleFormChange}
-                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px] ${
+                        className={`outline-2 focus:outline-black m-2 w-full p-1 rounded-[4px]  disabled:outline-gray-400 text-gray-500 ${
                           errors.password ? "border border-red-500" : ""
                         }`}
                       />
@@ -425,7 +412,7 @@ const Account = ({ account, setAccount }) => {
               {errors.image && (
                 <div className="text-red-500 text-xs mb-1">{errors.image}</div>
               )}
-              {form.image && (
+              {form.image ? (
                 <motion.div
                   custom={16}
                   variants={inputVariants}
@@ -441,7 +428,7 @@ const Account = ({ account, setAccount }) => {
                     height={96}
                   />
                 </motion.div>
-              )}
+              ):<><div className="font-thin my-2">No image</div></>}
             </motion.div>
             <div className="flex justify-between mt-6">
               <button
@@ -464,7 +451,7 @@ const Account = ({ account, setAccount }) => {
         <div
           className={`${
             showdetails ? "right-0" : "right-[100vw]"
-          } duration-[2s] sm:fixed l:hidden top-[10vh] overflow-y-scroll scrollbar-hide h-[90vh] bg-white shadow-md rounded-lg p-6  `}
+          } duration-[2s] sm:fixed l:hidden top-[10vh] overflow-y-scroll scrollbar-hide h-[90vh] z-888 bg-white shadow-md rounded-lg p-6  `}
         >
           <div
             className="text-[30px] place-self-end my-1 l:hidden sm:block cursor-pointer"
@@ -474,8 +461,8 @@ const Account = ({ account, setAccount }) => {
           >
             <RxCross2 />
           </div>
-          <h1 className="text-2xl font-bold mb-4">Account Details</h1>
-          <div className="border-r-[4px] px-[1rem] border-[var(---btncolor)]">
+          <h1 className="text-2xl font-bold mb-4 sm:text-center">Account Details</h1>
+          <div className="border-r-[4px] px-[1rem] border-[var(---btncolor)] w-[100%] break-all">
             <div className="my-4 ">
               {account.image ? (
                 <Image
@@ -483,7 +470,7 @@ const Account = ({ account, setAccount }) => {
                   width={1020}
                   height={1020}
                   alt="User Image"
-                  className="w-[10rem] h-[10rem] rounded-full"
+                  className="mx-auto w-[10rem] h-[10rem] rounded-full"
                 />
               ) : (
                 <Image
@@ -491,7 +478,7 @@ const Account = ({ account, setAccount }) => {
                   width={1020}
                   height={1020}
                   alt="No Image"
-                  className="w-[10rem] h-[10rem] rounded-full"
+                  className="mx-auto w-[10rem] h-[10rem] rounded-full"
                 />
               )}
             </div>

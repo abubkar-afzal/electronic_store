@@ -906,7 +906,7 @@ const WearableTech = () => {
                 <Fade duration={2000} cascade triggerOnce fraction={0.1}>
                   <div
                     key={item.id}
-                    className="relative w-full flex-shrink-0 cursor-pointer bg-[var(---whitetext)] h-[20rem]"
+                    className="relative w-full flex-shrink-0 cursor-pointer bg-[var(---whitetext)] h-[22rem]"
                   >
                     <div className="relative w-full h-[2rem]">
                       <FaEdit
